@@ -1,20 +1,23 @@
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                            text   4000   01D5 =    469. bytes (rel,con,rom)
+                            text   4000   01CF =    463. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
        4000  __start
        4028  _exit
+       402A  _main
        402A  __text_start
-       403A  _main
-       4106  _getKeyboardCol
-       413F  _delay
-       4178  _setbaud
-       41A8  _putchar
-       41D0  __HC12Setup
-       41D5  __text_end
+       403A  _keyboard_scan
+       40A6  _keyboard_pushed
+       40F3  _keyboard_init
+       4100  _keyboard_get_column
+       4139  _delay
+       4172  _setbaud
+       41A2  _putchar
+       41CA  __HC12Setup
+       41CF  __text_end
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------

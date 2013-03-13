@@ -1,281 +1,301 @@
 XH
-H 1 areas 5 global symbols
+H 1 areas 8 global symbols
 M assign41.c
 S _setbaud Ref0000
 S _putchar Ref0000
-A text size 14E flags 0
+A text size 148 flags 0
 dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1\assign41.c
-dbfunc e main 10 fI
-dbsym l loopi FFFFFFE8 I
-dbsym l char_arr FFFFFFEA A[16:4:4]c
-dbsym l col FFFFFFFA I
-dbsym l row_mask FFFFFFFC I
+dbfunc e main 0 fI
+dbline FFFFFFFF 0
+dbline 10 0
+dbline 11 0
+dbline 12 6
+dbline 13 9
+dbline 14 C
+dbline FFFFFFFE F
+dbline 0 F
+dbfunc e keyboard_scan 10 fV
+dbsym l col FFFFFFFC I
 dbsym l row FFFFFFFE I
-dbline FFFFFFFF 16
-dbline 9 16
-dbline A 16
-dbline B 1B
-dbline C 20
-dbline D 25
-dbline 11 3B
-dbline 14 41
-dbline 17 47
-dbline 1A 4A
-dbline 1D 4F
-dbline 20 57
-dbline 21 57
-dbline 23 5C
-dbline 26 61
-dbline 26 66
-dbline 27 66
-dbline 29 6C
-dbline 29 79
-dbline 2A 79
-dbline 2C 96
-dbline 2F 96
-dbline 2F A4
-dbline 30 A4
-dbline 32 A9
-dbline 35 A9
-dbline 36 B0
-dbline 38 C0
-dbline 38 C7
-dbline 39 C7
-dbline 3A CC
-dbline 3B D1
-dbline 3C D1
-dbline 20 D1
-dbline 3E D5
-dbline FFFFFFFE D8
-dbline 0 DB
-dbfunc e getKeyboardCol DC fI
+dbline FFFFFFFF 15
+dbline 18 15
+dbline 19 15
+dbline 1A 1A
+dbline 1C 21
+dbline 1D 21
+dbline 1F 32
+dbline 22 37
+dbline 22 3C
+dbline 23 3C
+dbline 25 42
+dbline 25 4D
+dbline 26 4D
+dbline 28 56
+dbline 29 56
+dbline 2C 56
+dbline 2D 66
+dbline 1C 66
+dbline FFFFFFFE 68
+dbline 2E 68
+dbline 0 6B
+dbfunc e keyboard_pushed 7C fV
+dbsym l char_arr FFFFFFF0 A[16:4:4]c
+dbsym l col 6 I
+dbsym l row 2 I
+dbline FFFFFFFF 83
+dbline 31 83
+dbline 33 83
+dbline 38 98
+dbline 39 B4
+dbline 39 C2
+dbline 3A C2
+dbline 3B C3
+dbline FFFFFFFE C3
+dbline 3C C3
+dbline 0 C8
+dbfunc e keyboard_init C9 fV
+dbline FFFFFFFF C9
+dbline 3F C9
+dbline 40 C9
+dbline 41 CC
+dbline 42 D1
+dbline FFFFFFFE D5
+dbline 43 D5
+dbline 0 D5
+dbfunc e keyboard_get_column D6 fI
 dbsym l col FFFFFFFE I
-dbline FFFFFFFF E1
-dbline 42 E1
-dbline 44 E1
-dbline 44 E6
-dbline 45 E6
-dbline 46 EB
-dbline 46 ED
-dbline 46 F2
-dbline 47 F2
-dbline 48 F7
-dbline 48 F9
-dbline 48 FE
-dbline 49 FE
-dbline 4A 103
-dbline 4A 105
-dbline 4A 10A
-dbline 4B 10A
-dbline 4C 10F
-dbline 4D 10F
-dbline FFFFFFFE 111
-dbline 0 114
-dbfunc e delay 115 fV
+dbline FFFFFFFF DB
+dbline 46 DB
+dbline 48 DB
+dbline 48 E0
+dbline 49 E0
+dbline 4A E5
+dbline 4A E7
+dbline 4A EC
+dbline 4B EC
+dbline 4C F1
+dbline 4C F3
+dbline 4C F8
+dbline 4D F8
+dbline 4E FD
+dbline 4E FF
+dbline 4E 104
+dbline 4F 104
+dbline 50 109
+dbline 51 109
+dbline FFFFFFFE 10B
+dbline 0 10E
+dbfunc e delay 10F fV
 dbsym l i FFFFFFFA I
 dbsym l delayConstant FFFFFFFC I
 dbsym l j FFFFFFFE I
 dbsym l ms 2 I
-dbline FFFFFFFF 11B
-dbline 51 11B
-dbline 52 11B
-dbline 54 120
-dbline 54 127
-dbline 55 127
-dbline 55 12E
-dbline 55 12E
-dbline 55 12E
-dbline 55 135
-dbline 56 13B
-dbline 54 13B
-dbline 54 142
-dbline FFFFFFFE 148
-dbline 57 148
-dbline 0 14D
+dbline FFFFFFFF 115
+dbline 55 115
+dbline 56 115
+dbline 58 11A
+dbline 58 121
+dbline 59 121
+dbline 59 128
+dbline 59 128
+dbline 59 128
+dbline 59 12F
+dbline 5A 135
+dbline 58 135
+dbline 58 13C
+dbline FFFFFFFE 142
+dbline 5B 142
+dbline 0 147
 dbfile assign41.s
-dbfunc 0 ? 10 I
-dbline 14 10
-dbline 15 11
-dbline 16 13
-dbline 24 16
-dbline 25 19
-dbline 28 1B
-dbline 29 1E
-dbline 2C 20
-dbline 2D 23
-dbline 30 25
-dbline 31 28
-dbline 32 2A
-dbline 33 2D
-dbline 34 2E
-dbline 35 30
-dbline 37 33
-dbline 38 37
-dbline 39 3A
-dbline 3F 3B
-dbline 40 3E
-dbline 45 41
-dbline 46 44
-dbline 4B 47
-dbline 50 4A
-dbline 51 4C
-dbline 56 4F
-dbline 57 53
-dbline 5F 57
-dbline 60 59
-dbline 64 5C
-dbline 65 5F
-dbline 6A 61
-dbline 6E 66
-dbline 6F 69
-dbline 73 6C
-dbline 74 6F
-dbline 75 72
-dbline 76 74
-dbline 77 77
-dbline 7B 79
-dbline 7C 7B
-dbline 7D 7C
-dbline 7E 7D
-dbline 7F 80
-dbline 80 83
-dbline 81 86
-dbline 82 89
-dbline 83 8B
-dbline 84 8E
-dbline 85 90
-dbline 86 92
-dbline 87 93
-dbline 90 96
-dbline 91 98
-dbline 92 9B
-dbline 93 9D
-dbline 94 9F
-dbline 95 A2
-dbline 99 A4
-dbline 9A A7
-dbline A4 A9
-dbline A5 AB
-dbline A6 AE
-dbline A9 B0
-dbline AA B3
-dbline AB B5
-dbline AC B8
-dbline AE BA
-dbline AF BB
-dbline B1 BE
-dbline B5 C0
-dbline B6 C2
-dbline B7 C5
-dbline BB C7
-dbline BC CA
-dbline BF CC
-dbline C0 CF
-dbline C7 D1
-dbline CD D5
-dbline D0 D8
-dbline D1 DA
-dbline D3 DB
-dbline DD DC
-dbline DE DD
-dbline DF DF
-dbline E9 E1
-dbline ED E6
-dbline EE E9
-dbline F0 EB
-dbline F4 ED
-dbline F8 F2
-dbline F9 F5
-dbline FB F7
-dbline FF F9
-dbline 103 FE
-dbline 104 101
-dbline 106 103
-dbline 10A 105
-dbline 10E 10A
-dbline 10F 10D
-dbline 118 10F
-dbline 11B 111
-dbline 11C 113
-dbline 11E 114
-dbline 127 115
-dbline 128 116
-dbline 129 117
-dbline 12A 119
-dbline 133 11B
-dbline 134 11E
-dbline 136 120
-dbline 137 123
-dbline 138 125
-dbline 13E 127
-dbline 13F 12A
-dbline 140 12C
-dbline 146 12E
-dbline 147 130
-dbline 148 133
-dbline 14B 135
-dbline 14C 137
-dbline 14D 139
-dbline 151 13B
-dbline 152 13D
-dbline 153 140
-dbline 156 142
-dbline 157 144
-dbline 158 146
-dbline 15F 148
-dbline 160 14A
-dbline 161 14B
-dbline 163 14D
-S _main Def0010
-S _delay Def0115
-S _getKeyboardCol Def00DC
-T 00 00 31 32 33 41 34 35 36 42 37 38 39 43 45 30
+dbfunc 0 ? 0 I
+dbline 1A 0
+dbline 1B 3
+dbline 1E 6
+dbline 21 9
+dbline 24 C
+dbline 28 F
+dbline 2E 10
+dbline 2F 11
+dbline 30 13
+dbline 39 15
+dbline 3A 18
+dbline 3D 1A
+dbline 3E 1D
+dbline 3F 1F
+dbline 46 21
+dbline 47 24
+dbline 48 26
+dbline 49 29
+dbline 4B 2B
+dbline 4C 2C
+dbline 4E 2F
+dbline 52 32
+dbline 53 35
+dbline 58 37
+dbline 5C 3C
+dbline 5D 3F
+dbline 61 42
+dbline 62 45
+dbline 63 47
+dbline 64 49
+dbline 65 4B
+dbline 69 4D
+dbline 6A 51
+dbline 6B 53
+dbline 74 56
+dbline 75 58
+dbline 76 5B
+dbline 77 5E
+dbline 78 60
+dbline 79 62
+dbline 7A 64
+dbline 7E 66
+dbline 88 68
+dbline 89 6A
+dbline 8B 6B
+dbline 9D 7C
+dbline 9E 7D
+dbline 9F 7E
+dbline A0 80
+dbline A4 83
+dbline A5 85
+dbline A6 87
+dbline A7 8A
+dbline A8 8B
+dbline A9 8D
+dbline AB 90
+dbline AC 94
+dbline AD 97
+dbline AF 98
+dbline B0 9A
+dbline B1 9B
+dbline B2 9C
+dbline B3 9E
+dbline B4 A1
+dbline B5 A4
+dbline B6 A7
+dbline B7 A9
+dbline B8 AC
+dbline B9 AE
+dbline BA B0
+dbline BB B1
+dbline BD B4
+dbline BE B6
+dbline BF B9
+dbline C0 BB
+dbline C1 BD
+dbline C2 C0
+dbline C5 C2
+dbline DA C3
+dbline DB C5
+dbline DC C6
+dbline DE C8
+dbline EC C9
+dbline EF CC
+dbline F0 CE
+dbline F3 D1
+dbline F9 D5
+dbline FE D6
+dbline FF D7
+dbline 100 D9
+dbline 109 DB
+dbline 10D E0
+dbline 10E E3
+dbline 110 E5
+dbline 114 E7
+dbline 118 EC
+dbline 119 EF
+dbline 11B F1
+dbline 11F F3
+dbline 123 F8
+dbline 124 FB
+dbline 126 FD
+dbline 12A FF
+dbline 12E 104
+dbline 12F 107
+dbline 138 109
+dbline 13B 10B
+dbline 13C 10D
+dbline 13E 10E
+dbline 147 10F
+dbline 148 110
+dbline 149 111
+dbline 14A 113
+dbline 153 115
+dbline 154 118
+dbline 156 11A
+dbline 157 11D
+dbline 158 11F
+dbline 15E 121
+dbline 15F 124
+dbline 160 126
+dbline 166 128
+dbline 167 12A
+dbline 168 12D
+dbline 16B 12F
+dbline 16C 131
+dbline 16D 133
+dbline 171 135
+dbline 172 137
+dbline 173 13A
+dbline 176 13C
+dbline 177 13E
+dbline 178 140
+dbline 17F 142
+dbline 180 144
+dbline 181 145
+dbline 183 147
+S _main Def0000
+S _keyboard_get_column Def00D6
+S _delay Def010F
+S _keyboard_pushed Def007C
+S _keyboard_scan Def0010
+S _keyboard_init Def00C9
+T 00 00 CC 00 1A 16 00 00 16 00 C9 16 00 10 CC
+R 00 00 00 00 02 06 00 00 00 09 00 00 00 0C 00 00
+T 00 0D 00 01 3D 34 B7 75 1B 98 CC 00 00 6C 1E CC
 R 00 00 00 00
-T 00 0E 46 44 34 B7 75 1B F1 E2 CC 00 01 6C 1C CC
+T 00 1B 00 00 6C 1C 20 45 CC 00 01 ED 1E 8D 00 00
 R 00 00 00 00
-T 00 1C 00 00 6C 1E CC 00 00 6C 1A 19 E1 EA B7 C6
-R 00 00 00 00
-T 00 2A CD 00 00 34 B7 45 CC 00 08 18 02 71 31 04
-R 00 00 00 00 00 03 00 00
-T 00 38 34 F9 30 CC 00 00 6C E1 E8 CC 00 1A 16
-R 00 00 00 00
-T 00 45 00 00 79 00 F0 C6 0F 7B 02 5A 1D 02 62 F0
-R 00 00 00 00 02 02 00 00
-T 00 53 18 20 00 7A EC 1C 7B 02 58 16 00 DC 6C 1A
+T 00 29 27 04 59 04 36 FC 7B 02 58 16 00 D6 6C 1C
 R 00 00 00 00 00 0C 00 00
-T 00 61 1F 02 60 F0 43 CC 00 14 16 01 15 16 00 DC
+T 00 37 1F 02 60 F0 1A CC 00 14 16 01 0F 16 00 D6
 R 00 00 00 00 00 0B 00 00 00 0E 00 00
-T 00 6F 6C E1 E6 EC 1A AC E1 E6 26 1D EC 1E 59 59
+T 00 45 6C 1A EC 1C AC 1A 26 09 18 02 1C 80 EC 1E
 R 00 00 00 00
-T 00 7D 19 E1 EA 6D E1 E4 E3 E1 E4 6C E1 E2 EC 1A
+T 00 53 16 00 7C EC 1E C3 00 01 CD 00 04 B7 D6 18
+R 00 00 00 00 00 03 00 00
+T 00 61 15 B7 D6 6C 1E 20 B9 B7 57 30 3D 31 32 33
 R 00 00 00 00
-T 00 8B E3 E1 E2 B7 C6 E6 40 87 16 00 00 EC 1A 8C
-R 00 00 00 00 02 0B 00 01
-T 00 99 00 01 26 0C EC 1E 8C 00 03 26 05 CC 00 01
+T 00 6F 41 34 35 36 42 37 38 39 43 45 30 46 44 3B
 R 00 00 00 00
-T 00 A7 20 2F EC 1E C3 00 01 6C 1E CC 00 01 ED 1E
+T 00 7D 34 B7 75 1B F1 EC 19 10 B7 C6 CD 00 6C 34
+R 00 00 00 00 00 0D 00 00
+T 00 8B B7 45 CC 00 08 18 02 71 31 04 34 F9 30 EC
 R 00 00 00 00
-T 00 B5 8D 00 00 27 04 59 04 36 FC 6C 1C EC 1E 8C
+T 00 99 02 59 59 19 10 6D E1 EE E3 E1 EE 6C E1 EC
 R 00 00 00 00
-T 00 C3 00 04 2D 0A CC 00 01 6C 1C CC 00 00 6C 1E
+T 00 A7 EC 06 E3 E1 EC B7 C6 E6 40 87 16 00 00 EC
+R 00 00 00 00 02 0D 00 01
+T 00 B5 06 8C 00 01 26 08 EC 02 8C 00 03 26 01 3F
 R 00 00 00 00
-T 00 D1 18 20 FF 82 CC 00 01 B7 57 30 3D 34 B7 75
+T 00 C3 B7 57 30 1B 82 3D 79 00 F0 C6 0F 7B 02 5A
 R 00 00 00 00
-T 00 DF 1B 9E 1F 02 60 10 07 CC 00 00 6C 1E 20 22
+T 00 D1 1D 02 62 F0 3D 34 B7 75 1B 9E 1F 02 60 10
 R 00 00 00 00
-T 00 ED 1F 02 60 20 07 CC 00 01 6C 1E 20 16 1F
+T 00 DF 07 CC 00 00 6C 1E 20 22 1F 02 60 20 07 CC
 R 00 00 00 00
-T 00 FA 02 60 40 07 CC 00 02 6C 1E 20 0A 1F 02 60
+T 00 ED 00 01 6C 1E 20 16 1F 02 60 40 07 CC 00 02
 R 00 00 00 00
-T 01 08 80 05 CC 00 03 6C 1E EC 1E B7 57 30 3D 3B
+T 00 FB 6C 1E 20 0A 1F 02 60 80 05 CC 00 03 6C 1E
 R 00 00 00 00
-T 01 16 34 B7 75 1B 9A CC 04 D2 6C 1C CC 00 00 6C
+T 01 09 EC 1E B7 57 30 3D 3B 34 B7 75 1B 9A CC
 R 00 00 00 00
-T 01 24 1A 20 1B CC 00 00 6C 1E 20 07 EC 1E C3
+T 01 16 04 D2 6C 1C CC 00 00 6C 1A 20 1B CC 00 00
 R 00 00 00 00
-T 01 31 00 01 6C 1E EC 1E AC 1C 2D F3 EC 1A C3
+T 01 24 6C 1E 20 07 EC 1E C3 00 01 6C 1E EC 1E AC
 R 00 00 00 00
-T 01 3E 00 01 6C 1A EC 1A AC 02 2D DF B7 57 30 1B
+T 01 32 1C 2D F3 EC 1A C3 00 01 6C 1A EC 1A AC 02
 R 00 00 00 00
-T 01 4C 82 3D
+T 01 40 2D DF B7 57 30 1B 82 3D
 R 00 00 00 00
