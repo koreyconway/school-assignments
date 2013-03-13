@@ -1,8 +1,6 @@
 NoICE Debug Context File verion 1.0
-DEBUGFILE "M:\sysc 2003\assignment 4\assign43\assign43.dbg" 1363139055
-SOURCEFILE "assign43.c" 1363139054
-SOURCEFILE "basicLCD.s" 1363136277
-SOURCEFILE "DP256reg.s" 1363136271
+DEBUGFILE "M:\sysc 2003\assignment 4\assign43\assign43.dbg" 1363214878
+SOURCEFILE "assign43.c" 1363214825
 
 
 

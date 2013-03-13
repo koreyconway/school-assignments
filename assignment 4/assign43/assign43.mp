@@ -1,29 +1,28 @@
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                            text   4000   0689 =   1673. bytes (rel,con,rom)
+                            text   4000   05AF =   1455. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
        4000  __start
        4028  _exit
-       402A  __text_start
        402A  _main
-       40E2  _delay
-       4122  _LCD_instruction
-       412E  _LCD_display
-       413A  _Lcd2PP_Init
-       420A  _putchar
-       4232  _strcpy
-       4241  __va_start
-       425F  __HC12Setup
-       4264  _itoa
-       42EC  _islower
-       4304  __ctype
-       4405  _toupper
-       4425  __print
-       465A  _printf
-       4689  __text_end
+       402A  __text_start
+       4067  __360_anti_clockwise
+       40AD  __360_clockwise
+       40F3  _delay
+       4130  _putchar
+       4158  _strcpy
+       4167  __va_start
+       4185  __HC12Setup
+       418A  _itoa
+       4212  _islower
+       422A  __ctype
+       432B  _toupper
+       434B  __print
+       4580  _printf
+       45AF  __text_end
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
@@ -39,8 +38,6 @@ Files Linked      [ module(s) ]
 
 C:\icc\lib\crt12.o	[ crt12.s ]
 assign43.o	[ assign43.c ]
-basicLCD.o	[ basicLCD.s ]
-DP256Reg.o	[ DP256Reg.s ]
 <library>	[ putchar.c, strcpy.s, stdarg.s, setup.s, itoa.s, islower.s, ctype.s, toupper.s, _printf.s, printf.s ]
 [ textmode.s ]
 

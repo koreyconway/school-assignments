@@ -1,6 +1,6 @@
                         .module assign43.c
                         .area text
- 0000                   .dbfile M:\SYSC20~3\ASSIGN~4\assign43\assign43.c
+ 0000                   .dbfile assign43.c
  0000                   .dbfunc e main _main fV
  0000           _main::
  0000                   .dbline -1
@@ -10,229 +10,289 @@
  0000           ; 
  0000           ; 
  0000           ; void main(){
- 0000                   .dbline 6
+ 0000                   .dbline 8
+ 0000           ; 
+ 0000           ;        
  0000           ;        SPI1CR1 = 0x00;                   //Turn off SPI
  0000 7900F0            clr 0xf0
- 0003                   .dbline 7
+ 0003                   .dbline 10
+ 0003           ;        
  0003           ;        DDRP = 0xFF;
  0003 C6FF              ldab #255
  0005 7B025A            stab 0x25a
- 0008                   .dbline 8
+ 0008                   .dbline 11
  0008           ;        DDRT = 0xFF;
  0008 C6FF              ldab #255
  000A 7B0242            stab 0x242
- 000D                   .dbline 10
+ 000D                   .dbline 13
  000D           ;        
- 000D           ;        PTP = 0x20;
+ 000D           ;        PTP = 0x20;                       //STEPPER EN at PP5  
  000D C620              ldab #32
  000F 7B0258            stab 0x258
- 0012                   .dbline 11
- 0012           ;        delay(50);
- 0012 CC0032            ldd #50
- 0015 1600B8            jsr _delay
- 0018                   .dbline 12
- 0018           ;        PTT = 0x04;
- 0018 C604              ldab #4
- 001A 7B0240            stab 0x240
- 001D                   .dbline 13
- 001D           ;        delay(50);
- 001D CC0032            ldd #50
- 0020 1600B8            jsr _delay
- 0023                   .dbline 14
- 0023           ;        PTT = 0x04;
- 0023 C604              ldab #4
- 0025 7B0240            stab 0x240
- 0028                   .dbline 15
- 0028           ;        delay(50);
- 0028 CC0032            ldd #50
- 002B 1600B8            jsr _delay
- 002E                   .dbline 16
- 002E           ;        PTT = 0x04;
- 002E C604              ldab #4
- 0030 7B0240            stab 0x240
- 0033                   .dbline 17
- 0033           ;        delay(50);
- 0033 CC0032            ldd #50
- 0036 1600B8            jsr _delay
- 0039                   .dbline 18
- 0039           ;        PTT = 0x04;
- 0039 C604              ldab #4
- 003B 7B0240            stab 0x240
- 003E                   .dbline 19
- 003E           ;        delay(50);
- 003E CC0032            ldd #50
- 0041 1600B8            jsr _delay
- 0044                   .dbline 20
- 0044           ;        PTT = 0x04;
- 0044 C604              ldab #4
- 0046 7B0240            stab 0x240
- 0049                   .dbline 21
- 0049           ;        delay(50);
- 0049 CC0032            ldd #50
- 004C 1600B8            jsr _delay
- 004F                   .dbline 22
- 004F           ;        PTT = 0x04;
- 004F C604              ldab #4
- 0051 7B0240            stab 0x240
- 0054                   .dbline 23
- 0054           ;        delay(50);
- 0054 CC0032            ldd #50
- 0057 1600B8            jsr _delay
- 005A                   .dbline 25
- 005A           ;       
- 005A           ;        printf("yo");
- 005A CC00F5            ldd #L4
- 005D 160000            jsr _printf
- 0060                   .dbline 26
- 0060           ;        delay(1000);
- 0060 CC03E8            ldd #1000
- 0063 1600B8            jsr _delay
- 0066                   .dbline 29
- 0066           ;       
- 0066           ; 
- 0066           ;        delay(50);
- 0066 CC0032            ldd #50
- 0069 1600B8            jsr _delay
- 006C                   .dbline 30
- 006C           ;        PTT = 0x20;
- 006C C620              ldab #32
- 006E 7B0240            stab 0x240
- 0071                   .dbline 31
- 0071           ;        delay(50);
- 0071 CC0032            ldd #50
- 0074 1600B8            jsr _delay
- 0077                   .dbline 32
- 0077           ;        PTT = 0x20;
- 0077 C620              ldab #32
- 0079 7B0240            stab 0x240
- 007C                   .dbline 33
- 007C           ;        delay(50);
- 007C CC0032            ldd #50
- 007F 1600B8            jsr _delay
- 0082                   .dbline 34
- 0082           ;        PTT = 0x20;
- 0082 C620              ldab #32
- 0084 7B0240            stab 0x240
- 0087                   .dbline 35
- 0087           ;        delay(50);
- 0087 CC0032            ldd #50
- 008A 1600B8            jsr _delay
- 008D                   .dbline 36
- 008D           ;        PTT = 0x20;
- 008D C620              ldab #32
+ 0012                   .dbline 15
+ 0012           ;        
+ 0012           ;        delay(20);
+ 0012 CC0014            ldd #20
+ 0015 1600C9            jsr _delay
+ 0018                   .dbline 19
+ 0018           ;        
+ 0018           ;        //use _360_clockwise() twice to rotate 
+ 0018           ;        //stepper motor rotate clockwise 2 turns
+ 0018           ;        _360_clockwise();
+ 0018 160083            jsr __360_clockwise
+ 001B                   .dbline 20
+ 001B           ;        delay(300);
+ 001B CC012C            ldd #300
+ 001E 1600C9            jsr _delay
+ 0021                   .dbline 21
+ 0021           ;        _360_clockwise();
+ 0021 160083            jsr __360_clockwise
+ 0024                   .dbline 23
+ 0024           ;        
+ 0024           ;        delay(300);
+ 0024 CC012C            ldd #300
+ 0027 1600C9            jsr _delay
+ 002A                   .dbline 26
+ 002A           ;        //use _360_anti_clockwise() twice to rotate 
+ 002A           ;        //stepper motor rotate ant-clockwise 2 turns
+ 002A           ;        _360_anti_clockwise();
+ 002A 16003D            jsr __360_anti_clockwise
+ 002D                   .dbline 27
+ 002D           ;        delay(300);
+ 002D CC012C            ldd #300
+ 0030 1600C9            jsr _delay
+ 0033                   .dbline 28
+ 0033           ;        _360_anti_clockwise();
+ 0033 16003D            jsr __360_anti_clockwise
+ 0036                   .dbline 32
+ 0036           ;        
+ 0036           ;        
+ 0036           ;        
+ 0036           ;        printf("end");
+ 0036 CC0102            ldd #L4
+ 0039 160000            jsr _printf
+ 003C                   .dbline -2
+ 003C                   .dbline 34
+ 003C           ;        
+ 003C           ; }
+ 003C           L3:
+ 003C                   .dbline 0 ; func end
+ 003C 3D                rts
+ 003D                   .dbend
+ 003D                   .dbfunc e _360_anti_clockwise __360_anti_clockwise fV
+ 003D           ;              i -> -2,x
+ 003D           __360_anti_clockwise::
+ 003D 34                pshx
+ 003E B775              tfr s,x
+ 0040 1B9E              leas -2,sp
+ 0042                   .dbline -1
+ 0042                   .dbline 36
+ 0042           ; 
+ 0042           ; void _360_anti_clockwise(){
+ 0042                   .dbline 39
+ 0042 CC0000            ldd #0
+ 0045 6C1E              std -2,x
+ 0047           L6:
+ 0047                   .dbline 39
+ 0047                   .dbline 40
+ 0047 C660              ldab #96
+ 0049 7B0240            stab 0x240
+ 004C                   .dbline 41
+ 004C CC000A            ldd #10
+ 004F 1600C9            jsr _delay
+ 0052                   .dbline 42
+ 0052 C620              ldab #32
+ 0054 7B0240            stab 0x240
+ 0057                   .dbline 43
+ 0057 CC000A            ldd #10
+ 005A 1600C9            jsr _delay
+ 005D                   .dbline 44
+ 005D 790240            clr 0x240
+ 0060                   .dbline 45
+ 0060 CC000A            ldd #10
+ 0063 1600C9            jsr _delay
+ 0066                   .dbline 46
+ 0066 C640              ldab #64
+ 0068 7B0240            stab 0x240
+ 006B                   .dbline 47
+ 006B CC000A            ldd #10
+ 006E 1600C9            jsr _delay
+ 0071                   .dbline 48
+ 0071           L7:
+ 0071                   .dbline 39
+ 0071           ;        int i ;
+ 0071           ;        //stepper motor 360 degree turn anti-clock wise
+ 0071           ;        for(i=0;i<5;i++){
+ 0071 EC1E              ldd -2,x
+ 0073 C30001            addd #1
+ 0076 6C1E              std -2,x
+ 0078                   .dbline 39
+ 0078 EC1E              ldd -2,x
+ 007A 8C0005            cpd #5
+ 007D 2DC8              blt L6
+ 007F                   .dbline -2
+ 007F                   .dbline 49
+ 007F           ;        PTT = 0x60;
+ 007F           ;        delay(10);
+ 007F           ;        PTT = 0x20;
+ 007F           ;        delay(10);
+ 007F           ;        PTT = 0x00;
+ 007F           ;        delay(10);
+ 007F           ;        PTT = 0x40;
+ 007F           ;        delay(10);      
+ 007F           ;        }      
+ 007F           ; }
+ 007F           L5:
+ 007F B757              tfr x,s
+ 0081 30                pulx
+ 0082                   .dbline 0 ; func end
+ 0082 3D                rts
+ 0083                   .dbsym l i -2 I
+ 0083                   .dbend
+ 0083                   .dbfunc e _360_clockwise __360_clockwise fV
+ 0083           ;              i -> -2,x
+ 0083           __360_clockwise::
+ 0083 34                pshx
+ 0084 B775              tfr s,x
+ 0086 1B9E              leas -2,sp
+ 0088                   .dbline -1
+ 0088                   .dbline 52
+ 0088           ; 
+ 0088           ; 
+ 0088           ; void _360_clockwise(){
+ 0088                   .dbline 55
+ 0088 CC0000            ldd #0
+ 008B 6C1E              std -2,x
+ 008D           L11:
+ 008D                   .dbline 55
+ 008D                   .dbline 56
+ 008D C640              ldab #64
  008F 7B0240            stab 0x240
- 0092                   .dbline 37
- 0092           ;        delay(50);
- 0092 CC0032            ldd #50
- 0095 1600B8            jsr _delay
- 0098                   .dbline 38
- 0098           ;        PTT = 0x20;
- 0098 C620              ldab #32
- 009A 7B0240            stab 0x240
- 009D                   .dbline 39
- 009D           ;        delay(50);
- 009D CC0032            ldd #50
- 00A0 1600B8            jsr _delay
- 00A3                   .dbline 40
- 00A3           ;        PTT = 0x20;
- 00A3 C620              ldab #32
- 00A5 7B0240            stab 0x240
- 00A8                   .dbline 41
- 00A8           ;        delay(50);
- 00A8 CC0032            ldd #50
- 00AB 1600B8            jsr _delay
- 00AE                   .dbline 42
- 00AE           ;        PTP = 0x00;
- 00AE 790258            clr 0x258
- 00B1                   .dbline 45
- 00B1           ;        
- 00B1           ;        
- 00B1           ;        printf("end");
- 00B1 CC00F1            ldd #L5
- 00B4 160000            jsr _printf
- 00B7                   .dbline -2
- 00B7                   .dbline 47
- 00B7           ;        
- 00B7           ; }
- 00B7           L3:
- 00B7                   .dbline 0 ; func end
- 00B7 3D                rts
- 00B8                   .dbend
- 00B8                   .dbfunc e delay _delay fV
- 00B8           ;              i -> -6,x
- 00B8           ;  delayConstant -> -4,x
- 00B8           ;              j -> -2,x
- 00B8           ;             ms -> 2,x
- 00B8           _delay::
- 00B8 3B                pshd
- 00B9 34                pshx
- 00BA B775              tfr s,x
- 00BC 1B9A              leas -6,sp
- 00BE                   .dbline -1
- 00BE                   .dbline 49
- 00BE           ; 
- 00BE           ; void delay (int ms){
- 00BE                   .dbline 51
- 00BE           ; 
- 00BE           ;        const int delayConstant = 1234;
- 00BE CC04D2            ldd #1234
- 00C1 6C1C              std -4,x
- 00C3                   .dbline 54
- 00C3 CC0000            ldd #0
- 00C6 6C1A              std -6,x
- 00C8 201B              bra L10
- 00CA           L7:
- 00CA                   .dbline 54
- 00CA           ;        int i, j;
- 00CA           ;        
- 00CA           ;        for (i=0; i<ms; i++) {
- 00CA                   .dbline 55
- 00CA CC0000            ldd #0
- 00CD 6C1E              std -2,x
- 00CF 2007              bra L14
- 00D1           L11:
- 00D1                   .dbline 55
- 00D1                   .dbline 56
- 00D1           L12:
- 00D1                   .dbline 55
- 00D1 EC1E              ldd -2,x
- 00D3 C30001            addd #1
- 00D6 6C1E              std -2,x
- 00D8           L14:
- 00D8                   .dbline 55
- 00D8 EC1E              ldd -2,x
- 00DA AC1C              cpd -4,x
- 00DC 2DF3              blt L11
- 00DE                   .dbline 57
- 00DE           L8:
- 00DE                   .dbline 54
- 00DE EC1A              ldd -6,x
- 00E0 C30001            addd #1
- 00E3 6C1A              std -6,x
- 00E5           L10:
- 00E5                   .dbline 54
- 00E5 EC1A              ldd -6,x
- 00E7 AC02              cpd 2,x
- 00E9 2DDF              blt L7
- 00EB                   .dbline -2
- 00EB                   .dbline 59
- 00EB           ;                for (j=0; j<delayConstant; j++) {
- 00EB           ;                }
- 00EB           ;       }
- 00EB           ;       
- 00EB           ; }
- 00EB           L6:
- 00EB B757              tfr x,s
- 00ED 30                pulx
- 00EE 1B82              leas 2,sp
- 00F0                   .dbline 0 ; func end
- 00F0 3D                rts
- 00F1                   .dbsym l i -6 I
- 00F1                   .dbsym l delayConstant -4 I
- 00F1                   .dbsym l j -2 I
- 00F1                   .dbsym l ms 2 I
- 00F1                   .dbend
- 00F1           L5:
- 00F1 656E6400          .byte 'e,'n,'d,0
- 00F5           L4:
- 00F5 796F00            .byte 'y,'o,0
+ 0092                   .dbline 57
+ 0092 CC000A            ldd #10
+ 0095 1600C9            jsr _delay
+ 0098                   .dbline 58
+ 0098 790240            clr 0x240
+ 009B                   .dbline 59
+ 009B CC000A            ldd #10
+ 009E 1600C9            jsr _delay
+ 00A1                   .dbline 60
+ 00A1 C620              ldab #32
+ 00A3 7B0240            stab 0x240
+ 00A6                   .dbline 61
+ 00A6 CC000A            ldd #10
+ 00A9 1600C9            jsr _delay
+ 00AC                   .dbline 62
+ 00AC C660              ldab #96
+ 00AE 7B0240            stab 0x240
+ 00B1                   .dbline 63
+ 00B1 CC000A            ldd #10
+ 00B4 1600C9            jsr _delay
+ 00B7                   .dbline 64
+ 00B7           L12:
+ 00B7                   .dbline 55
+ 00B7           ;        int i ;
+ 00B7           ;        //stepper motor 360 degree turn anti-clock wise
+ 00B7           ;        for(i=0;i<5;i++){
+ 00B7 EC1E              ldd -2,x
+ 00B9 C30001            addd #1
+ 00BC 6C1E              std -2,x
+ 00BE                   .dbline 55
+ 00BE EC1E              ldd -2,x
+ 00C0 8C0005            cpd #5
+ 00C3 2DC8              blt L11
+ 00C5                   .dbline -2
+ 00C5                   .dbline 65
+ 00C5           ;        PTT = 0x40;
+ 00C5           ;        delay(10);
+ 00C5           ;        PTT = 0x00;
+ 00C5           ;        delay(10);
+ 00C5           ;        PTT = 0x20;
+ 00C5           ;        delay(10);
+ 00C5           ;        PTT = 0x60;
+ 00C5           ;        delay(10);      
+ 00C5           ;        }      
+ 00C5           ; }
+ 00C5           L10:
+ 00C5 B757              tfr x,s
+ 00C7 30                pulx
+ 00C8                   .dbline 0 ; func end
+ 00C8 3D                rts
+ 00C9                   .dbsym l i -2 I
+ 00C9                   .dbend
+ 00C9                   .dbfunc e delay _delay fV
+ 00C9           ;              i -> -6,x
+ 00C9           ;  delayConstant -> -4,x
+ 00C9           ;              j -> -2,x
+ 00C9           ;             ms -> 2,x
+ 00C9           _delay::
+ 00C9 3B                pshd
+ 00CA 34                pshx
+ 00CB B775              tfr s,x
+ 00CD 1B9A              leas -6,sp
+ 00CF                   .dbline -1
+ 00CF                   .dbline 67
+ 00CF           ; 
+ 00CF           ; void delay (int ms){
+ 00CF                   .dbline 69
+ 00CF           ; 
+ 00CF           ;        const int delayConstant = 1234;
+ 00CF CC04D2            ldd #1234
+ 00D2 6C1C              std -4,x
+ 00D4                   .dbline 72
+ 00D4 CC0000            ldd #0
+ 00D7 6C1A              std -6,x
+ 00D9 201B              bra L19
+ 00DB           L16:
+ 00DB                   .dbline 72
+ 00DB           ;        int i, j;
+ 00DB           ;        
+ 00DB           ;        for (i=0; i<ms; i++) {
+ 00DB                   .dbline 73
+ 00DB CC0000            ldd #0
+ 00DE 6C1E              std -2,x
+ 00E0 2007              bra L23
+ 00E2           L20:
+ 00E2                   .dbline 73
+ 00E2                   .dbline 74
+ 00E2           L21:
+ 00E2                   .dbline 73
+ 00E2 EC1E              ldd -2,x
+ 00E4 C30001            addd #1
+ 00E7 6C1E              std -2,x
+ 00E9           L23:
+ 00E9                   .dbline 73
+ 00E9 EC1E              ldd -2,x
+ 00EB AC1C              cpd -4,x
+ 00ED 2DF3              blt L20
+ 00EF                   .dbline 75
+ 00EF           L17:
+ 00EF                   .dbline 72
+ 00EF EC1A              ldd -6,x
+ 00F1 C30001            addd #1
+ 00F4 6C1A              std -6,x
+ 00F6           L19:
+ 00F6                   .dbline 72
+ 00F6 EC1A              ldd -6,x
+ 00F8 AC02              cpd 2,x
+ 00FA 2DDF              blt L16
+ 00FC                   .dbline -2
+ 00FC                   .dbline 77
+ 00FC           ;                for (j=0; j<delayConstant; j++) {
+ 00FC           ;                }
+ 00FC           ;       }
+ 00FC           ;       
+ 00FC           ; }
+ 00FC           L15:
+ 00FC B757              tfr x,s
+ 00FE 30                pulx
+ 00FF 1B82              leas 2,sp
+ 0101                   .dbline 0 ; func end
+ 0101 3D                rts
+ 0102                   .dbsym l i -6 I
+ 0102                   .dbsym l delayConstant -4 I
+ 0102                   .dbsym l j -2 I
+ 0102                   .dbsym l ms 2 I
+ 0102                   .dbend
+ 0102           L4:
+ 0102 656E6400          .byte 'e,'n,'d,0

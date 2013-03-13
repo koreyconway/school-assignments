@@ -1,6 +1,6 @@
 	.module assign43.c
 	.area text
-	.dbfile M:\SYSC20~3\ASSIGN~4\assign43\assign43.c
+	.dbfile assign43.c
 	.dbfunc e main _main fV
 _main::
 	.dbline -1
@@ -10,153 +10,215 @@ _main::
 ; 
 ; 
 ; void main(){
-	.dbline 6
+	.dbline 8
+; 
+; 	 
 ; 	 SPI1CR1 = 0x00;		   //Turn off SPI
 	clr 0xf0
-	.dbline 7
+	.dbline 10
+; 	 
 ; 	 DDRP = 0xFF;
 	ldab #255
 	stab 0x25a
-	.dbline 8
+	.dbline 11
 ; 	 DDRT = 0xFF;
 	ldab #255
 	stab 0x242
-	.dbline 10
+	.dbline 13
 ; 	 
-; 	 PTP = 0x20;
+; 	 PTP = 0x20; 			   //STEPPER EN at PP5  
 	ldab #32
 	stab 0x258
-	.dbline 11
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 12
-; 	 PTT = 0x04;
-	ldab #4
-	stab 0x240
-	.dbline 13
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 14
-; 	 PTT = 0x04;
-	ldab #4
-	stab 0x240
 	.dbline 15
-; 	 delay(50);
-	ldd #50
+; 	 
+; 	 delay(20);
+	ldd #20
 	jsr _delay
-	.dbline 16
-; 	 PTT = 0x04;
-	ldab #4
-	stab 0x240
-	.dbline 17
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 18
-; 	 PTT = 0x04;
-	ldab #4
-	stab 0x240
 	.dbline 19
-; 	 delay(50);
-	ldd #50
-	jsr _delay
+; 	 
+; 	 //use _360_clockwise() twice to rotate 
+; 	 //stepper motor rotate clockwise 2 turns
+; 	 _360_clockwise();
+	jsr __360_clockwise
 	.dbline 20
-; 	 PTT = 0x04;
-	ldab #4
-	stab 0x240
+; 	 delay(300);
+	ldd #300
+	jsr _delay
 	.dbline 21
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 22
-; 	 PTT = 0x04;
-	ldab #4
-	stab 0x240
+; 	 _360_clockwise();
+	jsr __360_clockwise
 	.dbline 23
-; 	 delay(50);
-	ldd #50
+; 	 
+; 	 delay(300);
+	ldd #300
 	jsr _delay
-	.dbline 25
-; 	
-; 	 printf("yo");
-	ldd #L4
-	jsr _printf
 	.dbline 26
-; 	 delay(1000);
-	ldd #1000
+; 	 //use _360_anti_clockwise() twice to rotate 
+; 	 //stepper motor rotate ant-clockwise 2 turns
+; 	 _360_anti_clockwise();
+	jsr __360_anti_clockwise
+	.dbline 27
+; 	 delay(300);
+	ldd #300
 	jsr _delay
-	.dbline 29
-; 	
-; 
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 30
-; 	 PTT = 0x20;
-	ldab #32
-	stab 0x240
-	.dbline 31
-; 	 delay(50);
-	ldd #50
-	jsr _delay
+	.dbline 28
+; 	 _360_anti_clockwise();
+	jsr __360_anti_clockwise
 	.dbline 32
-; 	 PTT = 0x20;
-	ldab #32
-	stab 0x240
-	.dbline 33
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 34
-; 	 PTT = 0x20;
-	ldab #32
-	stab 0x240
-	.dbline 35
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 36
-; 	 PTT = 0x20;
-	ldab #32
-	stab 0x240
-	.dbline 37
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 38
-; 	 PTT = 0x20;
-	ldab #32
-	stab 0x240
-	.dbline 39
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 40
-; 	 PTT = 0x20;
-	ldab #32
-	stab 0x240
-	.dbline 41
-; 	 delay(50);
-	ldd #50
-	jsr _delay
-	.dbline 42
-; 	 PTP = 0x00;
-	clr 0x258
-	.dbline 45
+; 	 
 ; 	 
 ; 	 
 ; 	 printf("end");
-	ldd #L5
+	ldd #L4
 	jsr _printf
 	.dbline -2
-	.dbline 47
+	.dbline 34
 ; 	 
 ; }
 L3:
 	.dbline 0 ; func end
 	rts
+	.dbend
+	.dbfunc e _360_anti_clockwise __360_anti_clockwise fV
+;              i -> -2,x
+__360_anti_clockwise::
+	pshx
+	tfr s,x
+	leas -2,sp
+	.dbline -1
+	.dbline 36
+; 
+; void _360_anti_clockwise(){
+	.dbline 39
+	ldd #0
+	std -2,x
+L6:
+	.dbline 39
+	.dbline 40
+	ldab #96
+	stab 0x240
+	.dbline 41
+	ldd #10
+	jsr _delay
+	.dbline 42
+	ldab #32
+	stab 0x240
+	.dbline 43
+	ldd #10
+	jsr _delay
+	.dbline 44
+	clr 0x240
+	.dbline 45
+	ldd #10
+	jsr _delay
+	.dbline 46
+	ldab #64
+	stab 0x240
+	.dbline 47
+	ldd #10
+	jsr _delay
+	.dbline 48
+L7:
+	.dbline 39
+; 	 int i ;
+; 	 //stepper motor 360 degree turn anti-clock wise
+; 	 for(i=0;i<5;i++){
+	ldd -2,x
+	addd #1
+	std -2,x
+	.dbline 39
+	ldd -2,x
+	cpd #5
+	blt L6
+	.dbline -2
+	.dbline 49
+; 	 PTT = 0x60;
+; 	 delay(10);
+; 	 PTT = 0x20;
+; 	 delay(10);
+; 	 PTT = 0x00;
+; 	 delay(10);
+; 	 PTT = 0x40;
+; 	 delay(10);	 
+; 	 }	
+; }
+L5:
+	tfr x,s
+	pulx
+	.dbline 0 ; func end
+	rts
+	.dbsym l i -2 I
+	.dbend
+	.dbfunc e _360_clockwise __360_clockwise fV
+;              i -> -2,x
+__360_clockwise::
+	pshx
+	tfr s,x
+	leas -2,sp
+	.dbline -1
+	.dbline 52
+; 
+; 
+; void _360_clockwise(){
+	.dbline 55
+	ldd #0
+	std -2,x
+L11:
+	.dbline 55
+	.dbline 56
+	ldab #64
+	stab 0x240
+	.dbline 57
+	ldd #10
+	jsr _delay
+	.dbline 58
+	clr 0x240
+	.dbline 59
+	ldd #10
+	jsr _delay
+	.dbline 60
+	ldab #32
+	stab 0x240
+	.dbline 61
+	ldd #10
+	jsr _delay
+	.dbline 62
+	ldab #96
+	stab 0x240
+	.dbline 63
+	ldd #10
+	jsr _delay
+	.dbline 64
+L12:
+	.dbline 55
+; 	 int i ;
+; 	 //stepper motor 360 degree turn anti-clock wise
+; 	 for(i=0;i<5;i++){
+	ldd -2,x
+	addd #1
+	std -2,x
+	.dbline 55
+	ldd -2,x
+	cpd #5
+	blt L11
+	.dbline -2
+	.dbline 65
+; 	 PTT = 0x40;
+; 	 delay(10);
+; 	 PTT = 0x00;
+; 	 delay(10);
+; 	 PTT = 0x20;
+; 	 delay(10);
+; 	 PTT = 0x60;
+; 	 delay(10);	 
+; 	 }	
+; }
+L10:
+	tfr x,s
+	pulx
+	.dbline 0 ; func end
+	rts
+	.dbsym l i -2 I
 	.dbend
 	.dbfunc e delay _delay fV
 ;              i -> -6,x
@@ -169,59 +231,59 @@ _delay::
 	tfr s,x
 	leas -6,sp
 	.dbline -1
-	.dbline 49
+	.dbline 67
 ; 
 ; void delay (int ms){
-	.dbline 51
+	.dbline 69
 ; 
 ; 	 const int delayConstant = 1234;
 	ldd #1234
 	std -4,x
-	.dbline 54
+	.dbline 72
 	ldd #0
 	std -6,x
-	bra L10
-L7:
-	.dbline 54
+	bra L19
+L16:
+	.dbline 72
 ; 	 int i, j;
 ; 	 
 ; 	 for (i=0; i<ms; i++) {
-	.dbline 55
+	.dbline 73
 	ldd #0
 	std -2,x
-	bra L14
-L11:
-	.dbline 55
-	.dbline 56
-L12:
-	.dbline 55
+	bra L23
+L20:
+	.dbline 73
+	.dbline 74
+L21:
+	.dbline 73
 	ldd -2,x
 	addd #1
 	std -2,x
-L14:
-	.dbline 55
+L23:
+	.dbline 73
 	ldd -2,x
 	cpd -4,x
-	blt L11
-	.dbline 57
-L8:
-	.dbline 54
+	blt L20
+	.dbline 75
+L17:
+	.dbline 72
 	ldd -6,x
 	addd #1
 	std -6,x
-L10:
-	.dbline 54
+L19:
+	.dbline 72
 	ldd -6,x
 	cpd 2,x
-	blt L7
+	blt L16
 	.dbline -2
-	.dbline 59
+	.dbline 77
 ; 	 	 for (j=0; j<delayConstant; j++) {
 ; 		 }
 ; 	}
 ; 	
 ; }
-L6:
+L15:
 	tfr x,s
 	pulx
 	leas 2,sp
@@ -232,7 +294,5 @@ L6:
 	.dbsym l j -2 I
 	.dbsym l ms 2 I
 	.dbend
-L5:
-	.byte 'e,'n,'d,0
 L4:
-	.byte 'y,'o,0
+	.byte 'e,'n,'d,0
