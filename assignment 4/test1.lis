@@ -1,0 +1,211 @@
+                        .module test1.c
+                        .area text
+ 0000                   .dbfile test1.c
+ 0000                   .dbfunc e main _main fI
+ 0000           ;              a -> -2,x
+ 0000           ;              x -> -1,x
+ 0000           _main::
+ 0000 34                pshx
+ 0001 B775              tfr s,x
+ 0003 1B9C              leas -4,sp
+ 0005                   .dbline -1
+ 0005                   .dbline 4
+ 0005           ; #include <stdio.h>
+ 0005           ; #include "hcs12dp256.h"
+ 0005           ; 
+ 0005           ; main(){
+ 0005                   .dbline 6
+ 0005           ; 
+ 0005           ;         char a = 0x09;
+ 0005 C609              ldab #9
+ 0007 6B1E              stab -2,x
+ 0009                   .dbline 7
+ 0009           ;         char x = 0;
+ 0009 691F              clr -1,x
+ 000B                   .dbline 8
+ 000B           ;       DDRK = 0xFF;                                                               // initialize port K for LED output 
+ 000B C6FF              ldab #255
+ 000D 7B0033            stab 0x33
+ 0010                   .dbline 10
+ 0010           ;       
+ 0010           ;       PTM = 0x08;                                                                        // initialize port M 3 bit to 1 to enable U7_EN
+ 0010 C608              ldab #8
+ 0012 7B0250            stab 0x250
+ 0015                   .dbline 11
+ 0015           ;       DDRT = 0x0F;                                                               // initialize the data direction register for port T
+ 0015 C60F              ldab #15
+ 0017 7B0242            stab 0x242
+ 001A 2057              bra L5
+ 001C           L4:
+ 001C                   .dbline 12
+ 001C           ;       while(x<10){
+ 001C                   .dbline 13
+ 001C           ;               printf("x : %d",x);
+ 001C E61F              ldab -1,x
+ 001E 87                clra
+ 001F 6C80              std 0,sp
+ 0021 CC00BF            ldd #L7
+ 0024 160000            jsr _printf
+ 0027                   .dbline 14
+ 0027           ;               printf("\n");
+ 0027 CC00BD            ldd #L8
+ 002A 160000            jsr _printf
+ 002D                   .dbline 15
+ 002D           ;               printf("a : %d",a);
+ 002D E61E              ldab -2,x
+ 002F 87                clra
+ 0030 6C80              std 0,sp
+ 0032 CC00B6            ldd #L9
+ 0035 160000            jsr _printf
+ 0038                   .dbline 16
+ 0038           ;               printf("\n");
+ 0038 CC00BD            ldd #L8
+ 003B 160000            jsr _printf
+ 003E                   .dbline 18
+ 003E           ;               
+ 003E           ;               PTT = a;
+ 003E 180D1E0240        movb -2,x,0x240
+ 0043                   .dbline 19
+ 0043           ;               a--;
+ 0043 E61E              ldab -2,x
+ 0045 87                clra
+ 0046 830001            subd #1
+ 0049 6B1E              stab -2,x
+ 004B                   .dbline 20
+ 004B           ;               x++;
+ 004B E61F              ldab -1,x
+ 004D 87                clra
+ 004E C30001            addd #1
+ 0051 6B1F              stab -1,x
+ 0053                   .dbline 21
+ 0053           ;               delay(100);
+ 0053 CC0064            ldd #100
+ 0056 16007D            jsr _delay
+ 0059                   .dbline 22
+ 0059           ;               if(x==10){
+ 0059 E61F              ldab -1,x
+ 005B C10A              cmpb #10
+ 005D 2614              bne L10
+ 005F                   .dbline 22
+ 005F                   .dbline 23
+ 005F           ;                       x=0;
+ 005F 691F              clr -1,x
+ 0061                   .dbline 24
+ 0061           ;                       a=9;
+ 0061 C609              ldab #9
+ 0063 6B1E              stab -2,x
+ 0065                   .dbline 26
+ 0065           ;                       
+ 0065           ;                               PORTK = 0x2F;
+ 0065 C62F              ldab #47
+ 0067 7B0032            stab 0x32
+ 006A                   .dbline 27
+ 006A           ;                               delay(100);
+ 006A CC0064            ldd #100
+ 006D 16007D            jsr _delay
+ 0070                   .dbline 28
+ 0070           ;                               PORTK = 0x00;
+ 0070 790032            clr 0x32
+ 0073                   .dbline 30
+ 0073           ;                       
+ 0073           ;               }
+ 0073           L10:
+ 0073                   .dbline 31
+ 0073           L5:
+ 0073                   .dbline 12
+ 0073 E61F              ldab -1,x
+ 0075 C10A              cmpb #10
+ 0077 25A3              blo L4
+ 0079                   .dbline -2
+ 0079                   .dbline 32
+ 0079           ;       }
+ 0079           ; }
+ 0079           L3:
+ 0079 B757              tfr x,s
+ 007B 30                pulx
+ 007C                   .dbline 0 ; func end
+ 007C 3D                rts
+ 007D                   .dbsym l a -2 c
+ 007D                   .dbsym l x -1 c
+ 007D                   .dbend
+ 007D                   .dbfunc e delay _delay fV
+ 007D           ;              i -> -6,x
+ 007D           ;  delayConstant -> -4,x
+ 007D           ;              j -> -2,x
+ 007D           ;             ms -> 2,x
+ 007D           _delay::
+ 007D 3B                pshd
+ 007E 34                pshx
+ 007F B775              tfr s,x
+ 0081 1B9A              leas -6,sp
+ 0083                   .dbline -1
+ 0083                   .dbline 35
+ 0083           ; 
+ 0083           ; 
+ 0083           ; void delay (int ms){
+ 0083                   .dbline 37
+ 0083           ; 
+ 0083           ;        const int delayConstant = 1234;
+ 0083 CC04D2            ldd #1234
+ 0086 6C1C              std -4,x
+ 0088                   .dbline 40
+ 0088 CC0000            ldd #0
+ 008B 6C1A              std -6,x
+ 008D 201B              bra L16
+ 008F           L13:
+ 008F                   .dbline 40
+ 008F           ;        int i, j;
+ 008F           ;        
+ 008F           ;        for (i=0; i<ms; i++) {
+ 008F                   .dbline 41
+ 008F CC0000            ldd #0
+ 0092 6C1E              std -2,x
+ 0094 2007              bra L20
+ 0096           L17:
+ 0096                   .dbline 41
+ 0096                   .dbline 42
+ 0096           L18:
+ 0096                   .dbline 41
+ 0096 EC1E              ldd -2,x
+ 0098 C30001            addd #1
+ 009B 6C1E              std -2,x
+ 009D           L20:
+ 009D                   .dbline 41
+ 009D EC1E              ldd -2,x
+ 009F AC1C              cpd -4,x
+ 00A1 2DF3              blt L17
+ 00A3                   .dbline 43
+ 00A3           L14:
+ 00A3                   .dbline 40
+ 00A3 EC1A              ldd -6,x
+ 00A5 C30001            addd #1
+ 00A8 6C1A              std -6,x
+ 00AA           L16:
+ 00AA                   .dbline 40
+ 00AA EC1A              ldd -6,x
+ 00AC AC02              cpd 2,x
+ 00AE 2DDF              blt L13
+ 00B0                   .dbline -2
+ 00B0                   .dbline 45
+ 00B0           ;                for (j=0; j<delayConstant; j++) {
+ 00B0           ;                }
+ 00B0           ;       }
+ 00B0           ;       
+ 00B0           ; }
+ 00B0           L12:
+ 00B0 B757              tfr x,s
+ 00B2 30                pulx
+ 00B3 1B82              leas 2,sp
+ 00B5                   .dbline 0 ; func end
+ 00B5 3D                rts
+ 00B6                   .dbsym l i -6 I
+ 00B6                   .dbsym l delayConstant -4 I
+ 00B6                   .dbsym l j -2 I
+ 00B6                   .dbsym l ms 2 I
+ 00B6                   .dbend
+ 00B6           L9:
+ 00B6 61203A20256400    .byte 'a,32,58,32,37,'d,0
+ 00BD           L8:
+ 00BD 0A00              .byte 10,0
+ 00BF           L7:
+ 00BF 78203A20256400    .byte 'x,32,58,32,37,'d,0

@@ -1,0 +1,7 @@
+[Files]
+basicLCD.s
+assign42.c
+DP256Reg.s
+[Headers]
+hcs12dp256.h
+[Documents]

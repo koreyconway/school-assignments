@@ -1,0 +1,202 @@
+XH
+H 1 areas 3 global symbols
+M assign43.c
+S _printf Ref0000
+A text size F8 flags 0
+dbfile M:\SYSC20~3\ASSIGN~4\assign43\assign43.c
+dbfunc e main 0 fV
+dbline FFFFFFFF 0
+dbline 5 0
+dbline 6 0
+dbline 7 3
+dbline 8 8
+dbline A D
+dbline B 12
+dbline C 18
+dbline D 1D
+dbline E 23
+dbline F 28
+dbline 10 2E
+dbline 11 33
+dbline 12 39
+dbline 13 3E
+dbline 14 44
+dbline 15 49
+dbline 16 4F
+dbline 17 54
+dbline 19 5A
+dbline 1A 60
+dbline 1D 66
+dbline 1E 6C
+dbline 1F 71
+dbline 20 77
+dbline 21 7C
+dbline 22 82
+dbline 23 87
+dbline 24 8D
+dbline 25 92
+dbline 26 98
+dbline 27 9D
+dbline 28 A3
+dbline 29 A8
+dbline 2A AE
+dbline 2D B1
+dbline FFFFFFFE B7
+dbline 2F B7
+dbline 0 B7
+dbfunc e delay B8 fV
+dbsym l i FFFFFFFA I
+dbsym l delayConstant FFFFFFFC I
+dbsym l j FFFFFFFE I
+dbsym l ms 2 I
+dbline FFFFFFFF BE
+dbline 31 BE
+dbline 33 BE
+dbline 36 C3
+dbline 36 CA
+dbline 37 CA
+dbline 37 D1
+dbline 38 D1
+dbline 37 D1
+dbline 37 D8
+dbline 39 DE
+dbline 36 DE
+dbline 36 E5
+dbline FFFFFFFE EB
+dbline 3B EB
+dbline 0 F0
+dbfile assign43.s
+dbfunc 0 ? 0 I
+dbline F 0
+dbline 12 3
+dbline 13 5
+dbline 16 8
+dbline 17 A
+dbline 1B D
+dbline 1C F
+dbline 1F 12
+dbline 20 15
+dbline 23 18
+dbline 24 1A
+dbline 27 1D
+dbline 28 20
+dbline 2B 23
+dbline 2C 25
+dbline 2F 28
+dbline 30 2B
+dbline 33 2E
+dbline 34 30
+dbline 37 33
+dbline 38 36
+dbline 3B 39
+dbline 3C 3B
+dbline 3F 3E
+dbline 40 41
+dbline 43 44
+dbline 44 46
+dbline 47 49
+dbline 48 4C
+dbline 4B 4F
+dbline 4C 51
+dbline 4F 54
+dbline 50 57
+dbline 54 5A
+dbline 55 5D
+dbline 58 60
+dbline 59 63
+dbline 5E 66
+dbline 5F 69
+dbline 62 6C
+dbline 63 6E
+dbline 66 71
+dbline 67 74
+dbline 6A 77
+dbline 6B 79
+dbline 6E 7C
+dbline 6F 7F
+dbline 72 82
+dbline 73 84
+dbline 76 87
+dbline 77 8A
+dbline 7A 8D
+dbline 7B 8F
+dbline 7E 92
+dbline 7F 95
+dbline 82 98
+dbline 83 9A
+dbline 86 9D
+dbline 87 A0
+dbline 8A A3
+dbline 8B A5
+dbline 8E A8
+dbline 8F AB
+dbline 92 AE
+dbline 97 B1
+dbline 98 B4
+dbline 9F B7
+dbline A7 B8
+dbline A8 B9
+dbline A9 BA
+dbline AA BC
+dbline B2 BE
+dbline B3 C1
+dbline B5 C3
+dbline B6 C6
+dbline B7 C8
+dbline BE CA
+dbline BF CD
+dbline C0 CF
+dbline C6 D1
+dbline C7 D3
+dbline C8 D6
+dbline CB D8
+dbline CC DA
+dbline CD DC
+dbline D1 DE
+dbline D2 E0
+dbline D3 E3
+dbline D6 E5
+dbline D7 E7
+dbline D8 E9
+dbline E1 EB
+dbline E2 ED
+dbline E3 EE
+dbline E5 F0
+S _main Def0000
+S _delay Def00B8
+T 00 00 79 00 F0 C6 FF 7B 02 5A C6 FF 7B 02 42 C6
+R 00 00 00 00
+T 00 0E 20 7B 02 58 CC 00 32 16 00 B8 C6 04 7B
+R 00 00 00 00 00 0A 00 00
+T 00 1B 02 40 CC 00 32 16 00 B8 C6 04 7B 02 40 CC
+R 00 00 00 00 00 08 00 00
+T 00 29 00 32 16 00 B8 C6 04 7B 02 40 CC 00 32 16
+R 00 00 00 00 00 05 00 00
+T 00 37 00 B8 C6 04 7B 02 40 CC 00 32 16 00 B8 C6
+R 00 00 00 00 00 02 00 00 00 0D 00 00
+T 00 45 04 7B 02 40 CC 00 32 16 00 B8 C6 04 7B
+R 00 00 00 00 00 0A 00 00
+T 00 52 02 40 CC 00 32 16 00 B8 CC 00 F5 16 00 00
+R 00 00 00 00 00 08 00 00 00 0B 00 00 02 0E 00 00
+T 00 60 CC 03 E8 16 00 B8 CC 00 32 16 00 B8 C6 20
+R 00 00 00 00 00 06 00 00 00 0C 00 00
+T 00 6E 7B 02 40 CC 00 32 16 00 B8 C6 20 7B 02 40
+R 00 00 00 00 00 09 00 00
+T 00 7C CC 00 32 16 00 B8 C6 20 7B 02 40 CC 00 32
+R 00 00 00 00 00 06 00 00
+T 00 8A 16 00 B8 C6 20 7B 02 40 CC 00 32 16 00 B8
+R 00 00 00 00 00 03 00 00 00 0E 00 00
+T 00 98 C6 20 7B 02 40 CC 00 32 16 00 B8 C6 20 7B
+R 00 00 00 00 00 0B 00 00
+T 00 A6 02 40 CC 00 32 16 00 B8 79 02 58 CC 00 F1
+R 00 00 00 00 00 08 00 00 00 0E 00 00
+T 00 B4 16 00 00 3D 3B 34 B7 75 1B 9A CC 04 D2 6C
+R 00 00 00 00 02 03 00 00
+T 00 C2 1C CC 00 00 6C 1A 20 1B CC 00 00 6C 1E 20
+R 00 00 00 00
+T 00 D0 07 EC 1E C3 00 01 6C 1E EC 1E AC 1C 2D F3
+R 00 00 00 00
+T 00 DE EC 1A C3 00 01 6C 1A EC 1A AC 02 2D DF B7
+R 00 00 00 00
+T 00 EC 57 30 1B 82 3D 65 6E 64 00 79 6F 00
+R 00 00 00 00
