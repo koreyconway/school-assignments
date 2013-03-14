@@ -1,0 +1,31 @@
+#include <hcs12dp256.h>
+#include <stdio.h>
+#include "vectors_dp256_NoICE.c"
+
+#define	STEPPER_DELAY	0XF000
+
+void _rti(void);
+//void _start(void);
+
+int main()
+{
+	setbaud(BAUD19K);
+	
+	while ( 1 ) printf("main\n");
+	
+	return 1;
+}
+
+#pragma interrupt_handler _rti
+void _rti(void)
+{
+	setbaud(BAUD19K);
+	printf("rti\n");
+}
+
+// void _start(void)
+// {
+	// setbaud(BAUD19K);
+	// printf("starting\n");
+// }
+

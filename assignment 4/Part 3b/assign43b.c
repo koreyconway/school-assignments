@@ -1,86 +1,138 @@
 #include <hcs12dp256.h>
 #include <stdio.h>
+#include "stepper.c"
 
-#define	STEPPER_DELAY	0XF000
-#define STEPPER_STEPS_PER_TURN	5*4
+#define RTI_CTL	0x7F // run real-time interrupt at 8Hz
+#define RTI_FREQUENCY	8
 
-void stepper_init(void);
-void stepper_turn_cw(int steps);
-void stepper_turn_ccw(int steps);
-void stepper_set_step(int step);
-void stepper_delay(unsigned int delay);
+void rti_init(void);
+void rti_handler(void);
+void rti_every_second(void);
+void trigger_collision(void);
+void collision_avoidance(void);
+
+// Global variables
+int collision_detected = 0;
+int temperature = 0;
 
 int main()
 {
-	int instruction = 0;
-	int shifted_instruction = 0;
-	
-	///(BAUD19K);	
+	setbaud(BAUD19K);
 	stepper_init();
-	stepper_turn_cw(STEPPER_STEPS_PER_TURN * 2);
-	stepper_turn_ccw(STEPPER_STEPS_PER_TURN * 2);
+	rti_init();
+	
+	temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
+
+	while ( 1 );
 	return 1;
 }
 
 /*
-	Turn clock-wise a given number of steps
+	Initialize the real-time interrupt
 */
-void stepper_turn_cw(int steps)
+void rti_init()
 {
-	for ( ; steps > 0; steps-- ) {
-		stepper_set_step(3 - (steps % 4));
-	}
+	CRGINT |= 0x80;
+	RTICTL = 0x7F; // runs at 8Hz
+	asm("cli");
 }
 
 /*
-	Turn clock-wise a given number of steps
+	The RTI handler. For now this simply calls rti_every_second() every second
 */
-void stepper_turn_ccw(int steps)
+#pragma interrupt_handler rti_handler
+void rti_handler()
 {
-	for ( ; steps > 0; steps-- ) {
-		stepper_set_step(steps % 4);
-	}
-}
-
-/*
-
-*/
-void stepper_set_step(int step)
-{
-	int coded_step = 0;
+	static int count = 0;
 	
-	// Get the coded step value for this step
-	if ( step == 2 ) {
-		coded_step = 3;
-	} else if ( step == 3 ) {
-		coded_step = 2;
+	if ( ++count == RTI_FREQUENCY ) {
+		count = 0;
+		rti_every_second();
+	}
+	
+	// Clear the interrupt
+	CRGFLG |= 0x80;
+}
+
+/*
+	Simulate a collision warning
+*/
+void trigger_collision()
+{
+	collision_detected = 1;
+}
+
+/*
+	This gets run every second
+*/
+void rti_every_second()
+{
+	static int seconds = 0;
+	
+	// Run the collision avoidance algorithm
+	collision_avoidance();
+	
+	// Simulate collisions at an interval
+	seconds = (seconds + 1) % 6;
+	if ( seconds == 0 ) {
+		trigger_collision();
+	}
+}
+
+/*
+	This is executes the algorithm provided in the labs to avoid a collision
+*/
+void collision_avoidance()
+{
+	#define COLLISION_AVOID_STATE_INITIAL	0
+	#define COLLISION_AVOID_STATE_WAIT		1
+	#define COLLISION_AVOID_STATE_ROTATE90	2
+	#define COLLISION_AVOID_STATE_CONTINUE	3
+
+	static int seconds = 0;
+	static int state = 0;
+	
+	if ( collision_detected ) {
+		switch ( state ) {
+			case COLLISION_AVOID_STATE_INITIAL:
+				// we would stop the forward motors here
+				printf("\n\nCollision warning!!\nStopping motors.\n");
+				seconds = 0;
+				state = COLLISION_AVOID_STATE_WAIT;
+				break;
+			case COLLISION_AVOID_STATE_WAIT:
+				// wait 2 seconds before changing to next state (total time will be 3 second wait)
+				printf("Waiting for motors to be stopped\n");
+				if ( ++seconds >= 2 ) {
+					seconds = 0;
+					state = COLLISION_AVOID_STATE_ROTATE90;
+				}
+				break;
+			case COLLISION_AVOID_STATE_ROTATE90:
+				if ( seconds == 0 ) {
+					printf("Rotating 90 degrees to the right.\n");
+					stepper_turn_cw(STEPPER_STEPS_PER_QUARTER);
+				} else {
+					printf("Waiting another second.\n");
+				}
+				
+				if ( ++seconds >= 2 ) {
+					// Go back into initial state and reset collision detection
+					seconds = 0;
+					state = COLLISION_AVOID_STATE_INITIAL;
+					collision_detected = 0;
+					
+					// We would start the forward motors here
+				}
+				break;
+			default:
+				printf("Unknown collision state, return to initial.\n");
+				seconds = 0;
+				state = COLLISION_AVOID_STATE_INITIAL;
+				collision_detected = 0;
+		}
 	} else {
-		coded_step = step;
+		printf("No collisions detected\n");
 	}
-
-	// Set the bits in port T
-	PTT = (PTT & ~0x60) | (coded_step << 5);
-	
-	//printf("Instruction: %X\nShifted Instruction: %X\nPTT: %X\n\n", instruction, shifted_instruction, PTT);
-	
-	// Delay to allow enough time for the step to take place
-	stepper_delay(STEPPER_DELAY);
-} 
-
-/*
-	Initialize ports for the stepper motor
-*/
-void stepper_init()
-{
-	DDRP = DDRP | 0x20; // Enable output for the enable bit
-	DDRT = DDRT | 0x60; // Enable output to the stepper motor
-	PTP  = PTP  | 0x20; // Enable the stepper motor
 }
 
-/*
-	Add delays for the stepper, based on given parameter
-*/
-void stepper_delay(unsigned int delay)
-{
-	for ( ; delay > 0 ; delay-- ) {}
-}

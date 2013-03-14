@@ -1,7 +1,7 @@
 #include <hcs12dp256.h>
 #include <stdio.h>
 
-#define	STEPPER_DELAY				0XF000
+#define	STEPPER_DELAY				0X0F00
 #define STEPPER_STEPS_PER_QUARTER	5
 #define STEPPER_STEPS_PER_TURN		STEPPER_STEPS_PER_QUARTER*4
 
@@ -10,18 +10,6 @@ void stepper_turn_cw(int steps);
 void stepper_turn_ccw(int steps);
 void stepper_set_step(int step);
 void stepper_delay(unsigned int delay);
-
-int main()
-{
-	int instruction = 0;
-	int shifted_instruction = 0;
-	
-	///(BAUD19K);	
-	stepper_init();
-	stepper_turn_cw(STEPPER_STEPS_PER_TURN * 2);
-	stepper_turn_ccw(STEPPER_STEPS_PER_TURN * 2);
-	return 1;
-}
 
 /*
 	Turn clock-wise a given number of steps
