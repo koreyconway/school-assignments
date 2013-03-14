@@ -1,0 +1,332 @@
+WARNING: EXTCODE CODE AREA DO NOT CONTAIN RELOCATED ADDRESSES.
+THIS WILL BE REMEDIED IN A LATER RELEASE.
+                        .module assign43.c
+                        .area text
+--- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3~1\assign43.c
+--- 0000                   .dbfunc e main _main fI
+--- 0000           ; shifted_instruction -> -4,x
+--- 0000           ;    instruction -> -2,x
+ 402A            _main::
+ 402A  34                pshx
+ 402B  B775              tfr s,x
+ 402D  1B9C              leas -4,sp
+ 402F                    .dbline -1
+ 402F                    .dbline 17
+ 402F            ; #include <hcs12dp256.h>
+ 402F            ; #include <stdio.h>
+ 402F            ; 
+ 402F            ; #define       STEPPER_DELAY   0XF000
+ 402F            ; #define STEPPER_CW            0
+ 402F            ; #define STEPPER_CCW           1
+ 402F            ; #define STEPPER_STEPS_PER_TURN        5*4
+ 402F            ; 
+ 402F            ; void stepper_init(void);
+ 402F            ; void stepper_turn(int quater_turns, int direction);
+ 402F            ; void stepper_turn_cw(int quarter_turns);
+ 402F            ; //void stepper_turn_ccw(int quarter_turns);
+ 402F            ; void  stepper_set_step(int step);
+ 402F            ; void stepper_delay(unsigned int delay);
+ 402F            ; 
+ 402F            ; int main()
+ 402F            ; {
+ 402F                    .dbline 18
+ 402F            ;       int instruction = 0;
+ 402F  CC0000            ldd #0
+ 4032  6C1E              std -2,x
+ 4034                    .dbline 19
+ 4034            ;       int shifted_instruction = 0;
+ 4034  CC0000            ldd #0
+ 4037  6C1C              std -4,x
+ 4039                    .dbline 21
+ 4039            ;       
+ 4039            ;       setbaud(BAUD19K);       
+ 4039  CC001A            ldd #26
+ 403C  16411B            jsr _setbaud
+ 403F                    .dbline 22
+ 403F            ;       stepper_init();
+ 403F  1640F7            jsr _stepper_init
+ 4042                    .dbline 23
+ 4042            ;       stepper_turn_cw(STEPPER_STEPS_PER_TURN * 2);
+ 4042  CC0028            ldd #40
+ 4045  164055            jsr _stepper_turn_cw
+ 4048                    .dbline 24
+ 4048            ;       stepper_turn_ccw(STEPPER_STEPS_PER_TURN * 2);
+ 4048  CC0028            ldd #40
+ 404B  164083            jsr _stepper_turn_ccw
+ 404E                    .dbline 25
+ 404E            ;       return 1;
+ 404E  CC0001            ldd #1
+ 4051                    .dbline -2
+ 4051            L3:
+ 4051  B757              tfr x,s
+ 4053  30                pulx
+ 4054                    .dbline 0 ; func end
+ 4054  3D                rts
+ 4055                    .dbsym l shifted_instruction -4 I
+ 4055                    .dbsym l instruction -2 I
+ 4055                    .dbend
+ 4055                    .dbfunc e stepper_turn_cw _stepper_turn_cw fV
+ 4055            ;          steps -> 2,x
+ 4055            _stepper_turn_cw::
+ 4055  3B                pshd
+ 4056  34                pshx
+ 4057  B775              tfr s,x
+ 4059  1B9E              leas -2,sp
+ 405B                    .dbline -1
+ 405B                    .dbline 32
+ 405B            ; }
+ 405B            ; 
+ 405B            ; /*
+ 405B            ;       Turn clock-wise a given number of steps
+ 405B            ; */
+ 405B            ; void stepper_turn_cw(int steps)
+ 405B            ; {
+ 405B                    .dbline 33
+ 405B  201C              bra L8
+ 405D            L5:
+ 405D                    .dbline 33
+ 405D                    .dbline 34
+ 405D  EC02              ldd 2,x
+ 405F  CD0004            ldy #4
+ 4062  B7D6              exg x,y
+ 4064  1815              idivs
+ 4066  B7D6              exg x,y
+ 4068  6C1E              std -2,x
+ 406A  CC0003            ldd #3
+ 406D  A31E              subd -2,x
+ 406F  1640A8            jsr _stepper_set_step
+ 4072                    .dbline 35
+ 4072            L6:
+ 4072                    .dbline 33
+ 4072  EC02              ldd 2,x
+ 4074  830001            subd #1
+ 4077  6C02              std 2,x
+ 4079            L8:
+ 4079                    .dbline 33
+ 4079            ;       for ( ; steps > 0; steps-- ) {
+ 4079  EC02              ldd 2,x
+ 407B  2EE0              bgt L5
+ 407D                    .dbline -2
+ 407D                    .dbline 36
+ 407D            ;               stepper_set_step(3 - (steps % 4));
+ 407D            ;       }
+ 407D            ; }
+ 407D            L4:
+ 407D  B757              tfr x,s
+ 407F  30                pulx
+ 4080  1B82              leas 2,sp
+ 4082                    .dbline 0 ; func end
+ 4082  3D                rts
+ 4083                    .dbsym l steps 2 I
+ 4083                    .dbend
+ 4083                    .dbfunc e stepper_turn_ccw _stepper_turn_ccw fV
+ 4083            ;          steps -> 2,x
+ 4083            _stepper_turn_ccw::
+ 4083  3B                pshd
+ 4084  34                pshx
+ 4085  B775              tfr s,x
+ 4087                    .dbline -1
+ 4087                    .dbline 42
+ 4087            ; 
+ 4087            ; /*
+ 4087            ;       Turn clock-wise a given number of steps
+ 4087            ; */
+ 4087            ; void stepper_turn_ccw(int steps)
+ 4087            ; {
+ 4087                    .dbline 43
+ 4087  2015              bra L13
+ 4089            L10:
+ 4089                    .dbline 43
+ 4089                    .dbline 44
+ 4089  EC02              ldd 2,x
+ 408B  CD0004            ldy #4
+ 408E  B7D6              exg x,y
+ 4090  1815              idivs
+ 4092  B7D6              exg x,y
+ 4094  1640A8            jsr _stepper_set_step
+ 4097                    .dbline 45
+ 4097            L11:
+ 4097                    .dbline 43
+ 4097  EC02              ldd 2,x
+ 4099  830001            subd #1
+ 409C  6C02              std 2,x
+ 409E            L13:
+ 409E                    .dbline 43
+ 409E            ;       for ( ; steps > 0; steps-- ) {
+ 409E  EC02              ldd 2,x
+ 40A0  2EE7              bgt L10
+ 40A2                    .dbline -2
+ 40A2                    .dbline 46
+ 40A2            ;               stepper_set_step(steps % 4);
+ 40A2            ;       }
+ 40A2            ; }
+ 40A2            L9:
+ 40A2  B757              tfr x,s
+ 40A4  30                pulx
+ 40A5  1B82              leas 2,sp
+ 40A7                    .dbline 0 ; func end
+ 40A7  3D                rts
+ 40A8                    .dbsym l steps 2 I
+ 40A8                    .dbend
+ 40A8                    .dbfunc e stepper_set_step _stepper_set_step fV
+ 40A8            ;     coded_step -> -2,x
+ 40A8            ;           step -> 2,x
+ 40A8            _stepper_set_step::
+ 40A8  3B                pshd
+ 40A9  34                pshx
+ 40AA  B775              tfr s,x
+ 40AC  1B9C              leas -4,sp
+ 40AE                    .dbline -1
+ 40AE                    .dbline 52
+ 40AE            ; 
+ 40AE            ; /*
+ 40AE            ; 
+ 40AE            ; */
+ 40AE            ; void stepper_set_step(int step)
+ 40AE            ; {
+ 40AE                    .dbline 53
+ 40AE            ;       int coded_step = 0;
+ 40AE  CC0000            ldd #0
+ 40B1  6C1E              std -2,x
+ 40B3                    .dbline 56
+ 40B3            ;       
+ 40B3            ;       // Get the coded step value for this step
+ 40B3            ;       if ( step == 2 ) {
+ 40B3  EC02              ldd 2,x
+ 40B5  8C0002            cpd #2
+ 40B8  2607              bne L15
+ 40BA                    .dbline 56
+ 40BA                    .dbline 57
+ 40BA            ;               coded_step = 3;
+ 40BA  CC0003            ldd #3
+ 40BD  6C1E              std -2,x
+ 40BF                    .dbline 58
+ 40BF  2012              bra L16
+ 40C1            L15:
+ 40C1                    .dbline 58
+ 40C1            ;       } else if ( step == 3 ) {
+ 40C1  EC02              ldd 2,x
+ 40C3  8C0003            cpd #3
+ 40C6  2607              bne L17
+ 40C8                    .dbline 58
+ 40C8                    .dbline 59
+ 40C8            ;               coded_step = 2;
+ 40C8  CC0002            ldd #2
+ 40CB  6C1E              std -2,x
+ 40CD                    .dbline 60
+ 40CD  2004              bra L18
+ 40CF            L17:
+ 40CF                    .dbline 60
+ 40CF            ;       } else {
+ 40CF                    .dbline 61
+ 40CF            ;               coded_step = step;
+ 40CF  1802021E          movw 2,x,-2,x
+ 40D3                    .dbline 62
+ 40D3            ;       }
+ 40D3            L18:
+ 40D3            L16:
+ 40D3                    .dbline 65
+ 40D3            ; 
+ 40D3            ;       // Set the bits in port T
+ 40D3            ;       PTT = (PTT & ~0x60) | (coded_step << 5);
+ 40D3  EC1E              ldd -2,x
+ 40D5  59                lsld
+ 40D6  59                lsld
+ 40D7  59                lsld
+ 40D8  59                lsld
+ 40D9  59                lsld
+ 40DA  6C1C              std -4,x
+ 40DC                    ; vol
+ 40DC  F60240            ldab 0x240
+ 40DF  87                clra
+ 40E0  84FF              anda #255
+ 40E2  C49F              andb #159
+ 40E4  AA1C              ora -4,x
+ 40E6  EA1D              orb -3,x
+ 40E8  7B0240            stab 0x240
+ 40EB                    .dbline 70
+ 40EB            ;       
+ 40EB            ;       //printf("Instruction: %X\nShifted Instruction: %X\nPTT: %X\n\n", instruction, shifted_instruction, PTT);
+ 40EB            ;       
+ 40EB            ;       // Delay to allow enough time for the step to take place
+ 40EB            ;       stepper_delay(STEPPER_DELAY);
+ 40EB  CCF000            ldd #0xf000
+ 40EE  164104            jsr _stepper_delay
+ 40F1                    .dbline -2
+ 40F1                    .dbline 71
+ 40F1            ; } 
+ 40F1            L14:
+ 40F1  B757              tfr x,s
+ 40F3  30                pulx
+ 40F4  1B82              leas 2,sp
+ 40F6                    .dbline 0 ; func end
+ 40F6  3D                rts
+ 40F7                    .dbsym l coded_step -2 I
+ 40F7                    .dbsym l step 2 I
+ 40F7                    .dbend
+ 40F7                    .dbfunc e stepper_init _stepper_init fV
+ 40F7            _stepper_init::
+ 40F7                    .dbline -1
+ 40F7                    .dbline 77
+ 40F7            ; 
+ 40F7            ; /*
+ 40F7            ;       Initialize ports for the stepper motor
+ 40F7            ; */
+ 40F7            ; void stepper_init()
+ 40F7            ; {
+ 40F7                    .dbline 78
+ 40F7            ;       DDRP = DDRP | 0x20; // Enable output for the enable bit
+ 40F7  1C025A20          bset 0x25a,#32
+ 40FB                    .dbline 79
+ 40FB            ;       DDRT = DDRT | 0x60; // Enable output to the stepper motor
+ 40FB  1C024260          bset 0x242,#96
+ 40FF                    .dbline 80
+ 40FF            ;       PTP  = PTP  | 0x20; // Enable the stepper motor
+ 40FF  1C025820          bset 0x258,#32
+ 4103                    .dbline -2
+ 4103                    .dbline 81
+ 4103            ; }
+ 4103            L19:
+ 4103                    .dbline 0 ; func end
+ 4103  3D                rts
+ 4104                    .dbend
+ 4104                    .dbfunc e stepper_delay _stepper_delay fV
+ 4104            ;          delay -> 2,x
+ 4104            _stepper_delay::
+ 4104  3B                pshd
+ 4105  34                pshx
+ 4106  B775              tfr s,x
+ 4108                    .dbline -1
+ 4108                    .dbline 87
+ 4108            ; 
+ 4108            ; /*
+ 4108            ;       Add delays for the stepper, based on given parameter
+ 4108            ; */
+ 4108            ; void stepper_delay(unsigned int delay)
+ 4108            ; {
+ 4108                    .dbline 88
+ 4108  2007              bra L24
+ 410A            L21:
+ 410A                    .dbline 88
+ 410A                    .dbline 88
+ 410A            L22:
+ 410A                    .dbline 88
+ 410A  EC02              ldd 2,x
+ 410C  830001            subd #1
+ 410F  6C02              std 2,x
+ 4111            L24:
+ 4111                    .dbline 88
+ 4111            ;       for ( ; delay > 0 ; delay-- ) {}
+ 4111  EC02              ldd 2,x
+ 4113  26F5              bne L21
+ 4115                    .dbline -2
+ 4115                    .dbline 89
+ 4115            ; }
+ 4115            L20:
+ 4115  B757              tfr x,s
+ 4117  30                pulx
+ 4118  1B82              leas 2,sp
+ 411A                    .dbline 0 ; func end
+ 411A  3D                rts
+ 411B                    .dbsym l delay 2 i
+ 411B                    .dbend
