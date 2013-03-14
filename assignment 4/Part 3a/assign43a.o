@@ -1,0 +1,243 @@
+XH
+H 1 areas 6 global symbols
+M assign43a.c
+A text size EB flags 0
+dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3A~1\assign43a.c
+dbfunc e main 0 fI
+dbsym l shifted_instruction FFFFFFFC I
+dbsym l instruction FFFFFFFE I
+dbline FFFFFFFF 5
+dbline E 5
+dbline F 5
+dbline 10 A
+dbline 13 F
+dbline 14 12
+dbline 15 18
+dbline 16 1E
+dbline FFFFFFFE 21
+dbline 0 24
+dbfunc e stepper_turn_cw 25 fV
+dbsym l steps 2 I
+dbline FFFFFFFF 2B
+dbline 1D 2B
+dbline 1E 2B
+dbline 1E 2D
+dbline 1F 2D
+dbline 20 42
+dbline 1E 42
+dbline 1E 49
+dbline FFFFFFFE 4D
+dbline 21 4D
+dbline 0 52
+dbfunc e stepper_turn_ccw 53 fV
+dbsym l steps 2 I
+dbline FFFFFFFF 57
+dbline 27 57
+dbline 28 57
+dbline 28 59
+dbline 29 59
+dbline 2A 67
+dbline 28 67
+dbline 28 6E
+dbline FFFFFFFE 72
+dbline 2B 72
+dbline 0 77
+dbfunc e stepper_set_step 78 fV
+dbsym l coded_step FFFFFFFE I
+dbsym l step 2 I
+dbline FFFFFFFF 7E
+dbline 31 7E
+dbline 32 7E
+dbline 35 83
+dbline 35 8A
+dbline 36 8A
+dbline 37 8F
+dbline 37 91
+dbline 37 98
+dbline 38 98
+dbline 39 9D
+dbline 39 9F
+dbline 3A 9F
+dbline 3B A3
+dbline 3E A3
+dbline 43 BB
+dbline FFFFFFFE C1
+dbline 44 C1
+dbline 0 C6
+dbfunc e stepper_init C7 fV
+dbline FFFFFFFF C7
+dbline 4A C7
+dbline 4B C7
+dbline 4C CB
+dbline 4D CF
+dbline FFFFFFFE D3
+dbline 4E D3
+dbline 0 D3
+dbfunc e stepper_delay D4 fV
+dbsym l delay 2 i
+dbline FFFFFFFF D8
+dbline 54 D8
+dbline 55 D8
+dbline 55 DA
+dbline 55 DA
+dbline 55 DA
+dbline 55 E1
+dbline FFFFFFFE E5
+dbline 56 E5
+dbline 0 EA
+dbfile assign43a.s
+dbfunc 0 ? 0 I
+dbline 8 0
+dbline 9 1
+dbline A 3
+dbline 1D 5
+dbline 1E 8
+dbline 21 A
+dbline 22 D
+dbline 27 F
+dbline 2A 12
+dbline 2B 15
+dbline 2E 18
+dbline 2F 1B
+dbline 32 1E
+dbline 35 21
+dbline 36 23
+dbline 38 24
+dbline 3F 25
+dbline 40 26
+dbline 41 27
+dbline 42 29
+dbline 4D 2B
+dbline 51 2D
+dbline 52 2F
+dbline 53 32
+dbline 54 34
+dbline 55 36
+dbline 56 38
+dbline 57 3A
+dbline 58 3D
+dbline 59 3F
+dbline 5D 42
+dbline 5E 44
+dbline 5F 47
+dbline 63 49
+dbline 64 4B
+dbline 6B 4D
+dbline 6C 4F
+dbline 6D 50
+dbline 6F 52
+dbline 75 53
+dbline 76 54
+dbline 77 55
+dbline 81 57
+dbline 85 59
+dbline 86 5B
+dbline 87 5E
+dbline 88 60
+dbline 89 62
+dbline 8A 64
+dbline 8E 67
+dbline 8F 69
+dbline 90 6C
+dbline 94 6E
+dbline 95 70
+dbline 9C 72
+dbline 9D 74
+dbline 9E 75
+dbline A0 77
+dbline A7 78
+dbline A8 79
+dbline A9 7A
+dbline AA 7C
+dbline B5 7E
+dbline B6 81
+dbline BB 83
+dbline BC 85
+dbline BD 88
+dbline C1 8A
+dbline C2 8D
+dbline C4 8F
+dbline C8 91
+dbline C9 93
+dbline CA 96
+dbline CE 98
+dbline CF 9B
+dbline D1 9D
+dbline D7 9F
+dbline E0 A3
+dbline E1 A5
+dbline E2 A6
+dbline E3 A7
+dbline E4 A8
+dbline E5 A9
+dbline E6 AA
+dbline E8 AC
+dbline E9 AF
+dbline EA B0
+dbline EB B2
+dbline EC B4
+dbline ED B6
+dbline EE B8
+dbline F5 BB
+dbline F6 BE
+dbline FB C1
+dbline FC C3
+dbline FD C4
+dbline FF C6
+dbline 10F C7
+dbline 112 CB
+dbline 115 CF
+dbline 11B D3
+dbline 120 D4
+dbline 121 D5
+dbline 122 D6
+dbline 12C D8
+dbline 132 DA
+dbline 133 DC
+dbline 134 DF
+dbline 138 E1
+dbline 139 E3
+dbline 13E E5
+dbline 13F E7
+dbline 140 E8
+dbline 142 EA
+S _main Def0000
+S _stepper_turn_ccw Def0053
+S _stepper_set_step Def0078
+S _stepper_init Def00C7
+S _stepper_turn_cw Def0025
+S _stepper_delay Def00D4
+T 00 00 34 B7 75 1B 9C CC 00 00 6C 1E CC 00 00 6C
+R 00 00 00 00
+T 00 0E 1C 16 00 C7 CC 00 28 16 00 25 CC 00 28 16
+R 00 00 00 00 00 04 00 00 00 0A 00 00
+T 00 1C 00 53 CC 00 01 B7 57 30 3D 3B 34 B7 75 1B
+R 00 00 00 00 00 02 00 00
+T 00 2A 9E 20 1C EC 02 CD 00 04 B7 D6 18 15 B7 D6
+R 00 00 00 00
+T 00 38 6C 1E CC 00 03 A3 1E 16 00 78 EC 02 83
+R 00 00 00 00 00 0A 00 00
+T 00 45 00 01 6C 02 EC 02 2E E0 B7 57 30 1B 82 3D
+R 00 00 00 00
+T 00 53 3B 34 B7 75 20 15 EC 02 CD 00 04 B7 D6 18
+R 00 00 00 00
+T 00 61 15 B7 D6 16 00 78 EC 02 83 00 01 6C 02 EC
+R 00 00 00 00 00 06 00 00
+T 00 6F 02 2E E7 B7 57 30 1B 82 3D 3B 34 B7 75 1B
+R 00 00 00 00
+T 00 7D 9C CC 00 00 6C 1E EC 02 8C 00 02 26 07 CC
+R 00 00 00 00
+T 00 8B 00 03 6C 1E 20 12 EC 02 8C 00 03 26 07 CC
+R 00 00 00 00
+T 00 99 00 02 6C 1E 20 04 18 02 02 1E EC 1E 59 59
+R 00 00 00 00
+T 00 A7 59 59 59 6C 1C F6 02 40 87 84 FF C4 9F AA
+R 00 00 00 00
+T 00 B5 1C EA 1D 7B 02 40 CC F0 00 16 00 D4 B7 57
+R 00 00 00 00 00 0C 00 00
+T 00 C3 30 1B 82 3D 1C 02 5A 20 1C 02 42 60 1C
+R 00 00 00 00
+T 00 D0 02 58 20 3D 3B 34 B7 75 20 07 EC 02 83
+R 00 00 00 00
+T 00 DD 00 01 6C 02 EC 02 26 F5 B7 57 30 1B 82 3D
+R 00 00 00 00

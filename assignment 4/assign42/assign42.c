@@ -5,6 +5,8 @@ asm (".include 'BasicLCD.s'");
 
 void delay(int ms);
 
+char * asciistring;
+sprintf(asciistring, "%u", intval);
 
 //LCD subroutines
 extern void LCD_display(char in);
@@ -29,7 +31,7 @@ void main (){
 	 convert_int_ascii(ret_char ,int_speed);
 	 pointer_to_ascii =& ret_char[0];
 	
-	 LCD_instruction(0x00);		// setting the lcd to print on 1st row 
+	 LCD_instruction(0x00);		// setting the lcd to print on 1st row
 	 DisplayLCD( "Speed :" ,pointer_to_ascii, "km/h" );		//print speed
 	 
 	 convert_int_ascii(ret_char ,int_temp);

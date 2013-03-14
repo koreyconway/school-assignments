@@ -1,7 +1,7 @@
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                            text   4000   0150 =    336. bytes (rel,con,rom)
+                            text   4000   011A =    282. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
@@ -9,20 +9,19 @@ Area                               Addr   Size   Decimal Bytes (Attributes)
        4028  _exit
        402A  _main
        402A  __text_start
-       4055  _stepper_turn_cw
-       4083  _stepper_turn_ccw
-       40A8  _stepper_set_step
-       40F7  _stepper_init
-       4104  _stepper_delay
-       411B  _setbaud
-       414B  __HC12Setup
-       4150  __text_end
+       404F  _stepper_turn_cw
+       407D  _stepper_turn_ccw
+       40A2  _stepper_set_step
+       40F1  _stepper_init
+       40FE  _stepper_delay
+       4115  __HC12Setup
+       411A  __text_end
 
 Files Linked      [ module(s) ]
 
 C:\icc\lib\crt12.o	[ crt12.s ]
-assign43.o	[ assign43.c ]
-<library>	[ serial.c, setup.s ]
+assign43a.o	[ assign43a.c ]
+<library>	[ setup.s ]
 
 User Global Definitions
 

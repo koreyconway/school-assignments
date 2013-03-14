@@ -2,14 +2,12 @@
 #include <stdio.h>
 
 #define	STEPPER_DELAY	0XF000
-#define STEPPER_CW		0
-#define STEPPER_CCW		1
 #define STEPPER_STEPS_PER_TURN	5*4
 
 void stepper_init(void);
-void stepper_turn(int quater_turns, int direction);
-void stepper_turn_cw(int quarter_turns);
-void  stepper_set_step(int step);
+void stepper_turn_cw(int steps);
+void stepper_turn_ccw(int steps);
+void stepper_set_step(int step);
 void stepper_delay(unsigned int delay);
 
 int main()
@@ -17,7 +15,7 @@ int main()
 	int instruction = 0;
 	int shifted_instruction = 0;
 	
-	setbaud(BAUD19K);	
+	///(BAUD19K);	
 	stepper_init();
 	stepper_turn_cw(STEPPER_STEPS_PER_TURN * 2);
 	stepper_turn_ccw(STEPPER_STEPS_PER_TURN * 2);
