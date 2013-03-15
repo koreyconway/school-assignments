@@ -82,6 +82,11 @@ void clearScreen(void){
 	 DisplayLCD(" "," "," ");
 }
 
+/* the method takes in 3 pointers to arrays of any size that include the ascii 
+* values that need to be printed 
+* within the subroutine 'DisplayLCD(char)' is used to print each character
+* one at a time.
+*/
 void DisplayLCD(char string[], char string1[], char string2[]){
 	 int number = 0;
 	 
@@ -117,6 +122,10 @@ void DisplayLCD(char string[], char string1[], char string2[]){
 	 }
 }
 
+// the method takes in  pointer to a array of size 4 and an integer 
+// it coverts the integer into its ascii presentation and stores
+// it into the array to which the pointer is pointing to
+
 void convert_int_ascii(char ret_char[] , int x){
 	 	ret_char[3]=0;		//NULL
 		ret_char[2]=(48+(x%10));
@@ -126,6 +135,8 @@ void convert_int_ascii(char ret_char[] , int x){
 		ret_char[0]=(48+(x%10));
 		
 }
+
+// the subroutine polls for a key pressed on the HCS12 keypad
 
 char key_pressed(void){
 	 
