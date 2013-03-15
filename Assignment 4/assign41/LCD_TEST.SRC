@@ -1,7 +1,0 @@
-[Files]
-LCD_test.c
-basicLCD.s
-DP256Reg.s
-[Headers]
-hcs12dp256.h
-[Documents]
