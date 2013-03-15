@@ -1,0 +1,300 @@
+WARNING: EXTCODE CODE AREA DO NOT CONTAIN RELOCATED ADDRESSES.
+THIS WILL BE REMEDIED IN A LATER RELEASE.
+                        .module assign43.c
+                        .area text
+--- 0000                   .dbfile assign43.c
+--- 0000                   .dbfunc e main _main fV
+ 402A            _main::
+ 402A                    .dbline -1
+ 402A                    .dbline 5
+ 402A            ; #include <stdio.h>
+ 402A            ; #include "hcs12dp256.h"
+ 402A            ; 
+ 402A            ; 
+ 402A            ; void main(){
+ 402A                    .dbline 8
+ 402A            ; 
+ 402A            ;        
+ 402A            ;        SPI1CR1 = 0x00;                   //Turn off SPI
+ 402A  7900F0            clr 0xf0
+ 402D                    .dbline 10
+ 402D            ;        
+ 402D            ;        DDRP = 0xFF;
+ 402D  C6FF              ldab #255
+ 402F  7B025A            stab 0x25a
+ 4032                    .dbline 11
+ 4032            ;        DDRT = 0xFF;
+ 4032  C6FF              ldab #255
+ 4034  7B0242            stab 0x242
+ 4037                    .dbline 13
+ 4037            ;        
+ 4037            ;        PTP = 0x20;                       //STEPPER EN at PP5  
+ 4037  C620              ldab #32
+ 4039  7B0258            stab 0x258
+ 403C                    .dbline 15
+ 403C            ;        
+ 403C            ;        delay(20);
+ 403C  CC0014            ldd #20
+ 403F  1640F3            jsr _delay
+ 4042                    .dbline 19
+ 4042            ;        
+ 4042            ;        //use _360_clockwise() twice to rotate 
+ 4042            ;        //stepper motor rotate clockwise 2 turns
+ 4042            ;        _360_clockwise();
+ 4042  1640AD            jsr __360_clockwise
+ 4045                    .dbline 20
+ 4045            ;        delay(300);
+ 4045  CC012C            ldd #300
+ 4048  1640F3            jsr _delay
+ 404B                    .dbline 21
+ 404B            ;        _360_clockwise();
+ 404B  1640AD            jsr __360_clockwise
+ 404E                    .dbline 23
+ 404E            ;        
+ 404E            ;        delay(300);
+ 404E  CC012C            ldd #300
+ 4051  1640F3            jsr _delay
+ 4054                    .dbline 26
+ 4054            ;        //use _360_anti_clockwise() twice to rotate 
+ 4054            ;        //stepper motor rotate ant-clockwise 2 turns
+ 4054            ;        _360_anti_clockwise();
+ 4054  164067            jsr __360_anti_clockwise
+ 4057                    .dbline 27
+ 4057            ;        delay(300);
+ 4057  CC012C            ldd #300
+ 405A  1640F3            jsr _delay
+ 405D                    .dbline 28
+ 405D            ;        _360_anti_clockwise();
+ 405D  164067            jsr __360_anti_clockwise
+ 4060                    .dbline 32
+ 4060            ;        
+ 4060            ;        
+ 4060            ;        
+ 4060            ;        printf("end");
+ 4060  CC412C            ldd #L4
+ 4063  164580            jsr _printf
+ 4066                    .dbline -2
+ 4066                    .dbline 34
+ 4066            ;        
+ 4066            ; }
+ 4066            L3:
+ 4066                    .dbline 0 ; func end
+ 4066  3D                rts
+ 4067                    .dbend
+ 4067                    .dbfunc e _360_anti_clockwise __360_anti_clockwise fV
+ 4067            ;              i -> -2,x
+ 4067            __360_anti_clockwise::
+ 4067  34                pshx
+ 4068  B775              tfr s,x
+ 406A  1B9E              leas -2,sp
+ 406C                    .dbline -1
+ 406C                    .dbline 36
+ 406C            ; 
+ 406C            ; void _360_anti_clockwise(){
+ 406C                    .dbline 39
+ 406C  CC0000            ldd #0
+ 406F  6C1E              std -2,x
+ 4071            L6:
+ 4071                    .dbline 39
+ 4071                    .dbline 40
+ 4071  C660              ldab #96
+ 4073  7B0240            stab 0x240
+ 4076                    .dbline 41
+ 4076  CC000A            ldd #10
+ 4079  1640F3            jsr _delay
+ 407C                    .dbline 42
+ 407C  C620              ldab #32
+ 407E  7B0240            stab 0x240
+ 4081                    .dbline 43
+ 4081  CC000A            ldd #10
+ 4084  1640F3            jsr _delay
+ 4087                    .dbline 44
+ 4087  790240            clr 0x240
+ 408A                    .dbline 45
+ 408A  CC000A            ldd #10
+ 408D  1640F3            jsr _delay
+ 4090                    .dbline 46
+ 4090  C640              ldab #64
+ 4092  7B0240            stab 0x240
+ 4095                    .dbline 47
+ 4095  CC000A            ldd #10
+ 4098  1640F3            jsr _delay
+ 409B                    .dbline 48
+ 409B            L7:
+ 409B                    .dbline 39
+ 409B            ;        int i ;
+ 409B            ;        //stepper motor 360 degree turn anti-clock wise
+ 409B            ;        for(i=0;i<5;i++){
+ 409B  EC1E              ldd -2,x
+ 409D  C30001            addd #1
+ 40A0  6C1E              std -2,x
+ 40A2                    .dbline 39
+ 40A2  EC1E              ldd -2,x
+ 40A4  8C0005            cpd #5
+ 40A7  2DC8              blt L6
+ 40A9                    .dbline -2
+ 40A9                    .dbline 49
+ 40A9            ;        PTT = 0x60;
+ 40A9            ;        delay(10);
+ 40A9            ;        PTT = 0x20;
+ 40A9            ;        delay(10);
+ 40A9            ;        PTT = 0x00;
+ 40A9            ;        delay(10);
+ 40A9            ;        PTT = 0x40;
+ 40A9            ;        delay(10);      
+ 40A9            ;        }      
+ 40A9            ; }
+ 40A9            L5:
+ 40A9  B757              tfr x,s
+ 40AB  30                pulx
+ 40AC                    .dbline 0 ; func end
+ 40AC  3D                rts
+ 40AD                    .dbsym l i -2 I
+ 40AD                    .dbend
+ 40AD                    .dbfunc e _360_clockwise __360_clockwise fV
+ 40AD            ;              i -> -2,x
+ 40AD            __360_clockwise::
+ 40AD  34                pshx
+ 40AE  B775              tfr s,x
+ 40B0  1B9E              leas -2,sp
+ 40B2                    .dbline -1
+ 40B2                    .dbline 52
+ 40B2            ; 
+ 40B2            ; 
+ 40B2            ; void _360_clockwise(){
+ 40B2                    .dbline 55
+ 40B2  CC0000            ldd #0
+ 40B5  6C1E              std -2,x
+ 40B7            L11:
+ 40B7                    .dbline 55
+ 40B7                    .dbline 56
+ 40B7  C640              ldab #64
+ 40B9  7B0240            stab 0x240
+ 40BC                    .dbline 57
+ 40BC  CC000A            ldd #10
+ 40BF  1640F3            jsr _delay
+ 40C2                    .dbline 58
+ 40C2  790240            clr 0x240
+ 40C5                    .dbline 59
+ 40C5  CC000A            ldd #10
+ 40C8  1640F3            jsr _delay
+ 40CB                    .dbline 60
+ 40CB  C620              ldab #32
+ 40CD  7B0240            stab 0x240
+ 40D0                    .dbline 61
+ 40D0  CC000A            ldd #10
+ 40D3  1640F3            jsr _delay
+ 40D6                    .dbline 62
+ 40D6  C660              ldab #96
+ 40D8  7B0240            stab 0x240
+ 40DB                    .dbline 63
+ 40DB  CC000A            ldd #10
+ 40DE  1640F3            jsr _delay
+ 40E1                    .dbline 64
+ 40E1            L12:
+ 40E1                    .dbline 55
+ 40E1            ;        int i ;
+ 40E1            ;        //stepper motor 360 degree turn anti-clock wise
+ 40E1            ;        for(i=0;i<5;i++){
+ 40E1  EC1E              ldd -2,x
+ 40E3  C30001            addd #1
+ 40E6  6C1E              std -2,x
+ 40E8                    .dbline 55
+ 40E8  EC1E              ldd -2,x
+ 40EA  8C0005            cpd #5
+ 40ED  2DC8              blt L11
+ 40EF                    .dbline -2
+ 40EF                    .dbline 65
+ 40EF            ;        PTT = 0x40;
+ 40EF            ;        delay(10);
+ 40EF            ;        PTT = 0x00;
+ 40EF            ;        delay(10);
+ 40EF            ;        PTT = 0x20;
+ 40EF            ;        delay(10);
+ 40EF            ;        PTT = 0x60;
+ 40EF            ;        delay(10);      
+ 40EF            ;        }      
+ 40EF            ; }
+ 40EF            L10:
+ 40EF  B757              tfr x,s
+ 40F1  30                pulx
+ 40F2                    .dbline 0 ; func end
+ 40F2  3D                rts
+ 40F3                    .dbsym l i -2 I
+ 40F3                    .dbend
+ 40F3                    .dbfunc e delay _delay fV
+ 40F3            ;              i -> -6,x
+ 40F3            ;  delayConstant -> -4,x
+ 40F3            ;              j -> -2,x
+ 40F3            ;             ms -> 2,x
+ 40F3            _delay::
+ 40F3  3B                pshd
+ 40F4  34                pshx
+ 40F5  B775              tfr s,x
+ 40F7  1B9A              leas -6,sp
+ 40F9                    .dbline -1
+ 40F9                    .dbline 67
+ 40F9            ; 
+ 40F9            ; void delay (int ms){
+ 40F9                    .dbline 69
+ 40F9            ; 
+ 40F9            ;        const int delayConstant = 1234;
+ 40F9  CC04D2            ldd #1234
+ 40FC  6C1C              std -4,x
+ 40FE                    .dbline 72
+ 40FE  CC0000            ldd #0
+ 4101  6C1A              std -6,x
+ 4103  201B              bra L19
+ 4105            L16:
+ 4105                    .dbline 72
+ 4105            ;        int i, j;
+ 4105            ;        
+ 4105            ;        for (i=0; i<ms; i++) {
+ 4105                    .dbline 73
+ 4105  CC0000            ldd #0
+ 4108  6C1E              std -2,x
+ 410A  2007              bra L23
+ 410C            L20:
+ 410C                    .dbline 73
+ 410C                    .dbline 74
+ 410C            L21:
+ 410C                    .dbline 73
+ 410C  EC1E              ldd -2,x
+ 410E  C30001            addd #1
+ 4111  6C1E              std -2,x
+ 4113            L23:
+ 4113                    .dbline 73
+ 4113  EC1E              ldd -2,x
+ 4115  AC1C              cpd -4,x
+ 4117  2DF3              blt L20
+ 4119                    .dbline 75
+ 4119            L17:
+ 4119                    .dbline 72
+ 4119  EC1A              ldd -6,x
+ 411B  C30001            addd #1
+ 411E  6C1A              std -6,x
+ 4120            L19:
+ 4120                    .dbline 72
+ 4120  EC1A              ldd -6,x
+ 4122  AC02              cpd 2,x
+ 4124  2DDF              blt L16
+ 4126                    .dbline -2
+ 4126                    .dbline 77
+ 4126            ;                for (j=0; j<delayConstant; j++) {
+ 4126            ;                }
+ 4126            ;       }
+ 4126            ;       
+ 4126            ; }
+ 4126            L15:
+ 4126  B757              tfr x,s
+ 4128  30                pulx
+ 4129  1B82              leas 2,sp
+ 412B                    .dbline 0 ; func end
+ 412B  3D                rts
+ 412C                    .dbsym l i -6 I
+ 412C                    .dbsym l delayConstant -4 I
+ 412C                    .dbsym l j -2 I
+ 412C                    .dbsym l ms 2 I
+ 412C                    .dbend
+ 412C            L4:
+ 412C  656E6400          .byte 'e,'n,'d,0

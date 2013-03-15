@@ -1,0 +1,372 @@
+WARNING: EXTCODE CODE AREA DO NOT CONTAIN RELOCATED ADDRESSES.
+THIS WILL BE REMEDIED IN A LATER RELEASE.
+                        .module LCD.c
+                        .area text
+--- 0000                   .dbfile LCD.c
+--- 0000                   .dbfunc e lcd_istruction _lcd_istruction fV
+--- 0000           ;             d1 -> -1,x
+--- 0000           ;           data -> 3,x
+ 402A            _lcd_istruction::
+ 402A  3B                pshd
+ 402B  34                pshx
+ 402C  B775              tfr s,x
+ 402E  1B9C              leas -4,sp
+ 4030                    .dbline -1
+ 4030                    .dbline 5
+ 4030            ; #include <stdio.h>
+ 4030            ; #include "hcs12dp256.h"
+ 4030            ; 
+ 4030            ; 
+ 4030            ; void lcd_istruction(char data){
+ 4030                    .dbline 7
+ 4030            ;        
+ 4030            ;        char d1 = 0x00;
+ 4030  691F              clr -1,x
+ 4032                    .dbline 8
+ 4032            ;        d1 = data;
+ 4032  180A031F          movb 3,x,-1,x
+ 4036                    .dbline 9
+ 4036            ;        d1 = d1 >> 4;
+ 4036  E61F              ldab -1,x
+ 4038  87                clra
+ 4039  47                asra
+ 403A  56                rorb
+ 403B  47                asra
+ 403C  56                rorb
+ 403D  47                asra
+ 403E  56                rorb
+ 403F  47                asra
+ 4040  56                rorb
+ 4041  6B1F              stab -1,x
+ 4043                    .dbline 10
+ 4043            ;        PTP |= d1;
+ 4043  E61F              ldab -1,x
+ 4045  87                clra
+ 4046  6C1C              std -4,x
+ 4048                    ; vol
+ 4048  F60258            ldab 0x258
+ 404B  87                clra
+ 404C  AA1C              ora -4,x
+ 404E  EA1D              orb -3,x
+ 4050  7B0258            stab 0x258
+ 4053                    .dbline 11
+ 4053            ;        PTT &= ~0x04;           //set RS=0 as it is an instruction
+ 4053  1D024004          bclr 0x240,#0x4
+ 4057                    .dbline 12
+ 4057            ;        PTT |= 0x08;            
+ 4057  1C024008          bset 0x240,#8
+ 405B                    .dbline 13
+ 405B            ;        delay(100);
+ 405B  CC0064            ldd #100
+ 405E  1640FE            jsr _delay
+ 4061                    .dbline 14
+ 4061            ;        PTT &= ~0x08;
+ 4061  1D024008          bclr 0x240,#0x8
+ 4065                    .dbline 16
+ 4065            ;        
+ 4065            ;        d1 = data;
+ 4065  180A031F          movb 3,x,-1,x
+ 4069                    .dbline 17
+ 4069            ;        d1 &= 0x0F;
+ 4069  0D1FF0            bclr -1,x,#0xf0
+ 406C                    .dbline 18
+ 406C            ;        PTP |= d1;
+ 406C  E61F              ldab -1,x
+ 406E  87                clra
+ 406F  6C1C              std -4,x
+ 4071                    ; vol
+ 4071  F60258            ldab 0x258
+ 4074  87                clra
+ 4075  AA1C              ora -4,x
+ 4077  EA1D              orb -3,x
+ 4079  7B0258            stab 0x258
+ 407C                    .dbline 19
+ 407C            ;        PTT &= ~0x04;           //set RS=0 as it is an instruction
+ 407C  1D024004          bclr 0x240,#0x4
+ 4080                    .dbline 20
+ 4080            ;        PTT |= 0x08;
+ 4080  1C024008          bset 0x240,#8
+ 4084                    .dbline 21
+ 4084            ;        delay(100);
+ 4084  CC0064            ldd #100
+ 4087  1640FE            jsr _delay
+ 408A                    .dbline 22
+ 408A            ;        PTT &= ~0x08;
+ 408A  1D024008          bclr 0x240,#0x8
+ 408E                    .dbline -2
+ 408E                    .dbline 24
+ 408E            ;        
+ 408E            ; }
+ 408E            L3:
+ 408E  B757              tfr x,s
+ 4090  30                pulx
+ 4091  1B82              leas 2,sp
+ 4093                    .dbline 0 ; func end
+ 4093  3D                rts
+ 4094                    .dbsym l d1 -1 c
+ 4094                    .dbsym l data 2 I
+ 4094                    .dbsym l data 3 c
+ 4094                    .dbend
+ 4094                    .dbfunc e lcd_data _lcd_data fV
+ 4094            ;             d1 -> -1,x
+ 4094            ;           data -> 3,x
+ 4094            _lcd_data::
+ 4094  3B                pshd
+ 4095  34                pshx
+ 4096  B775              tfr s,x
+ 4098  1B9C              leas -4,sp
+ 409A                    .dbline -1
+ 409A                    .dbline 26
+ 409A            ; 
+ 409A            ; void lcd_data(char data){
+ 409A                    .dbline 28
+ 409A            ;        
+ 409A            ;        char d1 = 0x00;
+ 409A  691F              clr -1,x
+ 409C                    .dbline 29
+ 409C            ;        d1 = data;
+ 409C  180A031F          movb 3,x,-1,x
+ 40A0                    .dbline 30
+ 40A0            ;        d1 = d1 >> 4;
+ 40A0  E61F              ldab -1,x
+ 40A2  87                clra
+ 40A3  47                asra
+ 40A4  56                rorb
+ 40A5  47                asra
+ 40A6  56                rorb
+ 40A7  47                asra
+ 40A8  56                rorb
+ 40A9  47                asra
+ 40AA  56                rorb
+ 40AB  6B1F              stab -1,x
+ 40AD                    .dbline 31
+ 40AD            ;        PTP |= d1;
+ 40AD  E61F              ldab -1,x
+ 40AF  87                clra
+ 40B0  6C1C              std -4,x
+ 40B2                    ; vol
+ 40B2  F60258            ldab 0x258
+ 40B5  87                clra
+ 40B6  AA1C              ora -4,x
+ 40B8  EA1D              orb -3,x
+ 40BA  7B0258            stab 0x258
+ 40BD                    .dbline 32
+ 40BD            ;        PTT |= 0x04;            //set RS=1 as it is data
+ 40BD  1C024004          bset 0x240,#4
+ 40C1                    .dbline 33
+ 40C1            ;        PTT |= 0x08;
+ 40C1  1C024008          bset 0x240,#8
+ 40C5                    .dbline 34
+ 40C5            ;        delay(100);
+ 40C5  CC0064            ldd #100
+ 40C8  1640FE            jsr _delay
+ 40CB                    .dbline 35
+ 40CB            ;        PTT &= ~0x08;
+ 40CB  1D024008          bclr 0x240,#0x8
+ 40CF                    .dbline 37
+ 40CF            ;        
+ 40CF            ;        d1 = data;
+ 40CF  180A031F          movb 3,x,-1,x
+ 40D3                    .dbline 38
+ 40D3            ;        d1 &= 0x0F;
+ 40D3  0D1FF0            bclr -1,x,#0xf0
+ 40D6                    .dbline 39
+ 40D6            ;        PTP |= d1;
+ 40D6  E61F              ldab -1,x
+ 40D8  87                clra
+ 40D9  6C1C              std -4,x
+ 40DB                    ; vol
+ 40DB  F60258            ldab 0x258
+ 40DE  87                clra
+ 40DF  AA1C              ora -4,x
+ 40E1  EA1D              orb -3,x
+ 40E3  7B0258            stab 0x258
+ 40E6                    .dbline 40
+ 40E6            ;        PTT |= 0x04;            //set RS=1 as it is data
+ 40E6  1C024004          bset 0x240,#4
+ 40EA                    .dbline 41
+ 40EA            ;        PTT |= 0x08;
+ 40EA  1C024008          bset 0x240,#8
+ 40EE                    .dbline 42
+ 40EE            ;        delay(100);
+ 40EE  CC0064            ldd #100
+ 40F1  1640FE            jsr _delay
+ 40F4                    .dbline 43
+ 40F4            ;        PTT &= ~0x08;
+ 40F4  1D024008          bclr 0x240,#0x8
+ 40F8                    .dbline -2
+ 40F8                    .dbline 45
+ 40F8            ;        
+ 40F8            ; }
+ 40F8            L4:
+ 40F8  B757              tfr x,s
+ 40FA  30                pulx
+ 40FB  1B82              leas 2,sp
+ 40FD                    .dbline 0 ; func end
+ 40FD  3D                rts
+ 40FE                    .dbsym l d1 -1 c
+ 40FE                    .dbsym l data 2 I
+ 40FE                    .dbsym l data 3 c
+ 40FE                    .dbend
+ 40FE                    .dbfunc e delay _delay fV
+ 40FE            ;              i -> -6,x
+ 40FE            ;  delayConstant -> -4,x
+ 40FE            ;              j -> -2,x
+ 40FE            ;             ms -> 2,x
+ 40FE            _delay::
+ 40FE  3B                pshd
+ 40FF  34                pshx
+ 4100  B775              tfr s,x
+ 4102  1B9A              leas -6,sp
+ 4104                    .dbline -1
+ 4104                    .dbline 47
+ 4104            ; 
+ 4104            ; void delay (int ms){
+ 4104                    .dbline 49
+ 4104            ; 
+ 4104            ;        const int delayConstant = 1234;
+ 4104  CC04D2            ldd #1234
+ 4107  6C1C              std -4,x
+ 4109                    .dbline 52
+ 4109  CC0000            ldd #0
+ 410C  6C1A              std -6,x
+ 410E  201B              bra L9
+ 4110            L6:
+ 4110                    .dbline 52
+ 4110            ;        int i, j;
+ 4110            ;        
+ 4110            ;        for (i=0; i<ms; i++) {
+ 4110                    .dbline 53
+ 4110  CC0000            ldd #0
+ 4113  6C1E              std -2,x
+ 4115  2007              bra L13
+ 4117            L10:
+ 4117                    .dbline 53
+ 4117                    .dbline 54
+ 4117            L11:
+ 4117                    .dbline 53
+ 4117  EC1E              ldd -2,x
+ 4119  C30001            addd #1
+ 411C  6C1E              std -2,x
+ 411E            L13:
+ 411E                    .dbline 53
+ 411E  EC1E              ldd -2,x
+ 4120  AC1C              cpd -4,x
+ 4122  2DF3              blt L10
+ 4124                    .dbline 55
+ 4124            L7:
+ 4124                    .dbline 52
+ 4124  EC1A              ldd -6,x
+ 4126  C30001            addd #1
+ 4129  6C1A              std -6,x
+ 412B            L9:
+ 412B                    .dbline 52
+ 412B  EC1A              ldd -6,x
+ 412D  AC02              cpd 2,x
+ 412F  2DDF              blt L6
+ 4131                    .dbline -2
+ 4131                    .dbline 57
+ 4131            ;                for (j=0; j<delayConstant; j++) {
+ 4131            ;                }
+ 4131            ;       }
+ 4131            ;       
+ 4131            ; }
+ 4131            L5:
+ 4131  B757              tfr x,s
+ 4133  30                pulx
+ 4134  1B82              leas 2,sp
+ 4136                    .dbline 0 ; func end
+ 4136  3D                rts
+ 4137                    .dbsym l i -6 I
+ 4137                    .dbsym l delayConstant -4 I
+ 4137                    .dbsym l j -2 I
+ 4137                    .dbsym l ms 2 I
+ 4137                    .dbend
+ 4137                    .dbfunc e main _main fV
+ 4137            ;           test -> -1,x
+ 4137            _main::
+ 4137  34                pshx
+ 4138  B775              tfr s,x
+ 413A  1B9C              leas -4,sp
+ 413C                    .dbline -1
+ 413C                    .dbline 59
+ 413C            ; 
+ 413C            ; void main(){
+ 413C                    .dbline 61
+ 413C            ;        
+ 413C            ;       char test = 0x00;
+ 413C  691F              clr -1,x
+ 413E                    .dbline 63
+ 413E            ;                 
+ 413E            ;       PTS = 0xFF;                             //enabling U21_EN for the LCD
+ 413E  C6FF              ldab #255
+ 4140  7B0248            stab 0x248
+ 4143                    .dbline 64
+ 4143            ;       PTT &= ~0x02;                   //set RW=0
+ 4143  1D024002          bclr 0x240,#0x2
+ 4147                    .dbline 66
+ 4147            ;       
+ 4147            ;       lcd_istruction(0x38);             //function set
+ 4147  CC0038            ldd #56
+ 414A  16402A            jsr _lcd_istruction
+ 414D                    .dbline 67
+ 414D            ;       lcd_istruction(0x0E);             //Display on/off control
+ 414D  CC000E            ldd #14
+ 4150  16402A            jsr _lcd_istruction
+ 4153                    .dbline 68
+ 4153            ;       lcd_istruction(0x06);             //Entry Mode set
+ 4153  CC0006            ldd #6
+ 4156  16402A            jsr _lcd_istruction
+ 4159                    .dbline 69
+ 4159            ;       lcd_istruction(0x01);             //clear display
+ 4159  CC0001            ldd #1
+ 415C  16402A            jsr _lcd_istruction
+ 415F  2019              bra L16
+ 4161            L15:
+ 4161                    .dbline 71
+ 4161                    .dbline 72
+ 4161  E61F              ldab -1,x
+ 4163  87                clra
+ 4164  164094            jsr _lcd_data
+ 4167                    .dbline 73
+ 4167  E61F              ldab -1,x
+ 4169  87                clra
+ 416A  6C80              std 0,sp
+ 416C  CC418E            ldd #L18
+ 416F  1645E6            jsr _printf
+ 4172                    .dbline 74
+ 4172  E61F              ldab -1,x
+ 4174  87                clra
+ 4175  C30001            addd #1
+ 4178  6B1F              stab -1,x
+ 417A                    .dbline 75
+ 417A            L16:
+ 417A                    .dbline 71
+ 417A            ;       
+ 417A            ;       while(test<0xFF){
+ 417A  E61F              ldab -1,x
+ 417C  C1FF              cmpb #255
+ 417E  25E1              blo L15
+ 4180                    .dbline 76
+ 4180            ;       lcd_data(test);
+ 4180            ;       printf("test : ",test);
+ 4180            ;       test++;
+ 4180            ;       }
+ 4180            ;       printf("End");
+ 4180  CC418A            ldd #L19
+ 4183  1645E6            jsr _printf
+ 4186                    .dbline -2
+ 4186                    .dbline 78
+ 4186            ;       
+ 4186            ; }
+ 4186            L14:
+ 4186  B757              tfr x,s
+ 4188  30                pulx
+ 4189                    .dbline 0 ; func end
+ 4189  3D                rts
+ 418A                    .dbsym l test -1 c
+ 418A                    .dbend
+ 418A            L19:
+ 418A  456E6400          .byte 'E,'n,'d,0
+ 418E            L18:
+ 418E  74657374203A2000  .byte 't,'e,'s,'t,32,58,32,0

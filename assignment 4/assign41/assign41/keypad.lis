@@ -1,0 +1,461 @@
+                        .module keypad.c
+                        .area text
+ 0000           L4:
+ 0000 3132              .byte 49,50
+ 0002 3341              .byte 51,'A
+ 0004 3435              .byte 52,53
+ 0006 3642              .byte 54,'B
+ 0008 3738              .byte 55,56
+ 000A 3943              .byte 57,'C
+ 000C 4530              .byte 'E,48
+ 000E 4644              .byte 'F,'D
+ 0010                   .dbfile keypad.c
+ 0010                   .dbfunc e main _main fV
+ 0010           ;        key_pad -> -21,x
+ 0010           ;           bool -> -5,x
+ 0010           ;            col -> -4,x
+ 0010           ;            row -> -3,x
+ 0010           ;          ret_v -> -2,x
+ 0010           ;              r -> -1,x
+ 0010           _main::
+ 0010 34                pshx
+ 0011 B775              tfr s,x
+ 0013 1BF1E4            leas -28,sp
+ 0016                   .dbline -1
+ 0016                   .dbline 5
+ 0016           ; #include <stdio.h>
+ 0016           ; #include "hcs12dp256.h"
+ 0016           ; 
+ 0016           ; 
+ 0016           ; void main(){
+ 0016                   .dbline 7
+ 0016           ;        
+ 0016           ;        char row = 1;
+ 0016 C601              ldab #1
+ 0018 6B1D              stab -3,x
+ 001A                   .dbline 8
+ 001A           ;        char r = 1;
+ 001A C601              ldab #1
+ 001C 6B1F              stab -1,x
+ 001E                   .dbline 13
+ 001E           ;        char col;
+ 001E           ;        #define HEIGT 4
+ 001E           ;        #define WIDTH 4
+ 001E           ;        char key_pad[HEIGT][WIDTH]=                                                    
+ 001E           ;          {{'1','2','3','A'},                                              
+ 001E 19E1EB            leay -21,x
+ 0021 B7C6              xgdy
+ 0023 CD0000            ldy #L4
+ 0026 34                pshx
+ 0027 B745              tfr d,x
+ 0029 CC0008            ldd #8
+ 002C           X0:
+ 002C 18027131          movw 2,y+,2,x+
+ 0030 0434F9            dbne d,X0
+ 0033 30                pulx
+ 0034                   .dbline 18
+ 0034           ;           {'4','5','6','B'},                                              
+ 0034           ;           {'7','8','9','C'},                                              
+ 0034           ;           {'E','0','F','D'}};
+ 0034           ;                 
+ 0034           ;        char bool = 1;
+ 0034 C601              ldab #1
+ 0036 6B1B              stab -5,x
+ 0038                   .dbline 21
+ 0038           ;        char ret_v;
+ 0038           ; 
+ 0038           ;       SPI1CR1 = 0x00;            //Turn off SPI
+ 0038 7900F0            clr 0xf0
+ 003B                   .dbline 22
+ 003B           ;       DDRP = 0x0F;               //set P0-3 as outputs(PP0..3 for Key1..4)
+ 003B C60F              ldab #15
+ 003D 7B025A            stab 0x25a
+ 0040                   .dbline 23
+ 0040           ;       DDRH = 0x0F;               //set H4-7 as inputs (Key5..8)
+ 0040 C60F              ldab #15
+ 0042 7B0262            stab 0x262
+ 0045 18200157          lbra L6
+ 0049           L5:
+ 0049                   .dbline 25
+ 0049           ;       
+ 0049           ;       while (bool){
+ 0049                   .dbline 28
+ 0049           ;                 
+ 0049           ;                 
+ 0049           ;                 PTM = 0x08;      //Load data into U7 set U7_EN high (PM3) 
+ 0049 C608              ldab #8
+ 004B 7B0250            stab 0x250
+ 004E                   .dbline 29
+ 004E           ;                 PTP = r;         //Write Key1..4 via PP0..3 
+ 004E 180D1F0258        movb -1,x,0x258
+ 0053                   .dbline 30
+ 0053           ;                 PTM = 0x00;      //set U7_EN low (PM3)
+ 0053 790250            clr 0x250
+ 0056                   .dbline 32
+ 0056           ;                 
+ 0056           ;                 ret_v = PTH;     //get column 
+ 0056                   ; vol
+ 0056 F60260            ldab 0x260
+ 0059 6B1E              stab -2,x
+ 005B                   .dbline 33
+ 005B           ;                 ret_v &= 0xF0;   //clear the last 4 bits
+ 005B 0D1E0F            bclr -2,x,#0xf
+ 005E                   .dbline 35
+ 005E           ;                 
+ 005E           ;                 if(ret_v == 0x10){
+ 005E E61E              ldab -2,x
+ 0060 C110              cmpb #16
+ 0062 2639              bne L8
+ 0064                   .dbline 35
+ 0064                   .dbline 36
+ 0064           ;                       col = 0;
+ 0064 691C              clr -4,x
+ 0066                   .dbline 37
+ 0066           ;                       printf("key : %c",key_pad[row-1][col]);
+ 0066 E61D              ldab -3,x
+ 0068 87                clra
+ 0069 830001            subd #1
+ 006C 59                lsld
+ 006D 59                lsld
+ 006E 19E1EB            leay -21,x
+ 0071 6DE1E8            sty -24,x
+ 0074 E3E1E8            addd -24,x
+ 0077 6CE1E6            std -26,x
+ 007A E61C              ldab -4,x
+ 007C 87                clra
+ 007D E3E1E6            addd -26,x
+ 0080 B7C6              xgdy
+ 0082 E640              ldab 0,y
+ 0084 87                clra
+ 0085 6C80              std 0,sp
+ 0087 CC01EF            ldd #L10
+ 008A 160000            jsr _printf
+ 008D                   .dbline 38
+ 008D           ;                       printf("\n");
+ 008D CC01ED            ldd #L11
+ 0090 160000            jsr _printf
+ 0093                   .dbline 39
+ 0093           ;                       delay(30);
+ 0093 CC001E            ldd #30
+ 0096 1601B0            jsr _delay
+ 0099                   .dbline 40
+ 0099 182000C5          lbra L9
+ 009D           L8:
+ 009D                   .dbline 40
+ 009D           ;                 } else if(ret_v == 0x20){
+ 009D E61E              ldab -2,x
+ 009F C120              cmpb #32
+ 00A1 2643              bne L12
+ 00A3                   .dbline 40
+ 00A3                   .dbline 41
+ 00A3           ;                       col = 1;
+ 00A3 C601              ldab #1
+ 00A5 6B1C              stab -4,x
+ 00A7                   .dbline 42
+ 00A7           ;                       printf("key : %c",key_pad[row-1][col]);
+ 00A7 E61D              ldab -3,x
+ 00A9 87                clra
+ 00AA 830001            subd #1
+ 00AD 59                lsld
+ 00AE 59                lsld
+ 00AF 19E1EB            leay -21,x
+ 00B2 6DE1E8            sty -24,x
+ 00B5 E3E1E8            addd -24,x
+ 00B8 6CE1E6            std -26,x
+ 00BB E61C              ldab -4,x
+ 00BD 87                clra
+ 00BE E3E1E6            addd -26,x
+ 00C1 B7C6              xgdy
+ 00C3 E640              ldab 0,y
+ 00C5 87                clra
+ 00C6 6C80              std 0,sp
+ 00C8 CC01EF            ldd #L10
+ 00CB 160000            jsr _printf
+ 00CE                   .dbline 43
+ 00CE           ;                       printf("\n");
+ 00CE CC01ED            ldd #L11
+ 00D1 160000            jsr _printf
+ 00D4                   .dbline 44
+ 00D4           ;                       delay(30);
+ 00D4 CC001E            ldd #30
+ 00D7 1601B0            jsr _delay
+ 00DA                   .dbline 45
+ 00DA           ;                       if(row == 4){
+ 00DA E61D              ldab -3,x
+ 00DC C104              cmpb #4
+ 00DE 18260080          lbne L13
+ 00E2                   .dbline 45
+ 00E2                   .dbline 46
+ 00E2           ;                                  break;
+ 00E2 182000C0          lbra L7
+ 00E6           X1:
+ 00E6                   .dbline 48
+ 00E6           L12:
+ 00E6                   .dbline 48
+ 00E6           ;                       }
+ 00E6           ;                 } else if(ret_v == 0x40){
+ 00E6 E61E              ldab -2,x
+ 00E8 C140              cmpb #64
+ 00EA 2639              bne L16
+ 00EC                   .dbline 48
+ 00EC                   .dbline 49
+ 00EC           ;                       col = 2;
+ 00EC C602              ldab #2
+ 00EE 6B1C              stab -4,x
+ 00F0                   .dbline 50
+ 00F0           ;                       printf("key : %c",key_pad[row-1][col]);
+ 00F0 E61D              ldab -3,x
+ 00F2 87                clra
+ 00F3 830001            subd #1
+ 00F6 59                lsld
+ 00F7 59                lsld
+ 00F8 19E1EB            leay -21,x
+ 00FB 6DE1E8            sty -24,x
+ 00FE E3E1E8            addd -24,x
+ 0101 6CE1E6            std -26,x
+ 0104 E61C              ldab -4,x
+ 0106 87                clra
+ 0107 E3E1E6            addd -26,x
+ 010A B7C6              xgdy
+ 010C E640              ldab 0,y
+ 010E 87                clra
+ 010F 6C80              std 0,sp
+ 0111 CC01EF            ldd #L10
+ 0114 160000            jsr _printf
+ 0117                   .dbline 51
+ 0117           ;                       printf("\n");
+ 0117 CC01ED            ldd #L11
+ 011A 160000            jsr _printf
+ 011D                   .dbline 52
+ 011D           ;                       delay(30);
+ 011D CC001E            ldd #30
+ 0120 1601B0            jsr _delay
+ 0123                   .dbline 53
+ 0123 203D              bra L17
+ 0125           L16:
+ 0125                   .dbline 53
+ 0125           ;                 } else if(ret_v == 0x80){
+ 0125 E61E              ldab -2,x
+ 0127 C180              cmpb #128
+ 0129 2637              bne L18
+ 012B                   .dbline 53
+ 012B                   .dbline 54
+ 012B           ;                       col = 3;
+ 012B C603              ldab #3
+ 012D 6B1C              stab -4,x
+ 012F                   .dbline 55
+ 012F           ;                       printf("key : %c",key_pad[row-1][col]);
+ 012F E61D              ldab -3,x
+ 0131 87                clra
+ 0132 830001            subd #1
+ 0135 59                lsld
+ 0136 59                lsld
+ 0137 19E1EB            leay -21,x
+ 013A 6DE1E8            sty -24,x
+ 013D E3E1E8            addd -24,x
+ 0140 6CE1E6            std -26,x
+ 0143 E61C              ldab -4,x
+ 0145 87                clra
+ 0146 E3E1E6            addd -26,x
+ 0149 B7C6              xgdy
+ 014B E640              ldab 0,y
+ 014D 87                clra
+ 014E 6C80              std 0,sp
+ 0150 CC01EF            ldd #L10
+ 0153 160000            jsr _printf
+ 0156                   .dbline 56
+ 0156           ;                       printf("\n");
+ 0156 CC01ED            ldd #L11
+ 0159 160000            jsr _printf
+ 015C                   .dbline 57
+ 015C           ;                       delay(30);
+ 015C CC001E            ldd #30
+ 015F 1601B0            jsr _delay
+ 0162                   .dbline 58
+ 0162           ;                 } 
+ 0162           L18:
+ 0162           L17:
+ 0162           L13:
+ 0162           L9:
+ 0162                   .dbline 59
+ 0162           ;                       if(r == 1){
+ 0162 E61F              ldab -1,x
+ 0164 C101              cmpb #1
+ 0166 260A              bne L20
+ 0168                   .dbline 59
+ 0168                   .dbline 60
+ 0168           ;                                  r = 2;
+ 0168 C602              ldab #2
+ 016A 6B1F              stab -1,x
+ 016C                   .dbline 61
+ 016C           ;                                  row = 2;
+ 016C C602              ldab #2
+ 016E 6B1D              stab -3,x
+ 0170                   .dbline 62
+ 0170 202E              bra L21
+ 0172           L20:
+ 0172                   .dbline 62
+ 0172           ;                       }else if(r == 2){
+ 0172 E61F              ldab -1,x
+ 0174 C102              cmpb #2
+ 0176 260A              bne L22
+ 0178                   .dbline 62
+ 0178                   .dbline 63
+ 0178           ;                                 r = 4;
+ 0178 C604              ldab #4
+ 017A 6B1F              stab -1,x
+ 017C                   .dbline 64
+ 017C           ;                                 row = 3;
+ 017C C603              ldab #3
+ 017E 6B1D              stab -3,x
+ 0180                   .dbline 65
+ 0180 201E              bra L23
+ 0182           L22:
+ 0182                   .dbline 65
+ 0182           ;                       }else if(r == 4){
+ 0182 E61F              ldab -1,x
+ 0184 C104              cmpb #4
+ 0186 260A              bne L24
+ 0188                   .dbline 65
+ 0188                   .dbline 66
+ 0188           ;                                 r = 8;
+ 0188 C608              ldab #8
+ 018A 6B1F              stab -1,x
+ 018C                   .dbline 67
+ 018C           ;                                 row = 4;
+ 018C C604              ldab #4
+ 018E 6B1D              stab -3,x
+ 0190                   .dbline 68
+ 0190 200E              bra L25
+ 0192           L24:
+ 0192                   .dbline 68
+ 0192           ;                       }else if(r == 8){
+ 0192 E61F              ldab -1,x
+ 0194 C108              cmpb #8
+ 0196 2608              bne L26
+ 0198                   .dbline 68
+ 0198                   .dbline 69
+ 0198           ;                                 r = 1;
+ 0198 C601              ldab #1
+ 019A 6B1F              stab -1,x
+ 019C                   .dbline 70
+ 019C           ;                                 row = 1;
+ 019C C601              ldab #1
+ 019E 6B1D              stab -3,x
+ 01A0                   .dbline 71
+ 01A0           ;                       }
+ 01A0           L26:
+ 01A0           L25:
+ 01A0           L23:
+ 01A0           L21:
+ 01A0                   .dbline 74
+ 01A0           L6:
+ 01A0                   .dbline 25
+ 01A0 E71B              tst -5,x
+ 01A2 1826FEA3          lbne L5
+ 01A6           L7:
+ 01A6                   .dbline 76
+ 01A6           ;                 
+ 01A6           ;                 
+ 01A6           ;       }//end while
+ 01A6           ;       
+ 01A6           ;       printf("End");
+ 01A6 CC01E9            ldd #L28
+ 01A9 160000            jsr _printf
+ 01AC                   .dbline -2
+ 01AC                   .dbline 78
+ 01AC           ;       
+ 01AC           ; }
+ 01AC           L3:
+ 01AC B757              tfr x,s
+ 01AE 30                pulx
+ 01AF                   .dbline 0 ; func end
+ 01AF 3D                rts
+ 01B0                   .dbsym l key_pad -21 A[16:4:4]c
+ 01B0                   .dbsym l bool -5 c
+ 01B0                   .dbsym l col -4 c
+ 01B0                   .dbsym l row -3 c
+ 01B0                   .dbsym l ret_v -2 c
+ 01B0                   .dbsym l r -1 c
+ 01B0                   .dbend
+ 01B0                   .dbfunc e delay _delay fV
+ 01B0           ;              i -> -6,x
+ 01B0           ;  delayConstant -> -4,x
+ 01B0           ;              j -> -2,x
+ 01B0           ;             ms -> 2,x
+ 01B0           _delay::
+ 01B0 3B                pshd
+ 01B1 34                pshx
+ 01B2 B775              tfr s,x
+ 01B4 1B9A              leas -6,sp
+ 01B6                   .dbline -1
+ 01B6                   .dbline 81
+ 01B6           ; 
+ 01B6           ; 
+ 01B6           ; void delay (int ms){
+ 01B6                   .dbline 83
+ 01B6           ; 
+ 01B6           ;        const int delayConstant = 1234;
+ 01B6 CC04D2            ldd #1234
+ 01B9 6C1C              std -4,x
+ 01BB                   .dbline 86
+ 01BB CC0000            ldd #0
+ 01BE 6C1A              std -6,x
+ 01C0 201B              bra L33
+ 01C2           L30:
+ 01C2                   .dbline 86
+ 01C2           ;        int i, j;
+ 01C2           ;        
+ 01C2           ;        for (i=0; i<ms; i++) {
+ 01C2                   .dbline 87
+ 01C2 CC0000            ldd #0
+ 01C5 6C1E              std -2,x
+ 01C7 2007              bra L37
+ 01C9           L34:
+ 01C9                   .dbline 87
+ 01C9                   .dbline 88
+ 01C9           L35:
+ 01C9                   .dbline 87
+ 01C9 EC1E              ldd -2,x
+ 01CB C30001            addd #1
+ 01CE 6C1E              std -2,x
+ 01D0           L37:
+ 01D0                   .dbline 87
+ 01D0 EC1E              ldd -2,x
+ 01D2 AC1C              cpd -4,x
+ 01D4 2DF3              blt L34
+ 01D6                   .dbline 89
+ 01D6           L31:
+ 01D6                   .dbline 86
+ 01D6 EC1A              ldd -6,x
+ 01D8 C30001            addd #1
+ 01DB 6C1A              std -6,x
+ 01DD           L33:
+ 01DD                   .dbline 86
+ 01DD EC1A              ldd -6,x
+ 01DF AC02              cpd 2,x
+ 01E1 2DDF              blt L30
+ 01E3                   .dbline -2
+ 01E3                   .dbline 91
+ 01E3           ;                for (j=0; j<delayConstant; j++) {
+ 01E3           ;                }
+ 01E3           ;       }
+ 01E3           ;       
+ 01E3           ; }
+ 01E3           L29:
+ 01E3 B757              tfr x,s
+ 01E5 30                pulx
+ 01E6 1B82              leas 2,sp
+ 01E8                   .dbline 0 ; func end
+ 01E8 3D                rts
+ 01E9                   .dbsym l i -6 I
+ 01E9                   .dbsym l delayConstant -4 I
+ 01E9                   .dbsym l j -2 I
+ 01E9                   .dbsym l ms 2 I
+ 01E9                   .dbend
+ 01E9           L28:
+ 01E9 456E6400          .byte 'E,'n,'d,0
+ 01ED           L11:
+ 01ED 0A00              .byte 10,0
+ 01EF           L10:
+ 01EF 6B6579203A20256300        .byte 'k,'e,'y,32,58,32,37,'c,0
