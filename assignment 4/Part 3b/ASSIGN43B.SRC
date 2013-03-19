@@ -1,5 +1,5 @@
 [Files]
 assign43b.c
-vectors_dp256_NoICE.c
+vectors_dp256_NoICE
 [Headers]
 [Documents]

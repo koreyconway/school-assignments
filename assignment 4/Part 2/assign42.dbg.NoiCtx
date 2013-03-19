@@ -1,0 +1,13 @@
+NoICE Debug Context File verion 1.0
+DEBUGFILE "M:\SYSC 2003\Assignments\Assignment 4\Part 2\assign42.dbg" 1363711798
+SOURCEFILE "keyboard.c" 1363710958
+SOURCEFILE "lcd.c" 1363710627
+SOURCEFILE "assign42.c" 1363711793
+SOURCEFILE "basicLCD.s" 1363636768
+SOURCEFILE "DP256reg.s" 1363637994
+
+BREAKPOINT 4367 1 2 53
+
+WATCH "col" 3 0 keyboard_getchar 0
+WATCH "row" 3 0 keyboard_getchar 0
+

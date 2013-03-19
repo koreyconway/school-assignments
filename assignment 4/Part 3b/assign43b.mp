@@ -12,7 +12,6 @@ Area                               Addr   Size   Decimal Bytes (Attributes)
        4058  _stepper_turn_ccw
        407D  _stepper_set_step
        40CC  _stepper_init
-       40D9  _stepper_delay
        40F0  _main
        4108  _rti_init
        4114  _rti_handler
@@ -62,19 +61,10 @@ Area                               Addr   Size   Decimal Bytes (Attributes)
        1025  __textmode
        1027  __bss_end
 
-Area                               Addr   Size   Decimal Bytes (Attributes)
---------------------------------   ----   ----   ------- ----- ------------
-                          memory   0000   4000 =  16384. bytes (abs,ovr,rom)
-
-       Addr  Global Symbol
-      -----  --------------------------------
-       3F8C  _interrupt_vectors
-
 Files Linked      [ module(s) ]
 
 C:\icc\lib\crt12.o	[ crt12.s ]
 assign43b.o	[ assign43b.c ]
-vectors_dp256_NoICE.o	[ vectors_dp256_NoICE.c ]
 <library>	[ serial.c, putchar.c, strcpy.s, stdarg.s, setup.s, itoa.s, islower.s, ctype.s, toupper.s, _printf.s ]
 [ printf.s, textmode.s ]
 

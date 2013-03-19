@@ -1,6 +1,8 @@
+// By Korey Conway and Tanzeel Rana
+
 #include <hcs12dp256.h>
 #include <stdio.h>
-#include "stepper.c"
+#include "../lib/stepper.c"
 
 #define RTI_CTL	0x7F // run real-time interrupt at 8Hz
 #define RTI_FREQUENCY	8
@@ -24,7 +26,7 @@ int main()
 	temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
 
 	while ( 1 );
-	return 1;
+	return 0;
 }
 
 /*

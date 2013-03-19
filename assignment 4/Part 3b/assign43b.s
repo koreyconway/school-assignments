@@ -1,6 +1,6 @@
 	.module assign43b.c
 	.area text
-	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/stepper.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/../lib/stepper.c
 	.dbfunc e stepper_turn_cw _stepper_turn_cw fV
 ;          steps -> 2,x
 _stepper_turn_cw::
@@ -9,10 +9,12 @@ _stepper_turn_cw::
 	tfr s,x
 	leas -2,sp
 	.dbline -1
-	.dbline 18
+	.dbline 19
+; // By Korey Conway and Tanzeel Rana
+; 
 ; #include <hcs12dp256.h>
 ; #include <stdio.h>
-; #include "stepper.c"
+; #include "../lib/stepper.c"
 ; 
 ; #define RTI_CTL	0x7F // run real-time interrupt at 8Hz
 ; #define RTI_FREQUENCY	8
@@ -27,12 +29,11 @@ _stepper_turn_cw::
 ; int collision_detected = 0;
 ; int temperature = 0;
 ; 
-; int main()
-	.dbline 19
+	.dbline 20
 	bra L7
 L4:
-	.dbline 19
 	.dbline 20
+	.dbline 21
 	ldd 2,x
 	ldy #4
 	exg x,y
@@ -42,22 +43,22 @@ L4:
 	ldd #3
 	subd -2,x
 	jsr _stepper_set_step
-	.dbline 21
+	.dbline 22
 L5:
-	.dbline 19
+	.dbline 20
 	ldd 2,x
 	subd #1
 	std 2,x
 L7:
-	.dbline 19
-; {
+	.dbline 20
+; int main()
 	ldd 2,x
 	bgt L4
 	.dbline -2
-	.dbline 22
+	.dbline 23
+; {
 ; 	setbaud(BAUD19K);
 ; 	stepper_init();
-; 	rti_init();
 L3:
 	tfr x,s
 	pulx
@@ -73,40 +74,40 @@ _stepper_turn_ccw::
 	pshx
 	tfr s,x
 	.dbline -1
-	.dbline 28
+	.dbline 29
+; 	rti_init();
 ; 	
 ; 	temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
 ; 
 ; 	while ( 1 );
-; 	return 1;
-; }
-	.dbline 29
+; 	return 0;
+	.dbline 30
 	bra L12
 L9:
-	.dbline 29
 	.dbline 30
+	.dbline 31
 	ldd 2,x
 	ldy #4
 	exg x,y
 	idivs
 	exg x,y
 	jsr _stepper_set_step
-	.dbline 31
+	.dbline 32
 L10:
-	.dbline 29
+	.dbline 30
 	ldd 2,x
 	subd #1
 	std 2,x
 L12:
-	.dbline 29
-; 
+	.dbline 30
+; }
 	ldd 2,x
 	bgt L9
 	.dbline -2
-	.dbline 32
+	.dbline 33
+; 
 ; /*
 ; 	Initialize the real-time interrupt
-; */
 L8:
 	tfr x,s
 	pulx
@@ -124,58 +125,58 @@ _stepper_set_step::
 	tfr s,x
 	leas -4,sp
 	.dbline -1
-	.dbline 38
+	.dbline 39
+; */
 ; void rti_init()
 ; {
 ; 	CRGINT |= 0x80;
 ; 	RTICTL = 0x7F; // runs at 8Hz
 ; 	asm("cli");
+	.dbline 40
 ; }
-	.dbline 39
-; 
 	ldd #0
 	std -2,x
-	.dbline 42
+	.dbline 43
+; 
 ; /*
 ; 	The RTI handler. For now this simply calls rti_every_second() every second
-; */
 	ldd 2,x
 	cpd #2
 	bne L14
-	.dbline 42
 	.dbline 43
-; #pragma interrupt_handler rti_handler
+	.dbline 44
+; */
 	ldd #3
 	std -2,x
-	.dbline 44
+	.dbline 45
 	bra L15
 L14:
-	.dbline 44
-; void rti_handler()
+	.dbline 45
+; #pragma interrupt_handler rti_handler
 	ldd 2,x
 	cpd #3
 	bne L16
-	.dbline 44
 	.dbline 45
-; {
+	.dbline 46
+; void rti_handler()
 	ldd #2
 	std -2,x
-	.dbline 46
+	.dbline 47
 	bra L17
 L16:
-	.dbline 46
-; 	static int count = 0;
 	.dbline 47
-; 	
-	movw 2,x,-2,x
+; {
 	.dbline 48
-; 	if ( ++count == RTI_FREQUENCY ) {
+; 	static int count = 0;
+	movw 2,x,-2,x
+	.dbline 49
+; 	
 L17:
 L15:
-	.dbline 51
+	.dbline 52
+; 	if ( ++count == RTI_FREQUENCY ) {
 ; 		count = 0;
 ; 		rti_every_second();
-; 	}
 	ldd -2,x
 	lsld
 	lsld
@@ -191,17 +192,17 @@ L15:
 	ora -4,x
 	orb -3,x
 	stab 0x240
-	.dbline 56
+	.dbline 57
+; 	}
 ; 	
 ; 	// Clear the interrupt
 ; 	CRGFLG |= 0x80;
 ; }
-; 
-	ldd #3840
+	ldd #0xf000
 	jsr _stepper_delay
 	.dbline -2
-	.dbline 57
-; /*
+	.dbline 58
+; 
 L13:
 	tfr x,s
 	pulx
@@ -214,61 +215,61 @@ L13:
 	.dbfunc e stepper_init _stepper_init fV
 _stepper_init::
 	.dbline -1
-	.dbline 63
+	.dbline 64
+; /*
 ; 	Simulate a collision warning
 ; */
 ; void trigger_collision()
 ; {
 ; 	collision_detected = 1;
-; }
-	.dbline 64
-; 
-	bset 0x25a,#32
 	.dbline 65
-; /*
-	bset 0x242,#96
+; }
+	bset 0x25a,#32
 	.dbline 66
-; 	This gets run every second
+; 
+	bset 0x242,#96
+	.dbline 67
+; /*
 	bset 0x258,#32
 	.dbline -2
-	.dbline 67
-; */
+	.dbline 68
+; 	This gets run every second
 L18:
 	.dbline 0 ; func end
 	rts
 	.dbend
-	.dbfunc e stepper_delay _stepper_delay fV
+	.dbfunc s stepper_delay _stepper_delay fV
 ;          delay -> 2,x
-_stepper_delay::
+_stepper_delay:
 	pshd
 	pshx
 	tfr s,x
 	.dbline -1
-	.dbline 73
+	.dbline 74
+; */
 ; void rti_every_second()
 ; {
 ; 	static int seconds = 0;
 ; 	
 ; 	// Run the collision avoidance algorithm
-; 	collision_avoidance();
-	.dbline 74
+	.dbline 75
 	bra L23
 L20:
-	.dbline 74
-	.dbline 74
+	.dbline 75
+	.dbline 75
 L21:
-	.dbline 74
+	.dbline 75
 	ldd 2,x
 	subd #1
 	std 2,x
 L23:
-	.dbline 74
-; 	
+	.dbline 75
+; 	collision_avoidance();
 	ldd 2,x
 	bne L20
 	.dbline -2
-	.dbline 75
-; 	// Simulate collisions at an interval
+	.dbline 76
+; 	
 L19:
 	tfr x,s
 	pulx
@@ -278,13 +279,13 @@ L19:
 	.dbsym l delay 2 i
 	.dbend
 	.area data
-	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/stepper.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/../lib/stepper.c
 _collision_detected::
 	.blkb 2
 	.area idata
 	.word 0
 	.area data
-	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/stepper.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/../lib/stepper.c
 	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
 	.dbsym e collision_detected _collision_detected I
 _temperature::
@@ -299,25 +300,25 @@ _temperature::
 	.dbfunc e main _main fI
 _main::
 	.dbline -1
-	.dbline 19
-	.dbline 20
+	.dbline 21
+	.dbline 22
 	ldd #26
 	jsr _setbaud
-	.dbline 21
+	.dbline 23
 	jsr _stepper_init
-	.dbline 22
-	jsr _rti_init
 	.dbline 24
+	jsr _rti_init
+	.dbline 26
 	ldd #56
 	std _temperature
 L25:
-	.dbline 26
+	.dbline 28
 L26:
-	.dbline 26
+	.dbline 28
 	bra L25
 X0:
-	.dbline 27
-	ldd #1
+	.dbline 29
+	ldd #0
 	.dbline -2
 L24:
 	.dbline 0 ; func end
@@ -326,17 +327,17 @@ L24:
 	.dbfunc e rti_init _rti_init fV
 _rti_init::
 	.dbline -1
-	.dbline 34
-	.dbline 35
-	bset 0x38,#128
 	.dbline 36
+	.dbline 37
+	bset 0x38,#128
+	.dbline 38
 	ldab #127
 	stab 0x3b
-	.dbline 37
+	.dbline 39
 		cli
 
 	.dbline -2
-	.dbline 38
+	.dbline 40
 L28:
 	.dbline 0 ; func end
 	rts
@@ -359,8 +360,8 @@ _rti_handler::
 	tfr s,x
 	leas -2,sp
 	.dbline -1
-	.dbline 45
-	.dbline 48
+	.dbline 47
+	.dbline 50
 	ldd L30
 	addd #1
 	std -2,x
@@ -368,18 +369,18 @@ _rti_handler::
 	ldd -2,x
 	cpd #8
 	bne L31
-	.dbline 48
-	.dbline 49
+	.dbline 50
+	.dbline 51
 	ldd #0
 	std L30
-	.dbline 50
+	.dbline 52
 	jsr _rti_every_second
-	.dbline 51
+	.dbline 53
 L31:
-	.dbline 54
+	.dbline 56
 	bset 0x37,#128
 	.dbline -2
-	.dbline 55
+	.dbline 57
 L29:
 	tfr x,s
 	pulx
@@ -389,12 +390,12 @@ L29:
 	.dbfunc e trigger_collision _trigger_collision fV
 _trigger_collision::
 	.dbline -1
-	.dbline 61
-	.dbline 62
+	.dbline 63
+	.dbline 64
 	ldd #1
 	std _collision_detected
 	.dbline -2
-	.dbline 63
+	.dbline 65
 L33:
 	.dbline 0 ; func end
 	rts
@@ -413,10 +414,10 @@ L35:
 	.dbsym s seconds L35 I
 _rti_every_second::
 	.dbline -1
-	.dbline 69
-	.dbline 73
+	.dbline 71
+	.dbline 75
 	jsr _collision_avoidance
-	.dbline 76
+	.dbline 78
 	ldd L35
 	addd #1
 	ldy #6
@@ -424,16 +425,17 @@ _rti_every_second::
 	idivs
 	exg x,y
 	std L35
-	.dbline 77
+	.dbline 79
 	ldd L35
 	bne L36
-	.dbline 77
-	.dbline 78
-	jsr _trigger_collision
 	.dbline 79
+	.dbline 80
+	jsr _trigger_collision
+	.dbline 81
 L36:
 	.dbline -2
-	.dbline 80
+	.dbline 82
+; 	// Simulate collisions at an interval
 ; 	seconds = (seconds + 1) % 6;
 ; 	if ( seconds == 0 ) {
 ; 		trigger_collision();
@@ -469,14 +471,14 @@ _collision_avoidance::
 	tfr s,x
 	leas -4,sp
 	.dbline -1
-	.dbline 86
+	.dbline 88
 ; 
 ; /*
 ; 	This is executes the algorithm provided in the labs to avoid a collision
 ; */
 ; void collision_avoidance()
 ; {
-	.dbline 95
+	.dbline 97
 ; 	#define COLLISION_AVOID_STATE_INITIAL	0
 ; 	#define COLLISION_AVOID_STATE_WAIT		1
 ; 	#define COLLISION_AVOID_STATE_ROTATE90	2
@@ -488,8 +490,8 @@ _collision_avoidance::
 ; 	if ( collision_detected ) {
 	ldd _collision_detected
 	lbeq L41
-	.dbline 95
-	.dbline 96
+	.dbline 97
+	.dbline 98
 	ldd L40
 	beq L45
 	ldd L40
@@ -500,34 +502,34 @@ _collision_avoidance::
 	beq L51
 	lbra L43
 X1:
-	.dbline 96
+	.dbline 98
 ; 		switch ( state ) {
 L45:
-	.dbline 99
+	.dbline 101
 ; 			case COLLISION_AVOID_STATE_INITIAL:
 ; 				// we would stop the forward motors here
 ; 				printf("\n\nCollision warning!!\nStopping motors.\n");
 	ldd #L46
 	jsr _printf
-	.dbline 100
+	.dbline 102
 ; 				seconds = 0;
 	ldd #0
 	std L39
-	.dbline 101
+	.dbline 103
 ; 				state = COLLISION_AVOID_STATE_WAIT;
 	ldd #1
 	std L40
-	.dbline 102
+	.dbline 104
 ; 				break;
 	lbra L42
 L47:
-	.dbline 105
+	.dbline 107
 ; 			case COLLISION_AVOID_STATE_WAIT:
 ; 				// wait 2 seconds before changing to next state (total time will be 3 second wait)
 ; 				printf("Waiting for motors to be stopped\n");
 	ldd #L48
 	jsr _printf
-	.dbline 106
+	.dbline 108
 ; 				if ( ++seconds >= 2 ) {
 	ldd L39
 	addd #1
@@ -536,48 +538,48 @@ L47:
 	ldd -2,x
 	cpd #2
 	blt L42
-	.dbline 106
-	.dbline 107
+	.dbline 108
+	.dbline 109
 ; 					seconds = 0;
 	ldd #0
 	std L39
-	.dbline 108
+	.dbline 110
 ; 					state = COLLISION_AVOID_STATE_ROTATE90;
 	ldd #2
 	std L40
-	.dbline 109
+	.dbline 111
 ; 				}
-	.dbline 110
+	.dbline 112
 ; 				break;
 	bra L42
 L51:
-	.dbline 112
+	.dbline 114
 ; 			case COLLISION_AVOID_STATE_ROTATE90:
 ; 				if ( seconds == 0 ) {
 	ldd L39
 	bne L52
-	.dbline 112
-	.dbline 113
+	.dbline 114
+	.dbline 115
 ; 					printf("Rotating 90 degrees to the right.\n");
 	ldd #L54
 	jsr _printf
-	.dbline 114
+	.dbline 116
 ; 					stepper_turn_cw(STEPPER_STEPS_PER_QUARTER);
 	ldd #5
 	jsr _stepper_turn_cw
-	.dbline 115
+	.dbline 117
 	bra L53
 L52:
-	.dbline 115
+	.dbline 117
 ; 				} else {
-	.dbline 116
+	.dbline 118
 ; 					printf("Waiting another second.\n");
 	ldd #L55
 	jsr _printf
-	.dbline 117
+	.dbline 119
 ; 				}
 L53:
-	.dbline 119
+	.dbline 121
 ; 				
 ; 				if ( ++seconds >= 2 ) {
 	ldd L39
@@ -587,58 +589,58 @@ L53:
 	ldd -4,x
 	cpd #2
 	blt L42
-	.dbline 119
 	.dbline 121
+	.dbline 123
 ; 					// Go back into initial state and reset collision detection
 ; 					seconds = 0;
 	ldd #0
 	std L39
-	.dbline 122
+	.dbline 124
 ; 					state = COLLISION_AVOID_STATE_INITIAL;
 	ldd #0
 	std L40
-	.dbline 123
+	.dbline 125
 ; 					collision_detected = 0;
 	ldd #0
 	std _collision_detected
-	.dbline 126
+	.dbline 128
 ; 					
 ; 					// We would start the forward motors here
 ; 				}
-	.dbline 127
+	.dbline 129
 ; 				break;
 	bra L42
 L43:
-	.dbline 129
+	.dbline 131
 ; 			default:
 ; 				printf("Unknown collision state, return to initial.\n");
 	ldd #L58
 	jsr _printf
-	.dbline 130
+	.dbline 132
 ; 				seconds = 0;
 	ldd #0
 	std L39
-	.dbline 131
+	.dbline 133
 ; 				state = COLLISION_AVOID_STATE_INITIAL;
 	ldd #0
 	std L40
-	.dbline 132
+	.dbline 134
 ; 				collision_detected = 0;
 	ldd #0
 	std _collision_detected
-	.dbline 133
+	.dbline 135
 ; 		}
-	.dbline 134
+	.dbline 136
 	bra L42
 L41:
-	.dbline 134
-	.dbline 135
+	.dbline 136
+	.dbline 137
 	ldd #L59
 	jsr _printf
-	.dbline 136
+	.dbline 138
 L42:
 	.dbline -2
-	.dbline 137
+	.dbline 139
 ; 	} else {
 ; 		printf("No collisions detected\n");
 ; 	}

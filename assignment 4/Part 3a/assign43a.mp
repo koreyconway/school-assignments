@@ -7,13 +7,12 @@ Area                               Addr   Size   Decimal Bytes (Attributes)
       -----  --------------------------------
        4000  __start
        4028  _exit
-       402A  _main
+       402A  _stepper_turn_cw
        402A  __text_start
-       404F  _stepper_turn_cw
-       407D  _stepper_turn_ccw
-       40A2  _stepper_set_step
-       40F1  _stepper_init
-       40FE  _stepper_delay
+       4058  _stepper_turn_ccw
+       407D  _stepper_set_step
+       40CC  _stepper_init
+       40F0  _main
        4115  __HC12Setup
        411A  __text_end
 

@@ -1,0 +1,52 @@
+#include <hcs12dp256.h>
+#include <stdio.h>
+#include "../lib/keyboard.c"
+#include "../lib/lcd.c"
+
+void lcd_display_speed(int speed);
+void lcd_display_temperature(int temp);
+
+int main()
+{
+	int speed = 45;
+	char key;
+	
+	// Setup keyboard, terminal, and lcd
+	lcd_init();
+	
+	// Initial lcd display
+	lcd_display_speed(speed);
+	lcd_display_temperature(31);
+	
+	printf("going into loop\n");
+
+	while ( 1 ) {
+		printf("getting char\n");
+		key = keyboard_getchar();
+		putchar(key);
+		
+		if ( key == '0' ) {
+			break;
+		} else if ( key == 'E' ) {
+			lcd_display_speed(++speed);
+		} else if ( key == 'D' ) {
+			lcd_display_speed(--speed);
+		}
+	}
+	
+	return 1;
+}
+
+void lcd_display_speed(int speed)
+{
+	char *string;
+	sprintf(string, "Speed: %d", speed);
+	lcd_print_top(string);
+}
+
+void lcd_display_temperature(int temp)
+{
+	char *string;
+	sprintf(string, "Temperature: %dC", temp);
+	lcd_print_bottom(string);
+}
