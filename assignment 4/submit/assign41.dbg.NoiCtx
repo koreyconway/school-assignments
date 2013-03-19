@@ -1,0 +1,12 @@
+NoICE Debug Context File verion 1.0
+DEBUGFILE "M:\SYSC 2003\Assignments\Assignment 4\Part 1\assign41.dbg" 1363704063
+SOURCEFILE "keyboard.c" 1363703617
+SOURCEFILE "assign41.c" 1363702396
+SOURCEFILE "serial.c" 0
+
+BREAKPOINT 404D 1 0 30
+
+WATCH "row" 3 0 keyboard_getchar 0
+WATCH "col" 3 0 keyboard_getchar 0
+WATCH "input" 3 0 keyboard_get_column 0
+
