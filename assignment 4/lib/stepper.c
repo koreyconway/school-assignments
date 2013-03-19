@@ -6,10 +6,10 @@
 #define STEPPER_STEPS_PER_QUARTER	5
 #define STEPPER_STEPS_PER_TURN		STEPPER_STEPS_PER_QUARTER*4
 
-void stepper_init(void);
+static void stepper_init(void);
 void stepper_turn_cw(int steps);
 void stepper_turn_ccw(int steps);
-void stepper_set_step(int step);
+static void stepper_set_step(int step);
 static void stepper_delay(unsigned int delay);
 
 /*
@@ -17,6 +17,7 @@ static void stepper_delay(unsigned int delay);
 */
 void stepper_turn_cw(int steps)
 {
+	stepper_init();
 	for ( ; steps > 0; steps-- ) {
 		stepper_set_step(3 - (steps % 4));
 	}
@@ -27,15 +28,16 @@ void stepper_turn_cw(int steps)
 */
 void stepper_turn_ccw(int steps)
 {
+	stepper_init();
 	for ( ; steps > 0; steps-- ) {
 		stepper_set_step(steps % 4);
 	}
 }
 
 /*
-
+	Perform a step (used internally)
 */
-void stepper_set_step(int step)
+static void stepper_set_step(int step)
 {
 	int coded_step = 0;
 	
@@ -60,11 +62,11 @@ void stepper_set_step(int step)
 /*
 	Initialize ports for the stepper motor
 */
-void stepper_init()
+static void stepper_init()
 {
-	DDRP = DDRP | 0x20; // Enable output for the enable bit
-	DDRT = DDRT | 0x60; // Enable output to the stepper motor
-	PTP  = PTP  | 0x20; // Enable the stepper motor
+	DDRP |= 0x20; // Enable output for the enable bit
+	DDRT |= 0x60; // Enable output to the stepper motor
+	PTP  |= 0x20; // Enable the stepper motor
 }
 
 /*

@@ -27,257 +27,263 @@
  0006           ; 
  0006           ; // Global variables
  0006           ; int collision_detected = 0;
- 0006           ; int temperature = 0;
  0006           ; 
+ 0006           ; int main()
  0006                   .dbline 20
- 0006 201C              bra L7
- 0008           L4:
- 0008                   .dbline 20
- 0008                   .dbline 21
- 0008 EC02              ldd 2,x
- 000A CD0004            ldy #4
- 000D B7D6              exg x,y
- 000F 1815              idivs
- 0011 B7D6              exg x,y
- 0013 6C1E              std -2,x
- 0015 CC0003            ldd #3
- 0018 A31E              subd -2,x
- 001A 160053            jsr _stepper_set_step
- 001D                   .dbline 22
- 001D           L5:
- 001D                   .dbline 20
- 001D EC02              ldd 2,x
- 001F 830001            subd #1
- 0022 6C02              std 2,x
- 0024           L7:
- 0024                   .dbline 20
- 0024           ; int main()
- 0024 EC02              ldd 2,x
- 0026 2EE0              bgt L4
- 0028                   .dbline -2
- 0028                   .dbline 23
- 0028           ; {
- 0028           ;       setbaud(BAUD19K);
- 0028           ;       stepper_init();
- 0028           L3:
- 0028 B757              tfr x,s
- 002A 30                pulx
- 002B 1B82              leas 2,sp
- 002D                   .dbline 0 ; func end
- 002D 3D                rts
- 002E                   .dbsym l steps 2 I
- 002E                   .dbend
- 002E                   .dbfunc e stepper_turn_ccw _stepper_turn_ccw fV
- 002E           ;          steps -> 2,x
- 002E           _stepper_turn_ccw::
- 002E 3B                pshd
- 002F 34                pshx
- 0030 B775              tfr s,x
- 0032                   .dbline -1
- 0032                   .dbline 29
- 0032           ;       rti_init();
- 0032           ;       
- 0032           ;       temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
- 0032           ; 
- 0032           ;       while ( 1 );
- 0032           ;       return 0;
- 0032                   .dbline 30
- 0032 2015              bra L12
- 0034           L9:
- 0034                   .dbline 30
- 0034                   .dbline 31
- 0034 EC02              ldd 2,x
- 0036 CD0004            ldy #4
- 0039 B7D6              exg x,y
- 003B 1815              idivs
- 003D B7D6              exg x,y
- 003F 160053            jsr _stepper_set_step
- 0042                   .dbline 32
- 0042           L10:
- 0042                   .dbline 30
- 0042 EC02              ldd 2,x
- 0044 830001            subd #1
- 0047 6C02              std 2,x
- 0049           L12:
- 0049                   .dbline 30
- 0049           ; }
- 0049 EC02              ldd 2,x
- 004B 2EE7              bgt L9
- 004D                   .dbline -2
- 004D                   .dbline 33
- 004D           ; 
- 004D           ; /*
- 004D           ;       Initialize the real-time interrupt
- 004D           L8:
- 004D B757              tfr x,s
- 004F 30                pulx
- 0050 1B82              leas 2,sp
- 0052                   .dbline 0 ; func end
- 0052 3D                rts
- 0053                   .dbsym l steps 2 I
- 0053                   .dbend
- 0053                   .dbfunc e stepper_set_step _stepper_set_step fV
- 0053           ;     coded_step -> -2,x
- 0053           ;           step -> 2,x
- 0053           _stepper_set_step::
- 0053 3B                pshd
- 0054 34                pshx
- 0055 B775              tfr s,x
- 0057 1B9C              leas -4,sp
- 0059                   .dbline -1
- 0059                   .dbline 39
- 0059           ; */
- 0059           ; void rti_init()
- 0059           ; {
- 0059           ;       CRGINT |= 0x80;
- 0059           ;       RTICTL = 0x7F; // runs at 8Hz
- 0059           ;       asm("cli");
- 0059                   .dbline 40
- 0059           ; }
- 0059 CC0000            ldd #0
- 005C 6C1E              std -2,x
- 005E                   .dbline 43
- 005E           ; 
- 005E           ; /*
- 005E           ;       The RTI handler. For now this simply calls rti_every_second() every second
- 005E EC02              ldd 2,x
- 0060 8C0002            cpd #2
- 0063 2607              bne L14
- 0065                   .dbline 43
- 0065                   .dbline 44
- 0065           ; */
- 0065 CC0003            ldd #3
- 0068 6C1E              std -2,x
- 006A                   .dbline 45
- 006A 2012              bra L15
- 006C           L14:
- 006C                   .dbline 45
- 006C           ; #pragma interrupt_handler rti_handler
- 006C EC02              ldd 2,x
- 006E 8C0003            cpd #3
- 0071 2607              bne L16
- 0073                   .dbline 45
- 0073                   .dbline 46
- 0073           ; void rti_handler()
- 0073 CC0002            ldd #2
- 0076 6C1E              std -2,x
- 0078                   .dbline 47
- 0078 2004              bra L17
- 007A           L16:
- 007A                   .dbline 47
- 007A           ; {
- 007A                   .dbline 48
- 007A           ;       static int count = 0;
- 007A 1802021E          movw 2,x,-2,x
+ 0006           ; {
+ 0006 1600A8            jsr _stepper_init
+ 0009                   .dbline 21
+ 0009 201C              bra L7
+ 000B           L4:
+ 000B                   .dbline 21
+ 000B                   .dbline 22
+ 000B EC02              ldd 2,x
+ 000D CD0004            ldy #4
+ 0010 B7D6              exg x,y
+ 0012 1815              idivs
+ 0014 B7D6              exg x,y
+ 0016 6C1E              std -2,x
+ 0018 CC0003            ldd #3
+ 001B A31E              subd -2,x
+ 001D 160059            jsr _stepper_set_step
+ 0020                   .dbline 23
+ 0020           L5:
+ 0020                   .dbline 21
+ 0020 EC02              ldd 2,x
+ 0022 830001            subd #1
+ 0025 6C02              std 2,x
+ 0027           L7:
+ 0027                   .dbline 21
+ 0027           ;       char key;
+ 0027 EC02              ldd 2,x
+ 0029 2EE0              bgt L4
+ 002B                   .dbline -2
+ 002B                   .dbline 24
+ 002B           ; 
+ 002B           ;       // Initialization
+ 002B           ;       setbaud(BAUD19K);
+ 002B           L3:
+ 002B B757              tfr x,s
+ 002D 30                pulx
+ 002E 1B82              leas 2,sp
+ 0030                   .dbline 0 ; func end
+ 0030 3D                rts
+ 0031                   .dbsym l steps 2 I
+ 0031                   .dbend
+ 0031                   .dbfunc e stepper_turn_ccw _stepper_turn_ccw fV
+ 0031           ;          steps -> 2,x
+ 0031           _stepper_turn_ccw::
+ 0031 3B                pshd
+ 0032 34                pshx
+ 0033 B775              tfr s,x
+ 0035                   .dbline -1
+ 0035                   .dbline 30
+ 0035           ;       rti_init();     
+ 0035           ;       
+ 0035           ;       while ( 1 );
+ 0035           ;       
+ 0035           ;       return 0;
+ 0035           ; }
+ 0035                   .dbline 31
+ 0035           ; 
+ 0035 1600A8            jsr _stepper_init
+ 0038                   .dbline 32
+ 0038 2015              bra L12
+ 003A           L9:
+ 003A                   .dbline 32
+ 003A                   .dbline 33
+ 003A EC02              ldd 2,x
+ 003C CD0004            ldy #4
+ 003F B7D6              exg x,y
+ 0041 1815              idivs
+ 0043 B7D6              exg x,y
+ 0045 160059            jsr _stepper_set_step
+ 0048                   .dbline 34
+ 0048           L10:
+ 0048                   .dbline 32
+ 0048 EC02              ldd 2,x
+ 004A 830001            subd #1
+ 004D 6C02              std 2,x
+ 004F           L12:
+ 004F                   .dbline 32
+ 004F           ; /*
+ 004F EC02              ldd 2,x
+ 0051 2EE7              bgt L9
+ 0053                   .dbline -2
+ 0053                   .dbline 35
+ 0053           ;       Initialize the real-time interrupt
+ 0053           ; */
+ 0053           ; void rti_init()
+ 0053           L8:
+ 0053 B757              tfr x,s
+ 0055 30                pulx
+ 0056 1B82              leas 2,sp
+ 0058                   .dbline 0 ; func end
+ 0058 3D                rts
+ 0059                   .dbsym l steps 2 I
+ 0059                   .dbend
+ 0059                   .dbfunc s stepper_set_step _stepper_set_step fV
+ 0059           ;     coded_step -> -2,x
+ 0059           ;           step -> 2,x
+ 0059           _stepper_set_step:
+ 0059 3B                pshd
+ 005A 34                pshx
+ 005B B775              tfr s,x
+ 005D 1B9C              leas -4,sp
+ 005F                   .dbline -1
+ 005F                   .dbline 41
+ 005F           ; {
+ 005F           ;       CRGINT |= 0x80;
+ 005F           ;       RTICTL = 0x7F; // runs at 8Hz
+ 005F           ;       asm("cli");
+ 005F           ; }
+ 005F           ; 
+ 005F                   .dbline 42
+ 005F           ; /*
+ 005F CC0000            ldd #0
+ 0062 6C1E              std -2,x
+ 0064                   .dbline 45
+ 0064           ;       The RTI handler. For now this simply calls rti_every_second() every second
+ 0064           ; */
+ 0064           ; #pragma interrupt_handler rti_handler
+ 0064 EC02              ldd 2,x
+ 0066 8C0002            cpd #2
+ 0069 2607              bne L14
+ 006B                   .dbline 45
+ 006B                   .dbline 46
+ 006B           ; void rti_handler()
+ 006B CC0003            ldd #3
+ 006E 6C1E              std -2,x
+ 0070                   .dbline 47
+ 0070 2012              bra L15
+ 0072           L14:
+ 0072                   .dbline 47
+ 0072           ; {
+ 0072 EC02              ldd 2,x
+ 0074 8C0003            cpd #3
+ 0077 2607              bne L16
+ 0079                   .dbline 47
+ 0079                   .dbline 48
+ 0079           ;       static int count = 0;
+ 0079 CC0002            ldd #2
+ 007C 6C1E              std -2,x
  007E                   .dbline 49
- 007E           ;       
- 007E           L17:
- 007E           L15:
- 007E                   .dbline 52
- 007E           ;       if ( ++count == RTI_FREQUENCY ) {
- 007E           ;               count = 0;
- 007E           ;               rti_every_second();
- 007E EC1E              ldd -2,x
- 0080 59                lsld
- 0081 59                lsld
- 0082 59                lsld
- 0083 59                lsld
- 0084 59                lsld
- 0085 6C1C              std -4,x
- 0087                   ; vol
- 0087 F60240            ldab 0x240
- 008A 87                clra
- 008B 84FF              anda #255
- 008D C49F              andb #159
- 008F AA1C              ora -4,x
- 0091 EA1D              orb -3,x
- 0093 7B0240            stab 0x240
- 0096                   .dbline 57
- 0096           ;       }
- 0096           ;       
- 0096           ;       // Clear the interrupt
- 0096           ;       CRGFLG |= 0x80;
- 0096           ; }
- 0096 CCF000            ldd #0xf000
- 0099 1600AF            jsr _stepper_delay
- 009C                   .dbline -2
- 009C                   .dbline 58
+ 007E 2004              bra L17
+ 0080           L16:
+ 0080                   .dbline 49
+ 0080           ;       
+ 0080                   .dbline 50
+ 0080           ;       if ( ++count == RTI_FREQUENCY ) {
+ 0080 1802021E          movw 2,x,-2,x
+ 0084                   .dbline 51
+ 0084           ;               count = 0;
+ 0084           L17:
+ 0084           L15:
+ 0084                   .dbline 54
+ 0084           ;               rti_every_second();
+ 0084           ;       }
+ 0084           ;       
+ 0084 EC1E              ldd -2,x
+ 0086 59                lsld
+ 0087 59                lsld
+ 0088 59                lsld
+ 0089 59                lsld
+ 008A 59                lsld
+ 008B 6C1C              std -4,x
+ 008D                   ; vol
+ 008D F60240            ldab 0x240
+ 0090 87                clra
+ 0091 84FF              anda #255
+ 0093 C49F              andb #159
+ 0095 AA1C              ora -4,x
+ 0097 EA1D              orb -3,x
+ 0099 7B0240            stab 0x240
+ 009C                   .dbline 59
+ 009C           ;       // Clear the interrupt
+ 009C           ;       CRGFLG |= 0x80;
+ 009C           ; }
  009C           ; 
- 009C           L13:
- 009C B757              tfr x,s
- 009E 30                pulx
- 009F 1B82              leas 2,sp
- 00A1                   .dbline 0 ; func end
- 00A1 3D                rts
- 00A2                   .dbsym l coded_step -2 I
- 00A2                   .dbsym l step 2 I
- 00A2                   .dbend
- 00A2                   .dbfunc e stepper_init _stepper_init fV
- 00A2           _stepper_init::
- 00A2                   .dbline -1
- 00A2                   .dbline 64
- 00A2           ; /*
+ 009C           ; /*
+ 009C CCF000            ldd #0xf000
+ 009F 1600B5            jsr _stepper_delay
+ 00A2                   .dbline -2
+ 00A2                   .dbline 60
  00A2           ;       Simulate a collision warning
- 00A2           ; */
- 00A2           ; void trigger_collision()
- 00A2           ; {
- 00A2           ;       collision_detected = 1;
- 00A2                   .dbline 65
- 00A2           ; }
- 00A2 1C025A20          bset 0x25a,#32
- 00A6                   .dbline 66
- 00A6           ; 
- 00A6 1C024260          bset 0x242,#96
- 00AA                   .dbline 67
- 00AA           ; /*
- 00AA 1C025820          bset 0x258,#32
- 00AE                   .dbline -2
- 00AE                   .dbline 68
- 00AE           ;       This gets run every second
- 00AE           L18:
- 00AE                   .dbline 0 ; func end
- 00AE 3D                rts
- 00AF                   .dbend
- 00AF                   .dbfunc s stepper_delay _stepper_delay fV
- 00AF           ;          delay -> 2,x
- 00AF           _stepper_delay:
- 00AF 3B                pshd
- 00B0 34                pshx
- 00B1 B775              tfr s,x
- 00B3                   .dbline -1
- 00B3                   .dbline 74
- 00B3           ; */
- 00B3           ; void rti_every_second()
- 00B3           ; {
- 00B3           ;       static int seconds = 0;
- 00B3           ;       
- 00B3           ;       // Run the collision avoidance algorithm
- 00B3                   .dbline 75
- 00B3 2007              bra L23
- 00B5           L20:
- 00B5                   .dbline 75
- 00B5                   .dbline 75
- 00B5           L21:
- 00B5                   .dbline 75
- 00B5 EC02              ldd 2,x
- 00B7 830001            subd #1
- 00BA 6C02              std 2,x
- 00BC           L23:
- 00BC                   .dbline 75
- 00BC           ;       collision_avoidance();
- 00BC EC02              ldd 2,x
- 00BE 26F5              bne L20
- 00C0                   .dbline -2
- 00C0                   .dbline 76
- 00C0           ;       
- 00C0           L19:
- 00C0 B757              tfr x,s
- 00C2 30                pulx
- 00C3 1B82              leas 2,sp
- 00C5                   .dbline 0 ; func end
- 00C5 3D                rts
- 00C6                   .dbsym l delay 2 i
- 00C6                   .dbend
+ 00A2           L13:
+ 00A2 B757              tfr x,s
+ 00A4 30                pulx
+ 00A5 1B82              leas 2,sp
+ 00A7                   .dbline 0 ; func end
+ 00A7 3D                rts
+ 00A8                   .dbsym l coded_step -2 I
+ 00A8                   .dbsym l step 2 I
+ 00A8                   .dbend
+ 00A8                   .dbfunc s stepper_init _stepper_init fV
+ 00A8           _stepper_init:
+ 00A8                   .dbline -1
+ 00A8                   .dbline 66
+ 00A8           ; */
+ 00A8           ; void trigger_collision()
+ 00A8           ; {
+ 00A8           ;       collision_detected = 1;
+ 00A8           ; }
+ 00A8           ; 
+ 00A8                   .dbline 67
+ 00A8           ; /*
+ 00A8 1C025A20          bset 0x25a,#32
+ 00AC                   .dbline 68
+ 00AC           ;       This gets run every second
+ 00AC 1C024260          bset 0x242,#96
+ 00B0                   .dbline 69
+ 00B0           ; */
+ 00B0 1C025820          bset 0x258,#32
+ 00B4                   .dbline -2
+ 00B4                   .dbline 70
+ 00B4           ; void rti_every_second()
+ 00B4           L18:
+ 00B4                   .dbline 0 ; func end
+ 00B4 3D                rts
+ 00B5                   .dbend
+ 00B5                   .dbfunc s stepper_delay _stepper_delay fV
+ 00B5           ;          delay -> 2,x
+ 00B5           _stepper_delay:
+ 00B5 3B                pshd
+ 00B6 34                pshx
+ 00B7 B775              tfr s,x
+ 00B9                   .dbline -1
+ 00B9                   .dbline 76
+ 00B9           ; {
+ 00B9           ;       static int seconds = 0;
+ 00B9           ; 
+ 00B9           ;       // Run the collision avoidance algorithm
+ 00B9           ;       collision_avoidance();
+ 00B9           ; 
+ 00B9                   .dbline 77
+ 00B9 2007              bra L23
+ 00BB           L20:
+ 00BB                   .dbline 77
+ 00BB                   .dbline 77
+ 00BB           L21:
+ 00BB                   .dbline 77
+ 00BB EC02              ldd 2,x
+ 00BD 830001            subd #1
+ 00C0 6C02              std 2,x
+ 00C2           L23:
+ 00C2                   .dbline 77
+ 00C2           ;       // Simulate collisions at an interval
+ 00C2 EC02              ldd 2,x
+ 00C4 26F5              bne L20
+ 00C6                   .dbline -2
+ 00C6                   .dbline 78
+ 00C6           ;       seconds = (seconds + 1) % 6;
+ 00C6           L19:
+ 00C6 B757              tfr x,s
+ 00C8 30                pulx
+ 00C9 1B82              leas 2,sp
+ 00CB                   .dbline 0 ; func end
+ 00CB 3D                rts
+ 00CC                   .dbsym l delay 2 i
+ 00CC                   .dbend
                         .area data
  0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/../lib/stepper.c
  0000           _collision_detected::
@@ -288,388 +294,381 @@
  0002                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/../lib/stepper.c
  0002                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
  0002                   .dbsym e collision_detected _collision_detected I
- 0002           _temperature::
+                        .area text
+ 00CC                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
+ 00CC                   .dbfunc e main _main fI
+ 00CC           ;            key -> -1,x
+ 00CC           _main::
+ 00CC 34                pshx
+ 00CD B775              tfr s,x
+ 00CF 1B9E              leas -2,sp
+ 00D1                   .dbline -1
+ 00D1                   .dbline 20
+ 00D1                   .dbline 24
+ 00D1 CC001A            ldd #26
+ 00D4 160000            jsr _setbaud
+ 00D7                   .dbline 25
+ 00D7 1600E3            jsr _rti_init
+ 00DA           L25:
+ 00DA                   .dbline 27
+ 00DA           L26:
+ 00DA                   .dbline 27
+ 00DA 20FE              bra L25
+ 00DC           X0:
+ 00DC                   .dbline 29
+ 00DC CC0000            ldd #0
+ 00DF                   .dbline -2
+ 00DF           L24:
+ 00DF B757              tfr x,s
+ 00E1 30                pulx
+ 00E2                   .dbline 0 ; func end
+ 00E2 3D                rts
+ 00E3                   .dbsym l key -1 c
+ 00E3                   .dbend
+ 00E3                   .dbfunc e rti_init _rti_init fV
+ 00E3           _rti_init::
+ 00E3                   .dbline -1
+ 00E3                   .dbline 36
+ 00E3                   .dbline 37
+ 00E3 1C003880          bset 0x38,#128
+ 00E7                   .dbline 38
+ 00E7 C67F              ldab #127
+ 00E9 7B003B            stab 0x3b
+ 00EC                   .dbline 39
+ 00EC 10EF                      cli
+ 00EE           
+ 00EE                   .dbline -2
+ 00EE                   .dbline 40
+ 00EE           L28:
+ 00EE                   .dbline 0 ; func end
+ 00EE 3D                rts
+ 00EF                   .dbend
+                        .area data
+ 0002                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
+ 0002           L30:
  0002                   .blkb 2
                         .area idata
  0002 0000              .word 0
                         .area data
  0004                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 0004                   .dbsym e temperature _temperature I
                         .area text
- 00C6                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 00C6                   .dbfunc e main _main fI
- 00C6           _main::
- 00C6                   .dbline -1
- 00C6                   .dbline 21
- 00C6                   .dbline 22
- 00C6 CC001A            ldd #26
- 00C9 160000            jsr _setbaud
- 00CC                   .dbline 23
- 00CC 1600A2            jsr _stepper_init
- 00CF                   .dbline 24
- 00CF 1600DE            jsr _rti_init
- 00D2                   .dbline 26
- 00D2 CC0038            ldd #56
- 00D5 7C0002            std _temperature
- 00D8           L25:
- 00D8                   .dbline 28
- 00D8           L26:
- 00D8                   .dbline 28
- 00D8 20FE              bra L25
- 00DA           X0:
- 00DA                   .dbline 29
- 00DA CC0000            ldd #0
- 00DD                   .dbline -2
- 00DD           L24:
- 00DD                   .dbline 0 ; func end
- 00DD 3D                rts
- 00DE                   .dbend
- 00DE                   .dbfunc e rti_init _rti_init fV
- 00DE           _rti_init::
- 00DE                   .dbline -1
- 00DE                   .dbline 36
- 00DE                   .dbline 37
- 00DE 1C003880          bset 0x38,#128
- 00E2                   .dbline 38
- 00E2 C67F              ldab #127
- 00E4 7B003B            stab 0x3b
- 00E7                   .dbline 39
- 00E7 10EF                      cli
- 00E9           
- 00E9                   .dbline -2
- 00E9                   .dbline 40
- 00E9           L28:
- 00E9                   .dbline 0 ; func end
- 00E9 3D                rts
- 00EA                   .dbend
+ 00EF                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
+ 00EF                   .dbfunc e rti_handler _rti_handler fV
+ 00EF                   .dbsym s count L30 I
+ 00EF           ;          ?temp -> -2,x
+ 00EF           _rti_handler::
+ 00EF 34                pshx
+ 00F0 B775              tfr s,x
+ 00F2 1B9E              leas -2,sp
+ 00F4                   .dbline -1
+ 00F4                   .dbline 47
+ 00F4                   .dbline 50
+ 00F4 FC0002            ldd L30
+ 00F7 C30001            addd #1
+ 00FA 6C1E              std -2,x
+ 00FC 18051E0002        movw -2,x,L30
+ 0101 EC1E              ldd -2,x
+ 0103 8C0008            cpd #8
+ 0106 2609              bne L31
+ 0108                   .dbline 50
+ 0108                   .dbline 51
+ 0108 CC0000            ldd #0
+ 010B 7C0002            std L30
+ 010E                   .dbline 52
+ 010E 160120            jsr _rti_every_second
+ 0111                   .dbline 53
+ 0111           L31:
+ 0111                   .dbline 56
+ 0111 1C003780          bset 0x37,#128
+ 0115                   .dbline -2
+ 0115                   .dbline 57
+ 0115           L29:
+ 0115 B757              tfr x,s
+ 0117 30                pulx
+ 0118                   .dbline 0 ; func end
+ 0118 0B                rti
+ 0119                   .dbend
+ 0119                   .dbfunc e trigger_collision _trigger_collision fV
+ 0119           _trigger_collision::
+ 0119                   .dbline -1
+ 0119                   .dbline 63
+ 0119                   .dbline 64
+ 0119 CC0001            ldd #1
+ 011C 7C0000            std _collision_detected
+ 011F                   .dbline -2
+ 011F                   .dbline 65
+ 011F           L33:
+ 011F                   .dbline 0 ; func end
+ 011F 3D                rts
+ 0120                   .dbend
                         .area data
  0004                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 0004           L30:
+ 0004           L35:
  0004                   .blkb 2
                         .area idata
  0004 0000              .word 0
                         .area data
  0006                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
                         .area text
- 00EA                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 00EA                   .dbfunc e rti_handler _rti_handler fV
- 00EA                   .dbsym s count L30 I
- 00EA           ;          ?temp -> -2,x
- 00EA           _rti_handler::
- 00EA 34                pshx
- 00EB B775              tfr s,x
- 00ED 1B9E              leas -2,sp
- 00EF                   .dbline -1
- 00EF                   .dbline 47
- 00EF                   .dbline 50
- 00EF FC0004            ldd L30
- 00F2 C30001            addd #1
- 00F5 6C1E              std -2,x
- 00F7 18051E0004        movw -2,x,L30
- 00FC EC1E              ldd -2,x
- 00FE 8C0008            cpd #8
- 0101 2609              bne L31
- 0103                   .dbline 50
- 0103                   .dbline 51
- 0103 CC0000            ldd #0
- 0106 7C0004            std L30
- 0109                   .dbline 52
- 0109 16011B            jsr _rti_every_second
- 010C                   .dbline 53
- 010C           L31:
- 010C                   .dbline 56
- 010C 1C003780          bset 0x37,#128
- 0110                   .dbline -2
- 0110                   .dbline 57
- 0110           L29:
- 0110 B757              tfr x,s
- 0112 30                pulx
- 0113                   .dbline 0 ; func end
- 0113 0B                rti
- 0114                   .dbend
- 0114                   .dbfunc e trigger_collision _trigger_collision fV
- 0114           _trigger_collision::
- 0114                   .dbline -1
- 0114                   .dbline 63
- 0114                   .dbline 64
- 0114 CC0001            ldd #1
- 0117 7C0000            std _collision_detected
- 011A                   .dbline -2
- 011A                   .dbline 65
- 011A           L33:
- 011A                   .dbline 0 ; func end
- 011A 3D                rts
- 011B                   .dbend
+ 0120                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
+ 0120                   .dbfunc e rti_every_second _rti_every_second fV
+ 0120                   .dbsym s seconds L35 I
+ 0120           _rti_every_second::
+ 0120                   .dbline -1
+ 0120                   .dbline 71
+ 0120                   .dbline 75
+ 0120 16013E            jsr _collision_avoidance
+ 0123                   .dbline 78
+ 0123 FC0004            ldd L35
+ 0126 C30001            addd #1
+ 0129 CD0006            ldy #6
+ 012C B7D6              exg x,y
+ 012E 1815              idivs
+ 0130 B7D6              exg x,y
+ 0132 7C0004            std L35
+ 0135                   .dbline 79
+ 0135 FC0004            ldd L35
+ 0138 2603              bne L36
+ 013A                   .dbline 79
+ 013A                   .dbline 80
+ 013A 160119            jsr _trigger_collision
+ 013D                   .dbline 81
+ 013D           L36:
+ 013D                   .dbline -2
+ 013D                   .dbline 82
+ 013D           ;       if ( seconds == 0 ) {
+ 013D           ;               trigger_collision();
+ 013D           ;       }
+ 013D           ; }
+ 013D           L34:
+ 013D                   .dbline 0 ; func end
+ 013D 3D                rts
+ 013E                   .dbend
                         .area data
  0006                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 0006           L35:
+ 0006           L39:
  0006                   .blkb 2
                         .area idata
  0006 0000              .word 0
                         .area data
  0008                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
-                        .area text
- 011B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 011B                   .dbfunc e rti_every_second _rti_every_second fV
- 011B                   .dbsym s seconds L35 I
- 011B           _rti_every_second::
- 011B                   .dbline -1
- 011B                   .dbline 71
- 011B                   .dbline 75
- 011B 160139            jsr _collision_avoidance
- 011E                   .dbline 78
- 011E FC0006            ldd L35
- 0121 C30001            addd #1
- 0124 CD0006            ldy #6
- 0127 B7D6              exg x,y
- 0129 1815              idivs
- 012B B7D6              exg x,y
- 012D 7C0006            std L35
- 0130                   .dbline 79
- 0130 FC0006            ldd L35
- 0133 2603              bne L36
- 0135                   .dbline 79
- 0135                   .dbline 80
- 0135 160114            jsr _trigger_collision
- 0138                   .dbline 81
- 0138           L36:
- 0138                   .dbline -2
- 0138                   .dbline 82
- 0138           ;       // Simulate collisions at an interval
- 0138           ;       seconds = (seconds + 1) % 6;
- 0138           ;       if ( seconds == 0 ) {
- 0138           ;               trigger_collision();
- 0138           ;       }
- 0138           ; }
- 0138           L34:
- 0138                   .dbline 0 ; func end
- 0138 3D                rts
- 0139                   .dbend
-                        .area data
- 0008                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 0008           L39:
+ 0008           L40:
  0008                   .blkb 2
                         .area idata
  0008 0000              .word 0
                         .area data
  000A                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 000A           L40:
- 000A                   .blkb 2
-                        .area idata
- 000A 0000              .word 0
-                        .area data
- 000C                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
                         .area text
- 0139                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
- 0139                   .dbfunc e collision_avoidance _collision_avoidance fV
- 0139                   .dbsym s state L40 I
- 0139                   .dbsym s seconds L39 I
- 0139           ;          ?temp -> -4,x
- 0139           ;          ?temp -> -2,x
- 0139           _collision_avoidance::
- 0139 34                pshx
- 013A B775              tfr s,x
- 013C 1B9C              leas -4,sp
- 013E                   .dbline -1
- 013E                   .dbline 88
- 013E           ; 
- 013E           ; /*
- 013E           ;       This is executes the algorithm provided in the labs to avoid a collision
- 013E           ; */
- 013E           ; void collision_avoidance()
- 013E           ; {
- 013E                   .dbline 97
- 013E           ;       #define COLLISION_AVOID_STATE_INITIAL   0
- 013E           ;       #define COLLISION_AVOID_STATE_WAIT              1
- 013E           ;       #define COLLISION_AVOID_STATE_ROTATE90  2
- 013E           ;       #define COLLISION_AVOID_STATE_CONTINUE  3
- 013E           ; 
- 013E           ;       static int seconds = 0;
- 013E           ;       static int state = 0;
- 013E           ;       
- 013E           ;       if ( collision_detected ) {
- 013E FC0000            ldd _collision_detected
- 0141 182700B2          lbeq L41
- 0145                   .dbline 97
- 0145                   .dbline 98
- 0145 FC000A            ldd L40
- 0148 2714              beq L45
- 014A FC000A            ldd L40
- 014D 8C0001            cpd #1
- 0150 2722              beq L47
- 0152 FC000A            ldd L40
- 0155 8C0002            cpd #2
- 0158 2742              beq L51
- 015A 1820007F          lbra L43
- 015E           X1:
- 015E                   .dbline 98
- 015E           ;               switch ( state ) {
- 015E           L45:
- 015E                   .dbline 101
- 015E           ;                       case COLLISION_AVOID_STATE_INITIAL:
- 015E           ;                               // we would stop the forward motors here
- 015E           ;                               printf("\n\nCollision warning!!\nStopping motors.\n");
- 015E CC02A4            ldd #L46
- 0161 160000            jsr _printf
- 0164                   .dbline 102
- 0164           ;                               seconds = 0;
- 0164 CC0000            ldd #0
- 0167 7C0008            std L39
- 016A                   .dbline 103
- 016A           ;                               state = COLLISION_AVOID_STATE_WAIT;
- 016A CC0001            ldd #1
- 016D 7C000A            std L40
- 0170                   .dbline 104
- 0170           ;                               break;
- 0170 18200089          lbra L42
- 0174           L47:
- 0174                   .dbline 107
- 0174           ;                       case COLLISION_AVOID_STATE_WAIT:
- 0174           ;                               // wait 2 seconds before changing to next state (total time will be 3 second wait)
- 0174           ;                               printf("Waiting for motors to be stopped\n");
- 0174 CC0282            ldd #L48
- 0177 160000            jsr _printf
- 017A                   .dbline 108
- 017A           ;                               if ( ++seconds >= 2 ) {
- 017A FC0008            ldd L39
- 017D C30001            addd #1
- 0180 6C1E              std -2,x
- 0182 18051E0008        movw -2,x,L39
- 0187 EC1E              ldd -2,x
- 0189 8C0002            cpd #2
- 018C 2D6F              blt L42
- 018E                   .dbline 108
- 018E                   .dbline 109
- 018E           ;                                       seconds = 0;
- 018E CC0000            ldd #0
- 0191 7C0008            std L39
- 0194                   .dbline 110
- 0194           ;                                       state = COLLISION_AVOID_STATE_ROTATE90;
- 0194 CC0002            ldd #2
- 0197 7C000A            std L40
- 019A                   .dbline 111
- 019A           ;                               }
- 019A                   .dbline 112
- 019A           ;                               break;
- 019A 2061              bra L42
- 019C           L51:
- 019C                   .dbline 114
- 019C           ;                       case COLLISION_AVOID_STATE_ROTATE90:
- 019C           ;                               if ( seconds == 0 ) {
- 019C FC0008            ldd L39
- 019F 260E              bne L52
+ 013E                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
+ 013E                   .dbfunc e collision_avoidance _collision_avoidance fV
+ 013E                   .dbsym s state L40 I
+ 013E                   .dbsym s seconds L39 I
+ 013E           ;          ?temp -> -4,x
+ 013E           ;          ?temp -> -2,x
+ 013E           _collision_avoidance::
+ 013E 34                pshx
+ 013F B775              tfr s,x
+ 0141 1B9C              leas -4,sp
+ 0143                   .dbline -1
+ 0143                   .dbline 88
+ 0143           ; 
+ 0143           ; /*
+ 0143           ;       This is executes the algorithm provided in the labs to avoid a collision
+ 0143           ; */
+ 0143           ; void collision_avoidance()
+ 0143           ; {
+ 0143                   .dbline 97
+ 0143           ;       #define COLLISION_AVOID_STATE_INITIAL   0
+ 0143           ;       #define COLLISION_AVOID_STATE_WAIT              1
+ 0143           ;       #define COLLISION_AVOID_STATE_ROTATE90  2
+ 0143           ;       #define COLLISION_AVOID_STATE_CONTINUE  3
+ 0143           ; 
+ 0143           ;       static int seconds = 0;
+ 0143           ;       static int state = 0;
+ 0143           ;       
+ 0143           ;       if ( collision_detected ) {
+ 0143 FC0000            ldd _collision_detected
+ 0146 182700B2          lbeq L41
+ 014A                   .dbline 97
+ 014A                   .dbline 98
+ 014A FC0008            ldd L40
+ 014D 2714              beq L45
+ 014F FC0008            ldd L40
+ 0152 8C0001            cpd #1
+ 0155 2722              beq L47
+ 0157 FC0008            ldd L40
+ 015A 8C0002            cpd #2
+ 015D 2742              beq L51
+ 015F 1820007F          lbra L43
+ 0163           X1:
+ 0163                   .dbline 98
+ 0163           ;               switch ( state ) {
+ 0163           L45:
+ 0163                   .dbline 101
+ 0163           ;                       case COLLISION_AVOID_STATE_INITIAL:
+ 0163           ;                               // we would stop the forward motors here
+ 0163           ;                               printf("\n\nCollision warning!!\nStopping motors.\n");
+ 0163 CC02A9            ldd #L46
+ 0166 160000            jsr _printf
+ 0169                   .dbline 102
+ 0169           ;                               seconds = 0;
+ 0169 CC0000            ldd #0
+ 016C 7C0006            std L39
+ 016F                   .dbline 103
+ 016F           ;                               state = COLLISION_AVOID_STATE_WAIT;
+ 016F CC0001            ldd #1
+ 0172 7C0008            std L40
+ 0175                   .dbline 104
+ 0175           ;                               break;
+ 0175 18200089          lbra L42
+ 0179           L47:
+ 0179                   .dbline 107
+ 0179           ;                       case COLLISION_AVOID_STATE_WAIT:
+ 0179           ;                               // wait 2 seconds before changing to next state (total time will be 3 second wait)
+ 0179           ;                               printf("Waiting for motors to be stopped\n");
+ 0179 CC0287            ldd #L48
+ 017C 160000            jsr _printf
+ 017F                   .dbline 108
+ 017F           ;                               if ( ++seconds >= 2 ) {
+ 017F FC0006            ldd L39
+ 0182 C30001            addd #1
+ 0185 6C1E              std -2,x
+ 0187 18051E0006        movw -2,x,L39
+ 018C EC1E              ldd -2,x
+ 018E 8C0002            cpd #2
+ 0191 2D6F              blt L42
+ 0193                   .dbline 108
+ 0193                   .dbline 109
+ 0193           ;                                       seconds = 0;
+ 0193 CC0000            ldd #0
+ 0196 7C0006            std L39
+ 0199                   .dbline 110
+ 0199           ;                                       state = COLLISION_AVOID_STATE_ROTATE90;
+ 0199 CC0002            ldd #2
+ 019C 7C0008            std L40
+ 019F                   .dbline 111
+ 019F           ;                               }
+ 019F                   .dbline 112
+ 019F           ;                               break;
+ 019F 2061              bra L42
+ 01A1           L51:
  01A1                   .dbline 114
- 01A1                   .dbline 115
- 01A1           ;                                       printf("Rotating 90 degrees to the right.\n");
- 01A1 CC025F            ldd #L54
- 01A4 160000            jsr _printf
- 01A7                   .dbline 116
- 01A7           ;                                       stepper_turn_cw(STEPPER_STEPS_PER_QUARTER);
- 01A7 CC0005            ldd #5
- 01AA 160000            jsr _stepper_turn_cw
- 01AD                   .dbline 117
- 01AD 2006              bra L53
- 01AF           L52:
- 01AF                   .dbline 117
- 01AF           ;                               } else {
- 01AF                   .dbline 118
- 01AF           ;                                       printf("Waiting another second.\n");
- 01AF CC0246            ldd #L55
- 01B2 160000            jsr _printf
- 01B5                   .dbline 119
- 01B5           ;                               }
- 01B5           L53:
- 01B5                   .dbline 121
- 01B5           ;                               
- 01B5           ;                               if ( ++seconds >= 2 ) {
- 01B5 FC0008            ldd L39
- 01B8 C30001            addd #1
- 01BB 6C1C              std -4,x
- 01BD 18051C0008        movw -4,x,L39
- 01C2 EC1C              ldd -4,x
- 01C4 8C0002            cpd #2
- 01C7 2D34              blt L42
- 01C9                   .dbline 121
- 01C9                   .dbline 123
- 01C9           ;                                       // Go back into initial state and reset collision detection
- 01C9           ;                                       seconds = 0;
- 01C9 CC0000            ldd #0
- 01CC 7C0008            std L39
- 01CF                   .dbline 124
- 01CF           ;                                       state = COLLISION_AVOID_STATE_INITIAL;
- 01CF CC0000            ldd #0
- 01D2 7C000A            std L40
- 01D5                   .dbline 125
- 01D5           ;                                       collision_detected = 0;
- 01D5 CC0000            ldd #0
- 01D8 7C0000            std _collision_detected
- 01DB                   .dbline 128
- 01DB           ;                                       
- 01DB           ;                                       // We would start the forward motors here
- 01DB           ;                               }
- 01DB                   .dbline 129
- 01DB           ;                               break;
- 01DB 2020              bra L42
- 01DD           L43:
- 01DD                   .dbline 131
- 01DD           ;                       default:
- 01DD           ;                               printf("Unknown collision state, return to initial.\n");
- 01DD CC0219            ldd #L58
- 01E0 160000            jsr _printf
- 01E3                   .dbline 132
- 01E3           ;                               seconds = 0;
- 01E3 CC0000            ldd #0
- 01E6 7C0008            std L39
- 01E9                   .dbline 133
- 01E9           ;                               state = COLLISION_AVOID_STATE_INITIAL;
- 01E9 CC0000            ldd #0
- 01EC 7C000A            std L40
- 01EF                   .dbline 134
- 01EF           ;                               collision_detected = 0;
- 01EF CC0000            ldd #0
- 01F2 7C0000            std _collision_detected
- 01F5                   .dbline 135
- 01F5           ;               }
- 01F5                   .dbline 136
- 01F5 2006              bra L42
- 01F7           L41:
- 01F7                   .dbline 136
- 01F7                   .dbline 137
- 01F7 CC0201            ldd #L59
- 01FA 160000            jsr _printf
- 01FD                   .dbline 138
- 01FD           L42:
- 01FD                   .dbline -2
- 01FD                   .dbline 139
- 01FD           ;       } else {
- 01FD           ;               printf("No collisions detected\n");
- 01FD           ;       }
- 01FD           ; }
- 01FD           L38:
- 01FD B757              tfr x,s
- 01FF 30                pulx
- 0200                   .dbline 0 ; func end
- 0200 3D                rts
- 0201                   .dbend
- 0201           L59:
- 0201 4E6F20636F6C6C6973696F6E73206465  .byte 'N,'o,32,'c,'o,'l,'l,'i,'s,'i,'o,'n,'s,32,'d,'e
- 0211 7465637465640A00  .byte 't,'e,'c,'t,'e,'d,10,0
- 0219           L58:
- 0219 556E6B6E6F776E20636F6C6C6973696F  .byte 'U,'n,'k,'n,'o,'w,'n,32,'c,'o,'l,'l,'i,'s,'i,'o
- 0229 6E2073746174652C2072657475726E20  .byte 'n,32,'s,'t,'a,'t,'e,44,32,'r,'e,'t,'u,'r,'n,32
- 0239 746F20696E697469616C2E0A00        .byte 't,'o,32,'i,'n,'i,'t,'i,'a,'l,46,10,0
- 0246           L55:
- 0246 57616974696E6720616E6F7468657220  .byte 'W,'a,'i,'t,'i,'n,'g,32,'a,'n,'o,'t,'h,'e,'r,32
- 0256 7365636F6E642E0A00        .byte 's,'e,'c,'o,'n,'d,46,10,0
- 025F           L54:
- 025F 526F746174696E672039302064656772  .byte 'R,'o,'t,'a,'t,'i,'n,'g,32,57,48,32,'d,'e,'g,'r
- 026F 65657320746F20746865207269676874  .byte 'e,'e,'s,32,'t,'o,32,'t,'h,'e,32,'r,'i,'g,'h,'t
- 027F 2E0A00            .byte 46,10,0
- 0282           L48:
- 0282 57616974696E6720666F72206D6F746F  .byte 'W,'a,'i,'t,'i,'n,'g,32,'f,'o,'r,32,'m,'o,'t,'o
- 0292 727320746F2062652073746F70706564  .byte 'r,'s,32,'t,'o,32,'b,'e,32,'s,'t,'o,'p,'p,'e,'d
- 02A2 0A00              .byte 10,0
- 02A4           L46:
- 02A4 0A0A436F6C6C6973696F6E207761726E  .byte 10,10,'C,'o,'l,'l,'i,'s,'i,'o,'n,32,'w,'a,'r,'n
- 02B4 696E6721210A53746F7070696E67206D  .byte 'i,'n,'g,33,33,10,'S,'t,'o,'p,'p,'i,'n,'g,32,'m
- 02C4 6F746F72732E0A00  .byte 'o,'t,'o,'r,'s,46,10,0
+ 01A1           ;                       case COLLISION_AVOID_STATE_ROTATE90:
+ 01A1           ;                               if ( seconds == 0 ) {
+ 01A1 FC0006            ldd L39
+ 01A4 260E              bne L52
+ 01A6                   .dbline 114
+ 01A6                   .dbline 115
+ 01A6           ;                                       printf("Rotating 90 degrees to the right.\n");
+ 01A6 CC0264            ldd #L54
+ 01A9 160000            jsr _printf
+ 01AC                   .dbline 116
+ 01AC           ;                                       stepper_turn_cw(STEPPER_STEPS_PER_QUARTER);
+ 01AC CC0005            ldd #5
+ 01AF 160000            jsr _stepper_turn_cw
+ 01B2                   .dbline 117
+ 01B2 2006              bra L53
+ 01B4           L52:
+ 01B4                   .dbline 117
+ 01B4           ;                               } else {
+ 01B4                   .dbline 118
+ 01B4           ;                                       printf("Waiting another second.\n");
+ 01B4 CC024B            ldd #L55
+ 01B7 160000            jsr _printf
+ 01BA                   .dbline 119
+ 01BA           ;                               }
+ 01BA           L53:
+ 01BA                   .dbline 121
+ 01BA           ;                               
+ 01BA           ;                               if ( ++seconds >= 2 ) {
+ 01BA FC0006            ldd L39
+ 01BD C30001            addd #1
+ 01C0 6C1C              std -4,x
+ 01C2 18051C0006        movw -4,x,L39
+ 01C7 EC1C              ldd -4,x
+ 01C9 8C0002            cpd #2
+ 01CC 2D34              blt L42
+ 01CE                   .dbline 121
+ 01CE                   .dbline 123
+ 01CE           ;                                       // Go back into initial state and reset collision detection
+ 01CE           ;                                       seconds = 0;
+ 01CE CC0000            ldd #0
+ 01D1 7C0006            std L39
+ 01D4                   .dbline 124
+ 01D4           ;                                       state = COLLISION_AVOID_STATE_INITIAL;
+ 01D4 CC0000            ldd #0
+ 01D7 7C0008            std L40
+ 01DA                   .dbline 125
+ 01DA           ;                                       collision_detected = 0;
+ 01DA CC0000            ldd #0
+ 01DD 7C0000            std _collision_detected
+ 01E0                   .dbline 128
+ 01E0           ;                                       
+ 01E0           ;                                       // We would start the forward motors here
+ 01E0           ;                               }
+ 01E0                   .dbline 129
+ 01E0           ;                               break;
+ 01E0 2020              bra L42
+ 01E2           L43:
+ 01E2                   .dbline 131
+ 01E2           ;                       default:
+ 01E2           ;                               printf("Unknown collision state, return to initial.\n");
+ 01E2 CC021E            ldd #L58
+ 01E5 160000            jsr _printf
+ 01E8                   .dbline 132
+ 01E8           ;                               seconds = 0;
+ 01E8 CC0000            ldd #0
+ 01EB 7C0006            std L39
+ 01EE                   .dbline 133
+ 01EE           ;                               state = COLLISION_AVOID_STATE_INITIAL;
+ 01EE CC0000            ldd #0
+ 01F1 7C0008            std L40
+ 01F4                   .dbline 134
+ 01F4           ;                               collision_detected = 0;
+ 01F4 CC0000            ldd #0
+ 01F7 7C0000            std _collision_detected
+ 01FA                   .dbline 135
+ 01FA           ;               }
+ 01FA                   .dbline 136
+ 01FA 2006              bra L42
+ 01FC           L41:
+ 01FC                   .dbline 136
+ 01FC                   .dbline 137
+ 01FC CC0206            ldd #L59
+ 01FF 160000            jsr _printf
+ 0202                   .dbline 138
+ 0202           L42:
+ 0202                   .dbline -2
+ 0202                   .dbline 139
+ 0202           ;       } else {
+ 0202           ;               printf("No collisions detected\n");
+ 0202           ;       }
+ 0202           ; }
+ 0202           L38:
+ 0202 B757              tfr x,s
+ 0204 30                pulx
+ 0205                   .dbline 0 ; func end
+ 0205 3D                rts
+ 0206                   .dbend
+ 0206           L59:
+ 0206 4E6F20636F6C6C6973696F6E73206465  .byte 'N,'o,32,'c,'o,'l,'l,'i,'s,'i,'o,'n,'s,32,'d,'e
+ 0216 7465637465640A00  .byte 't,'e,'c,'t,'e,'d,10,0
+ 021E           L58:
+ 021E 556E6B6E6F776E20636F6C6C6973696F  .byte 'U,'n,'k,'n,'o,'w,'n,32,'c,'o,'l,'l,'i,'s,'i,'o
+ 022E 6E2073746174652C2072657475726E20  .byte 'n,32,'s,'t,'a,'t,'e,44,32,'r,'e,'t,'u,'r,'n,32
+ 023E 746F20696E697469616C2E0A00        .byte 't,'o,32,'i,'n,'i,'t,'i,'a,'l,46,10,0
+ 024B           L55:
+ 024B 57616974696E6720616E6F7468657220  .byte 'W,'a,'i,'t,'i,'n,'g,32,'a,'n,'o,'t,'h,'e,'r,32
+ 025B 7365636F6E642E0A00        .byte 's,'e,'c,'o,'n,'d,46,10,0
+ 0264           L54:
+ 0264 526F746174696E672039302064656772  .byte 'R,'o,'t,'a,'t,'i,'n,'g,32,57,48,32,'d,'e,'g,'r
+ 0274 65657320746F20746865207269676874  .byte 'e,'e,'s,32,'t,'o,32,'t,'h,'e,32,'r,'i,'g,'h,'t
+ 0284 2E0A00            .byte 46,10,0
+ 0287           L48:
+ 0287 57616974696E6720666F72206D6F746F  .byte 'W,'a,'i,'t,'i,'n,'g,32,'f,'o,'r,32,'m,'o,'t,'o
+ 0297 727320746F2062652073746F70706564  .byte 'r,'s,32,'t,'o,32,'b,'e,32,'s,'t,'o,'p,'p,'e,'d
+ 02A7 0A00              .byte 10,0
+ 02A9           L46:
+ 02A9 0A0A436F6C6C6973696F6E207761726E  .byte 10,10,'C,'o,'l,'l,'i,'s,'i,'o,'n,32,'w,'a,'r,'n
+ 02B9 696E6721210A53746F7070696E67206D  .byte 'i,'n,'g,33,33,10,'S,'t,'o,'p,'p,'i,'n,'g,32,'m
+ 02C9 6F746F72732E0A00  .byte 'o,'t,'o,'r,'s,46,10,0

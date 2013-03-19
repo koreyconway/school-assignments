@@ -4,7 +4,9 @@
 	.dbfunc s keyboard_init _keyboard_init fV
 _keyboard_init:
 	.dbline -1
-	.dbline 17
+	.dbline 19
+; // By Korey Conway and Tanzeel Rana
+; 
 ; #include <hcs12dp256.h>
 ; #include <stdio.h>
 ; #include "../lib/keyboard.c"
@@ -22,21 +24,21 @@ _keyboard_init:
 ; 	
 ; 	// Setup keyboard, terminal, and lcd
 ; 	lcd_init();
-	.dbline 18
+	.dbline 20
 ; 	
 	clr 0xf0
-	.dbline 19
+	.dbline 21
 ; 	// Initial lcd display
 	ldab #15
 	stab 0x25a
-	.dbline 20
+	.dbline 22
 ; 	lcd_display_speed(speed);
 	bclr 0x262,#0xf0
-	.dbline 21
+	.dbline 23
 ; 	lcd_display_temperature(temp);
 	bset 0x262,#8
 	.dbline -2
-	.dbline 22
+	.dbline 24
 ; 	
 L3:
 	.dbline 0 ; func end
@@ -78,24 +80,24 @@ _keyboard_getchar::
 	tfr s,x
 	leas -26,sp
 	.dbline -1
-	.dbline 28
+	.dbline 30
 ; 	while ( 1 ) {
 ; 		key = keyboard_getchar();
 ; 		putchar(key);
 ; 		
 ; 		if ( key == '0' ) {
 ; 			break;
-	.dbline 31
+	.dbline 33
 ; 		} else if ( key == 'E' ) {
 ; 			++speed;
 ; 			printf("Increasing speed to %d\n", speed);
 	ldd #0
 	std -2,x
-	.dbline 32
+	.dbline 34
 ; 			lcd_display_speed(speed);
 	ldd #0
 	std -4,x
-	.dbline 34
+	.dbline 36
 ; 			lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
 ; 		} else if ( key == 'D' ) {
 	leay -20,x
@@ -108,7 +110,7 @@ X0:
 	movw 2,y+,2,x+
 	dbne d,X0
 	pulx
-	.dbline 39
+	.dbline 41
 ; 			--speed;
 ; 			printf("Decreasing speed to %d\n", speed);
 ; 			lcd_display_speed(speed);
@@ -117,13 +119,13 @@ X0:
 	jsr _keyboard_init
 	lbra L9
 L8:
-	.dbline 41
+	.dbline 43
 ; 	}
 ; 	
-	.dbline 42
-; 	return 1;
+	.dbline 44
+; 	return 0;
 	bset 0x250,#8
-	.dbline 43
+	.dbline 45
 ; }
 	ldd #1
 	ldy -2,x
@@ -134,23 +136,23 @@ X2:
 	dbne y,X2
 X1:
 	stab 0x258
-	.dbline 44
+	.dbline 46
 ; 
 	bclr 0x250,#0x8
-	.dbline 46
+	.dbline 48
 ; void lcd_display_speed(int speed)
 ; {
 	jsr _keyboard_get_column
 	std -4,x
-	.dbline 49
+	.dbline 51
 ; 	char *string;
 ; 	sprintf(string, "Speed: %d", speed);
 ; 	lcd_print_top(string);
 	ldd -4,x
 	cpd #-1
 	beq L11
-	.dbline 49
-	.dbline 50
+	.dbline 51
+	.dbline 52
 ; }
 	ldd L5
 	cpd -2,x
@@ -158,24 +160,24 @@ X1:
 	ldd L6
 	cpd -4,x
 	bne L13
-	.dbline 50
-	.dbline 51
+	.dbline 52
+	.dbline 53
 ; 
 	ldd #0xf000
 	jsr _keyboard_delay
-	.dbline 52
+	.dbline 54
 	bra L14
 L13:
-	.dbline 52
+	.dbline 54
 ; void lcd_display_temperature(int temp)
-	.dbline 53
+	.dbline 55
 ; {
 	ldd #20480
 	jsr _keyboard_delay
-	.dbline 54
+	.dbline 56
 ; 	char *string;
 L14:
-	.dbline 57
+	.dbline 59
 ; 	sprintf(string, "Temperature: %dC", temp);
 ; 	lcd_print_bottom(string);
 ; }
@@ -184,15 +186,15 @@ L14:
 	ldd -4,x
 	cpd -22,x
 	bne L12
-	.dbline 57
 	.dbline 59
+	.dbline 61
 ; }
 ; }
 	movw -2,x,L5
-	.dbline 60
+	.dbline 62
 ; }
 	movw -4,x,L6
-	.dbline 61
+	.dbline 63
 ; }
 	ldd -2,x
 	lsld
@@ -208,25 +210,25 @@ L14:
 	clra
 	bra L4
 X3:
-	.dbline 63
+	.dbline 65
 L11:
-	.dbline 63
+	.dbline 65
 ; }
 ; }
 	ldd -2,x
 	cpd L5
 	bne L17
-	.dbline 63
 	.dbline 65
+	.dbline 67
 ; }
 ; }
 	ldd #-1
 	std L6
-	.dbline 66
+	.dbline 68
 ; }
 L17:
 L12:
-	.dbline 69
+	.dbline 71
 	ldd -2,x
 	addd #1
 	ldy #4
@@ -234,12 +236,12 @@ L12:
 	idivs
 	exg x,y
 	std -2,x
-	.dbline 70
+	.dbline 72
 L9:
-	.dbline 41
+	.dbline 43
 	lbra L8
 X4:
-	.dbline 72
+	.dbline 74
 ; }
 ; }
 ; }
@@ -265,7 +267,7 @@ _keyboard_get_column:
 	tfr s,x
 	leas -4,sp
 	.dbline -1
-	.dbline 80
+	.dbline 82
 ; ä
 ; ä
 ; ä
@@ -274,11 +276,11 @@ _keyboard_get_column:
 ; ä
 ; ä
 ; ä
-	.dbline 81
+	.dbline 83
 ; ä
 	ldd #0
 	std -2,x
-	.dbline 82
+	.dbline 84
 ; ä
 	; vol
 	ldab 0x260
@@ -292,26 +294,26 @@ _keyboard_get_column:
 	asra
 	rorb
 	std -4,x
-	.dbline 85
+	.dbline 87
 ; ä
 ; ä
 ; ä
 	ldd -4,x
 	bne L20
-	.dbline 85
+	.dbline 87
 	ldd #-1
 	bra L19
 L20:
-	.dbline 89
+	.dbline 91
 	ldd #0
 	std -2,x
 L22:
-	.dbline 89
+	.dbline 91
 ; ä
 ; ä
 ; ä
 ; ä
-	.dbline 90
+	.dbline 92
 ; ä
 	ldd -4,x
 	ldy -2,x
@@ -326,23 +328,23 @@ X5:
 	andb #1
 	cpd #0
 	beq L26
-	.dbline 90
-	.dbline 91
+	.dbline 92
+	.dbline 93
 ; ä
 	ldd -2,x
 	bra L19
 L26:
-	.dbline 93
+	.dbline 95
 L23:
-	.dbline 89
+	.dbline 91
 	ldd -2,x
 	addd #1
 	std -2,x
-	.dbline 89
+	.dbline 91
 	ldd -2,x
 	cpd #4
 	blt L22
-	.dbline 95
+	.dbline 97
 ; ä
 ; ä
 ; ä
@@ -364,7 +366,7 @@ _keyboard_delay:
 	pshx
 	tfr s,x
 	.dbline -1
-	.dbline 102
+	.dbline 104
 ; ä
 ; ä
 ; ä
@@ -372,23 +374,23 @@ _keyboard_delay:
 ; ä
 ; ä
 ; ä
-	.dbline 103
+	.dbline 105
 	bra L32
 L29:
-	.dbline 103
-	.dbline 103
+	.dbline 105
+	.dbline 105
 L30:
-	.dbline 103
+	.dbline 105
 	ldd 2,x
 	subd #1
 	std 2,x
 L32:
-	.dbline 103
+	.dbline 105
 ; ä
 	ldd 2,x
 	bne L29
 	.dbline -2
-	.dbline 104
+	.dbline 106
 ; ä
 L28:
 	tfr x,s
@@ -404,11 +406,11 @@ L28:
 	.dbfunc e lcd_init _lcd_init fV
 _lcd_init::
 	.dbline -1
-	.dbline 19
-	.dbline 20
+	.dbline 21
+	.dbline 22
 	jsr _Lcd2PP_Init
 	.dbline -2
-	.dbline 21
+	.dbline 23
 L33:
 	.dbline 0 ; func end
 	rts
@@ -423,29 +425,29 @@ _lcd_print::
 	tfr s,x
 	leas -2,sp
 	.dbline -1
-	.dbline 27
-	.dbline 28
+	.dbline 29
+	.dbline 30
 	ldab #15
 	stab 0x242
-	.dbline 29
+	.dbline 31
 	clr 0x240
-	.dbline 30
+	.dbline 32
 	ldab #254
 	stab 0x252
-	.dbline 31
-	clr 0x250
-	.dbline 32
-	bset 0x25a,#15
 	.dbline 33
-	bclr 0xf0,#0x40
+	clr 0x250
+	.dbline 34
+	bset 0x25a,#15
 	.dbline 35
+	bclr 0xf0,#0x40
+	.dbline 37
 	ldd 6,x
 	clra
 	jsr _LCD_instruction
 	bra L36
 L35:
-	.dbline 36
-	.dbline 37
+	.dbline 38
+	.dbline 39
 	movw 2,x,-2,x
 	ldd -2,x
 	addd #1
@@ -454,14 +456,14 @@ L35:
 	ldab 0,y
 	clra
 	jsr _LCD_display
-	.dbline 38
+	.dbline 40
 L36:
-	.dbline 36
+	.dbline 38
 	ldy 2,x
 	tst 0,y
 	bne L35
 	.dbline -2
-	.dbline 39
+	.dbline 41
 L34:
 	tfr x,s
 	pulx
@@ -479,14 +481,14 @@ _lcd_print_top::
 	tfr s,x
 	leas -2,sp
 	.dbline -1
-	.dbline 45
-	.dbline 46
+	.dbline 47
+	.dbline 48
 	ldd #0
 	std 0,sp
 	ldd 2,x
 	jsr _lcd_print
 	.dbline -2
-	.dbline 47
+	.dbline 49
 L38:
 	tfr x,s
 	pulx
@@ -503,14 +505,14 @@ _lcd_print_bottom::
 	tfr s,x
 	leas -2,sp
 	.dbline -1
-	.dbline 53
-	.dbline 54
+	.dbline 55
+	.dbline 56
 	ldd #192
 	std 0,sp
 	ldd 2,x
 	jsr _lcd_print
 	.dbline -2
-	.dbline 55
+	.dbline 57
 L39:
 	tfr x,s
 	pulx
@@ -545,84 +547,84 @@ _main::
 	tfr s,x
 	leas -4,sp
 	.dbline -1
-	.dbline 13
-	.dbline 17
+	.dbline 15
+	.dbline 19
 	jsr _lcd_init
-	.dbline 20
+	.dbline 22
 	ldd _speed
 	jsr _lcd_display_speed
-	.dbline 21
+	.dbline 23
 	ldd _temp
 	jsr _lcd_display_temperature
 	bra L42
 L41:
-	.dbline 23
-	.dbline 24
+	.dbline 25
+	.dbline 26
 	jsr _keyboard_getchar
 	stab -1,x
-	.dbline 25
+	.dbline 27
 	ldab -1,x
 	clra
 	jsr _putchar
-	.dbline 27
+	.dbline 29
 	ldab -1,x
 	cmpb #48
 	bne L44
-	.dbline 27
-	.dbline 28
+	.dbline 29
+	.dbline 30
 	bra L43
 L44:
-	.dbline 29
+	.dbline 31
 	ldab -1,x
 	cmpb #69
 	bne L46
-	.dbline 29
-	.dbline 30
+	.dbline 31
+	.dbline 32
 	ldd _speed
 	addd #1
 	std _speed
-	.dbline 31
+	.dbline 33
 	movw _speed,0,sp
 	ldd #L48
 	jsr _printf
-	.dbline 32
+	.dbline 34
 	ldd _speed
 	jsr _lcd_display_speed
-	.dbline 33
+	.dbline 35
 	ldd _temp
 	jsr _lcd_display_temperature
-	.dbline 34
+	.dbline 36
 	bra L47
 L46:
-	.dbline 34
+	.dbline 36
 	ldab -1,x
 	cmpb #68
 	bne L49
-	.dbline 34
-	.dbline 35
+	.dbline 36
+	.dbline 37
 	ldd _speed
 	subd #1
 	std _speed
-	.dbline 36
+	.dbline 38
 	movw _speed,0,sp
 	ldd #L51
 	jsr _printf
-	.dbline 37
+	.dbline 39
 	ldd _speed
 	jsr _lcd_display_speed
-	.dbline 38
+	.dbline 40
 	ldd _temp
 	jsr _lcd_display_temperature
-	.dbline 39
+	.dbline 41
 L49:
 L47:
-	.dbline 40
+	.dbline 42
 L42:
-	.dbline 23
+	.dbline 25
 	bra L41
 L43:
-	.dbline 42
-	ldd #1
+	.dbline 44
+	ldd #0
 	.dbline -2
 L40:
 	tfr x,s
@@ -640,18 +642,18 @@ _lcd_display_speed::
 	tfr s,x
 	leas -6,sp
 	.dbline -1
-	.dbline 46
 	.dbline 48
+	.dbline 50
 	movw 2,x,2,sp
 	ldd #L53
 	std 0,sp
 	ldd -2,x
 	jsr _sprintf
-	.dbline 49
+	.dbline 51
 	ldd -2,x
 	jsr _lcd_print_top
 	.dbline -2
-	.dbline 50
+	.dbline 52
 L52:
 	tfr x,s
 	pulx
@@ -670,18 +672,18 @@ _lcd_display_temperature::
 	tfr s,x
 	leas -6,sp
 	.dbline -1
-	.dbline 53
 	.dbline 55
+	.dbline 57
 	movw 2,x,2,sp
 	ldd #L55
 	std 0,sp
 	ldd -2,x
 	jsr _sprintf
-	.dbline 56
+	.dbline 58
 	ldd -2,x
 	jsr _lcd_print_bottom
 	.dbline -2
-	.dbline 57
+	.dbline 59
 L54:
 	tfr x,s
 	pulx

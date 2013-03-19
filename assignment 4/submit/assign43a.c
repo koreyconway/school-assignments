@@ -2,7 +2,7 @@
 
 #include <hcs12dp256.h>
 #include <stdio.h>
-#include "stepper.c"
+#include "../lib/stepper.c"
 
 int main()
 {

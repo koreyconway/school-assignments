@@ -2,8 +2,8 @@
 
 #include <hcs12dp256.h>
 #include <stdio.h>
-#include "keyboard.c"
-#include "lcd.c"
+#include "../lib/keyboard.c"
+#include "../lib/lcd.c"
 
 void lcd_display_speed(int speed);
 void lcd_display_temperature(int temp);

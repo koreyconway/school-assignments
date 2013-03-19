@@ -2,7 +2,9 @@
 
 #include <hcs12dp256.h>
 #include <stdio.h>
+#include "../lib/keyboard.c"
 #include "../lib/stepper.c"
+#include "../lib/lcd.c"
 
 #define RTI_CTL	0x7F // run real-time interrupt at 8Hz
 #define RTI_FREQUENCY	8
@@ -17,17 +19,64 @@ void collision_avoidance(void);
 int collision_detected = 0;
 int temperature = 0;
 
+void lcd_display_speed(int speed);
+void lcd_display_temperature(int temp);
+
+int speed = 45;
+int temp  = 31;
+
 int main()
 {
- 	// not enough time to finish, sorry
-	//setbaud(BAUD19K);
-	//stepper_init();
-	//rti_init();
-	
-	//temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
+	char key;
 
-	//while ( 1 );
+	// Initialization
+	setbaud(BAUD19K);
+	lcd_init();
+	rti_init();	
+	
+	// Initial lcd display
+	lcd_display_speed(speed);
+	lcd_display_temperature(temp);
+	
+	while ( 1 ) {
+		key = keyboard_getchar();
+		
+		if ( key == '0' ) {
+			printf("Finished running\n");
+			break;
+		} else if ( key == 'E' ) {
+			++speed;
+			printf("Increasing speed to %d\n", speed);
+			lcd_display_speed(speed);
+			lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
+		} else if ( key == 'D' ) {
+			--speed;
+			printf("Decreasing speed to %d\n", speed);
+			lcd_display_speed(speed);
+			lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
+		} else if ( key == '5' ) {
+			printf("Triggering collision\n");
+			trigger_collision();
+		} else {
+			printf("Key pressed: %c\n", key);
+		}
+	}
+	
 	return 0;
+}
+
+void lcd_display_speed(int speed)
+{
+	char *string;
+	sprintf(string, "Speed: %d", speed);
+	lcd_print_top(string);
+}
+
+void lcd_display_temperature(int temp)
+{
+	char *string;
+	sprintf(string, "Temperature: %dC", temp);
+	lcd_print_bottom(string);
 }
 
 /*
@@ -74,12 +123,6 @@ void rti_every_second()
 	
 	// Run the collision avoidance algorithm
 	collision_avoidance();
-	
-	// Simulate collisions at an interval
-	seconds = (seconds + 1) % 6;
-	if ( seconds == 0 ) {
-		trigger_collision();
-	}
 }
 
 /*

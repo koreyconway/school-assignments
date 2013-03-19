@@ -4,7 +4,14 @@
 	.dbfunc s keyboard_init _keyboard_init fV
 _keyboard_init:
 	.dbline -1
-	.dbline 17
+	.dbline 19
+; // By Korey Conway and Tanzeel Rana
+; 
+; /*
+; * READ THIS NOTE!!!! INCLUDED FILES ARE IN THIS FILE, COMMENTED OUT BELOW
+; * The submit program won't let us sumbit the extra files, so here they are... commented out.
+; */
+; 
 ; #include <hcs12dp256.h>
 ; #include <stdio.h>
 ; #include "../lib/keyboard.c"
@@ -17,24 +24,22 @@ _keyboard_init:
 ; 	setbaud(BAUD19K);
 ; 	
 ; 	while ( 1 ) {
+	.dbline 20
 ; 		key = keyboard_getchar();
-; 		putchar(key);
-; 		
-; 		if ( key == '0' ) {
-; 			break;
-	.dbline 18
-; 		}
 	clr 0xf0
-	.dbline 19
-; 	}
+	.dbline 21
+; 		putchar(key);
 	ldab #15
 	stab 0x25a
-	.dbline 20
-; 	
+	.dbline 22
+; 		
 	bclr 0x262,#0xf0
+	.dbline 23
+; 		if ( key == '0' ) {
+	bset 0x262,#8
 	.dbline -2
-	.dbline 21
-; 	return 1;
+	.dbline 24
+; 			break;
 L3:
 	.dbline 0 ; func end
 	rts
@@ -75,26 +80,26 @@ _keyboard_getchar::
 	tfr s,x
 	leas -26,sp
 	.dbline -1
-	.dbline 27
-; }
-; }
-; }
-; }
-; }
-; }
 	.dbline 30
+; 		}
+; 	}
+; 	
+; 	return 0;
 ; }
-; }
-; }
+; 
+	.dbline 33
+; /*
+; *
+; * The submit program won't let us sumbit the extra files, so here they are... commented out.
 	ldd #0
 	std -2,x
-	.dbline 31
-; }
+	.dbline 34
+; *
 	ldd #0
 	std -4,x
-	.dbline 33
-; }
-; }
+	.dbline 36
+; */
+; 
 	leay -20,x
 	xgdy
 	ldy #L7
@@ -105,20 +110,23 @@ X0:
 	movw 2,y+,2,x+
 	dbne d,X0
 	pulx
-	.dbline 38
-; }
-; }
-; }
-; }
-; }
+	.dbline 41
+; 
+; 
+; // // /* keyboard.c */
+; // // By Korey Conway and Tanzeel Rana
+; 
 	jsr _keyboard_init
 	lbra L9
 L8:
-	.dbline 40
-; }
-; }
-	.dbline 41
-; }
+	.dbline 43
+; // #include <hcs12dp256.h>
+; 
+	.dbline 44
+; // #define	KEYBOARD_ROWS		4
+	bset 0x250,#8
+	.dbline 45
+; // #define	KEYBOARD_COLUMNS	4
 	ldd #1
 	ldy -2,x
 	cpy #0
@@ -128,62 +136,66 @@ X2:
 	dbne y,X2
 X1:
 	stab 0x258
-	.dbline 42
-; }
+	.dbline 46
+; // #define KEYBOARD_DEBOUNCE_DELAY	0x5000
+	bclr 0x250,#0x8
+	.dbline 48
+; // #define KEYBOARD_REPEAT_DELAY	0xF000
+; 
 	jsr _keyboard_get_column
 	std -4,x
-	.dbline 45
-; }
-; }
-; }
+	.dbline 51
+; // char keyboard_getchar(void);
+; // static void keyboard_init(void);
+; // static void keyboard_delay(unsigned int delay);
 	ldd -4,x
 	cpd #-1
 	beq L11
-	.dbline 45
-	.dbline 46
-; }
+	.dbline 51
+	.dbline 52
+; // static int  keyboard_get_column(void);
 	ldd L5
 	cpd -2,x
 	bne L13
 	ldd L6
 	cpd -4,x
 	bne L13
-	.dbline 46
-	.dbline 47
-; }
+	.dbline 52
+	.dbline 53
+; 
 	ldd #0xf000
 	jsr _keyboard_delay
-	.dbline 48
+	.dbline 54
 	bra L14
 L13:
-	.dbline 48
-; }
-	.dbline 49
-; }
+	.dbline 54
+; // /*
+	.dbline 55
+; 	// Initialize ports for keyboard
 	ldd #20480
 	jsr _keyboard_delay
-	.dbline 50
-; }
+	.dbline 56
+; // */
 L14:
-	.dbline 53
-; }
-; }
-; }
+	.dbline 59
+; // static void keyboard_init()
+; // {
+; 	// SPI1CR1 = 0x00; // Turn off SPI (not explained why yet)
 	jsr _keyboard_get_column
 	std -22,x
 	ldd -4,x
 	cpd -22,x
 	bne L12
-	.dbline 53
-	.dbline 55
-; }
-; }
+	.dbline 59
+	.dbline 61
+; 	// DDRP    = 0x0F; // Enable keyboard and disable motors on port P
+; 	// DDRH   &= 0x0F; // Enable reading from keyboard (High bits of DDRH)
 	movw -2,x,L5
-	.dbline 56
-; }
+	.dbline 62
+; 	// DDRH   |= 0x08; // Enable writing to U7_EN
 	movw -4,x,L6
-	.dbline 57
-; }
+	.dbline 63
+; // }
 	ldd -2,x
 	lsld
 	lsld
@@ -198,25 +210,25 @@ L14:
 	clra
 	bra L4
 X3:
-	.dbline 59
+	.dbline 65
 L11:
-	.dbline 59
-; }
-; }
+	.dbline 65
+; 
+; // /*
 	ldd -2,x
 	cpd L5
 	bne L17
-	.dbline 59
-	.dbline 61
-; }
-; }
+	.dbline 65
+	.dbline 67
+; 	// Get a character from the keyboard
+; // */
 	ldd #-1
 	std L6
-	.dbline 62
-; }
+	.dbline 68
+; // char keyboard_getchar()
 L17:
 L12:
-	.dbline 65
+	.dbline 71
 	ldd -2,x
 	addd #1
 	ldy #4
@@ -224,18 +236,18 @@ L12:
 	idivs
 	exg x,y
 	std -2,x
-	.dbline 66
+	.dbline 72
 L9:
-	.dbline 40
+	.dbline 43
 	lbra L8
 X4:
-	.dbline 68
-; }
-; }
-; }
-; }
-; }
-; }
+	.dbline 74
+; // {
+; 	// static int last_row = -1;
+; 	// static int last_col = -1;
+; 	// int row = 0;
+; 	// int col = 0;
+; 	// char char_map[KEYBOARD_ROWS][KEYBOARD_COLUMNS] =
 	ldd #0
 	.dbline -2
 L4:
@@ -255,21 +267,21 @@ _keyboard_get_column:
 	tfr s,x
 	leas -4,sp
 	.dbline -1
-	.dbline 76
-; ä
-; ä
-; ä
-; ä
-; ä
-; ä
-; ä
-; ä
-	.dbline 77
-; ä
+	.dbline 82
+; 		// {{'1', '2', '3', 'A'},
+; 		// {'4', '5', '6', 'B'},
+; 		// {'7', '8', '9', 'C'},
+; 		// {'E', '0', 'F', 'D'}};
+; 	
+; 	// keyboard_init();
+; 
+; 	// while ( 1 ) {
+	.dbline 83
+; 		// PTM |= 0x08;		// Set U7_EN high (PM3)
 	ldd #0
 	std -2,x
-	.dbline 78
-; ä
+	.dbline 84
+; 		// PTP  = 0x01 << row;	// Enable the correct row
 	; vol
 	ldab 0x260
 	clra
@@ -282,27 +294,27 @@ _keyboard_get_column:
 	asra
 	rorb
 	std -4,x
-	.dbline 81
-; ä
-; ä
-; ä
+	.dbline 87
+; 		// PTM &= ~0x08;		// Set U7_EN low (PM3)
+; 		
+; 		// col = keyboard_get_column(); // Get the button that is pushed in that row (if any)
 	ldd -4,x
 	bne L20
-	.dbline 81
+	.dbline 87
 	ldd #-1
 	bra L19
 L20:
-	.dbline 85
+	.dbline 91
 	ldd #0
 	std -2,x
 L22:
-	.dbline 85
-; ä
-; ä
-; ä
-; ä
-	.dbline 86
-; ä
+	.dbline 91
+; 
+; 		// // Only react if a button was pushed
+; 		// if ( col != -1 ) {
+; 			// if ( last_row == row && last_col == col ) {
+	.dbline 92
+; 				// keyboard_delay(KEYBOARD_REPEAT_DELAY); // add delay for debounce
 	ldd -4,x
 	ldy -2,x
 	cpy #0
@@ -316,27 +328,27 @@ X5:
 	andb #1
 	cpd #0
 	beq L26
-	.dbline 86
-	.dbline 87
-; ä
+	.dbline 92
+	.dbline 93
+; 			// } else {
 	ldd -2,x
 	bra L19
 L26:
-	.dbline 89
+	.dbline 95
 L23:
-	.dbline 85
+	.dbline 91
 	ldd -2,x
 	addd #1
 	std -2,x
-	.dbline 85
+	.dbline 91
 	ldd -2,x
 	cpd #4
 	blt L22
-	.dbline 91
-; ä
-; ä
-; ä
-; ä
+	.dbline 97
+; 				// keyboard_delay(KEYBOARD_DEBOUNCE_DELAY); // add simple delay for repeat
+; 			// }
+; 
+; 			// // Check if the same button is still being pushed
 	ldd #-1
 	.dbline -2
 L19:
@@ -354,32 +366,32 @@ _keyboard_delay:
 	pshx
 	tfr s,x
 	.dbline -1
-	.dbline 98
-; ä
-; ä
-; ä
-; ä
-; ä
-; ä
-; ä
-	.dbline 99
+	.dbline 104
+; 			// if ( col == keyboard_get_column() ) {
+; 				// // save the row/col of the character for repeat delays then return the char
+; 				// last_row = row;
+; 				// last_col = col;
+; 				// return char_map[row][col];
+; 			// }
+; 		// } else if ( row == last_row )  {
+	.dbline 105
 	bra L32
 L29:
-	.dbline 99
-	.dbline 99
+	.dbline 105
+	.dbline 105
 L30:
-	.dbline 99
+	.dbline 105
 	ldd 2,x
 	subd #1
 	std 2,x
 L32:
-	.dbline 99
-; ä
+	.dbline 105
+; 			// // clear the memory of the last column because the button was released so we don't want a repeat delay anymore
 	ldd 2,x
 	bne L29
 	.dbline -2
-	.dbline 100
-; ä
+	.dbline 106
+; 			// last_col = -1; 
 L28:
 	tfr x,s
 	pulx
@@ -396,35 +408,35 @@ _main::
 	tfr s,x
 	leas -2,sp
 	.dbline -1
-	.dbline 6
-	.dbline 10
+	.dbline 13
+	.dbline 17
 	ldd #26
 	jsr _setbaud
 	bra L35
 L34:
-	.dbline 12
-	.dbline 13
+	.dbline 19
+	.dbline 20
 	jsr _keyboard_getchar
 	stab -1,x
-	.dbline 14
+	.dbline 21
 	ldab -1,x
 	clra
 	jsr _putchar
-	.dbline 16
+	.dbline 23
 	ldab -1,x
 	cmpb #48
 	bne L37
-	.dbline 16
-	.dbline 17
+	.dbline 23
+	.dbline 24
 	bra L36
 L37:
-	.dbline 19
+	.dbline 26
 L35:
-	.dbline 12
+	.dbline 19
 	bra L34
 L36:
-	.dbline 21
-	ldd #1
+	.dbline 28
+	ldd #0
 	.dbline -2
 L33:
 	tfr x,s

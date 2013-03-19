@@ -60,7 +60,7 @@ _interrupt_vectors::
 	.word 63493
 	.word 63497
 	.word __start
-	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART4~1\vectors_dp256_NoICE.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\vectors_dp256_NoICE.c
 	.dbsym e interrupt_vectors _interrupt_vectors A[116:58]pfV
 	.area data
-	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART4~1\vectors_dp256_NoICE.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\vectors_dp256_NoICE.c

@@ -2,7 +2,7 @@
 
 #include <hcs12dp256.h>
 #include <stdio.h>
-#include "stepper.c"
+#include "../lib/stepper.c"
 
 #define RTI_CTL	0x7F // run real-time interrupt at 8Hz
 #define RTI_FREQUENCY	8
@@ -15,17 +15,17 @@ void collision_avoidance(void);
 
 // Global variables
 int collision_detected = 0;
-int temperature = 0;
 
 int main()
 {
-	setbaud(BAUD19K);
-	stepper_init();
-	rti_init();
-	
-	temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
+	char key;
 
+	// Initialization
+	setbaud(BAUD19K);
+	rti_init();	
+	
 	while ( 1 );
+	
 	return 0;
 }
 
@@ -70,10 +70,10 @@ void trigger_collision()
 void rti_every_second()
 {
 	static int seconds = 0;
-	
+
 	// Run the collision avoidance algorithm
 	collision_avoidance();
-	
+
 	// Simulate collisions at an interval
 	seconds = (seconds + 1) % 6;
 	if ( seconds == 0 ) {

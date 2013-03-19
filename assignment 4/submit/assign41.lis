@@ -4,7 +4,14 @@
  0000                   .dbfunc s keyboard_init _keyboard_init fV
  0000           _keyboard_init:
  0000                   .dbline -1
- 0000                   .dbline 17
+ 0000                   .dbline 19
+ 0000           ; // By Korey Conway and Tanzeel Rana
+ 0000           ; 
+ 0000           ; /*
+ 0000           ; * READ THIS NOTE!!!! INCLUDED FILES ARE IN THIS FILE, COMMENTED OUT BELOW
+ 0000           ; * The submit program won't let us sumbit the extra files, so here they are... commented out.
+ 0000           ; */
+ 0000           ; 
  0000           ; #include <hcs12dp256.h>
  0000           ; #include <stdio.h>
  0000           ; #include "../lib/keyboard.c"
@@ -17,28 +24,26 @@
  0000           ;       setbaud(BAUD19K);
  0000           ;       
  0000           ;       while ( 1 ) {
+ 0000                   .dbline 20
  0000           ;               key = keyboard_getchar();
- 0000           ;               putchar(key);
- 0000           ;               
- 0000           ;               if ( key == '0' ) {
- 0000           ;                       break;
- 0000                   .dbline 18
- 0000           ;               }
  0000 7900F0            clr 0xf0
- 0003                   .dbline 19
- 0003           ;       }
+ 0003                   .dbline 21
+ 0003           ;               putchar(key);
  0003 C60F              ldab #15
  0005 7B025A            stab 0x25a
- 0008                   .dbline 20
- 0008           ;       
+ 0008                   .dbline 22
+ 0008           ;               
  0008 1D0262F0          bclr 0x262,#0xf0
- 000C                   .dbline -2
- 000C                   .dbline 21
- 000C           ;       return 1;
- 000C           L3:
- 000C                   .dbline 0 ; func end
- 000C 3D                rts
- 000D                   .dbend
+ 000C                   .dbline 23
+ 000C           ;               if ( key == '0' ) {
+ 000C 1C026208          bset 0x262,#8
+ 0010                   .dbline -2
+ 0010                   .dbline 24
+ 0010           ;                       break;
+ 0010           L3:
+ 0010                   .dbline 0 ; func end
+ 0010 3D                rts
+ 0011                   .dbend
                         .area data
  0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1/../lib/keyboard.c
  0000           L5:
@@ -54,382 +59,389 @@
                         .area data
  0004                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1/../lib/keyboard.c
                         .area text
- 000D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1/../lib/keyboard.c
- 000D           L7:
- 000D 3132              .byte 49,50
- 000F 3341              .byte 51,'A
- 0011 3435              .byte 52,53
- 0013 3642              .byte 54,'B
- 0015 3738              .byte 55,56
- 0017 3943              .byte 57,'C
- 0019 4530              .byte 'E,48
- 001B 4644              .byte 'F,'D
- 001D                   .dbfunc e keyboard_getchar _keyboard_getchar fc
- 001D                   .dbsym s last_col L6 I
- 001D                   .dbsym s last_row L5 I
- 001D           ;       char_map -> -20,x
- 001D           ;            col -> -4,x
- 001D           ;            row -> -2,x
- 001D           _keyboard_getchar::
- 001D 34                pshx
- 001E B775              tfr s,x
- 0020 1BF1E6            leas -26,sp
- 0023                   .dbline -1
- 0023                   .dbline 27
- 0023           ; }
- 0023           ; }
- 0023           ; }
- 0023           ; }
- 0023           ; }
- 0023           ; }
- 0023                   .dbline 30
- 0023           ; }
- 0023           ; }
- 0023           ; }
- 0023 CC0000            ldd #0
- 0026 6C1E              std -2,x
- 0028                   .dbline 31
- 0028           ; }
- 0028 CC0000            ldd #0
- 002B 6C1C              std -4,x
- 002D                   .dbline 33
- 002D           ; }
- 002D           ; }
- 002D 19E1EC            leay -20,x
- 0030 B7C6              xgdy
- 0032 CD000D            ldy #L7
- 0035 34                pshx
- 0036 B745              tfr d,x
- 0038 CC0008            ldd #8
- 003B           X0:
- 003B 18027131          movw 2,y+,2,x+
- 003F 0434F9            dbne d,X0
- 0042 30                pulx
- 0043                   .dbline 38
- 0043           ; }
- 0043           ; }
- 0043           ; }
- 0043           ; }
- 0043           ; }
- 0043 160000            jsr _keyboard_init
- 0046 18200089          lbra L9
- 004A           L8:
- 004A                   .dbline 40
- 004A           ; }
- 004A           ; }
- 004A                   .dbline 41
- 004A           ; }
- 004A CC0001            ldd #1
- 004D ED1E              ldy -2,x
- 004F 8D0000            cpy #0
- 0052 2704              beq X1
- 0054           X2:
- 0054 59                lsld
- 0055 0436FC            dbne y,X2
- 0058           X1:
- 0058 7B0258            stab 0x258
- 005B                   .dbline 42
- 005B           ; }
- 005B 1600DE            jsr _keyboard_get_column
- 005E 6C1C              std -4,x
- 0060                   .dbline 45
- 0060           ; }
- 0060           ; }
- 0060           ; }
- 0060 EC1C              ldd -4,x
- 0062 8CFFFF            cpd #-1
- 0065 274F              beq L11
- 0067                   .dbline 45
- 0067                   .dbline 46
- 0067           ; }
- 0067 FC0000            ldd L5
- 006A AC1E              cpd -2,x
- 006C 260F              bne L13
- 006E FC0002            ldd L6
- 0071 AC1C              cpd -4,x
- 0073 2608              bne L13
- 0075                   .dbline 46
- 0075                   .dbline 47
- 0075           ; }
- 0075 CCF000            ldd #0xf000
- 0078 160134            jsr _keyboard_delay
- 007B                   .dbline 48
- 007B 2006              bra L14
- 007D           L13:
- 007D                   .dbline 48
- 007D           ; }
- 007D                   .dbline 49
- 007D           ; }
- 007D CC5000            ldd #20480
- 0080 160134            jsr _keyboard_delay
- 0083                   .dbline 50
- 0083           ; }
- 0083           L14:
- 0083                   .dbline 53
- 0083           ; }
- 0083           ; }
- 0083           ; }
- 0083 1600DE            jsr _keyboard_get_column
- 0086 6CE1EA            std -22,x
- 0089 EC1C              ldd -4,x
- 008B ACE1EA            cpd -22,x
- 008E 2633              bne L12
- 0090                   .dbline 53
- 0090                   .dbline 55
- 0090           ; }
- 0090           ; }
- 0090 18051E0000        movw -2,x,L5
- 0095                   .dbline 56
- 0095           ; }
- 0095 18051C0002        movw -4,x,L6
- 009A                   .dbline 57
- 009A           ; }
- 009A EC1E              ldd -2,x
- 009C 59                lsld
- 009D 59                lsld
- 009E 19E1EC            leay -20,x
- 00A1 6DE1E8            sty -24,x
- 00A4 E3E1E8            addd -24,x
- 00A7 6CE1E6            std -26,x
- 00AA EC1C              ldd -4,x
- 00AC E3E1E6            addd -26,x
- 00AF B7C6              xgdy
- 00B1 E640              ldab 0,y
- 00B3 87                clra
- 00B4 2024              bra L4
- 00B6           X3:
- 00B6                   .dbline 59
- 00B6           L11:
- 00B6                   .dbline 59
- 00B6           ; }
- 00B6           ; }
- 00B6 EC1E              ldd -2,x
- 00B8 BC0000            cpd L5
- 00BB 2606              bne L17
- 00BD                   .dbline 59
- 00BD                   .dbline 61
- 00BD           ; }
- 00BD           ; }
- 00BD CCFFFF            ldd #-1
- 00C0 7C0002            std L6
- 00C3                   .dbline 62
- 00C3           ; }
- 00C3           L17:
- 00C3           L12:
- 00C3                   .dbline 65
- 00C3 EC1E              ldd -2,x
- 00C5 C30001            addd #1
- 00C8 CD0004            ldy #4
- 00CB B7D6              exg x,y
- 00CD 1815              idivs
- 00CF B7D6              exg x,y
- 00D1 6C1E              std -2,x
- 00D3                   .dbline 66
- 00D3           L9:
- 00D3                   .dbline 40
- 00D3 1820FF73          lbra L8
- 00D7           X4:
- 00D7                   .dbline 68
- 00D7           ; }
- 00D7           ; }
- 00D7           ; }
- 00D7           ; }
- 00D7           ; }
- 00D7           ; }
- 00D7 CC0000            ldd #0
- 00DA                   .dbline -2
- 00DA           L4:
- 00DA B757              tfr x,s
- 00DC 30                pulx
- 00DD                   .dbline 0 ; func end
- 00DD 3D                rts
- 00DE                   .dbsym l char_map -20 A[16:4:4]c
- 00DE                   .dbsym l col -4 I
- 00DE                   .dbsym l row -2 I
- 00DE                   .dbend
- 00DE                   .dbfunc s keyboard_get_column _keyboard_get_column fI
- 00DE           ;          input -> -4,x
- 00DE           ;            col -> -2,x
- 00DE           _keyboard_get_column:
- 00DE 34                pshx
- 00DF B775              tfr s,x
- 00E1 1B9C              leas -4,sp
- 00E3                   .dbline -1
- 00E3                   .dbline 76
- 00E3           ; ä
- 00E3           ; ä
- 00E3           ; ä
- 00E3           ; ä
- 00E3           ; ä
- 00E3           ; ä
- 00E3           ; ä
- 00E3           ; ä
- 00E3                   .dbline 77
- 00E3           ; ä
+ 0011                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1/../lib/keyboard.c
+ 0011           L7:
+ 0011 3132              .byte 49,50
+ 0013 3341              .byte 51,'A
+ 0015 3435              .byte 52,53
+ 0017 3642              .byte 54,'B
+ 0019 3738              .byte 55,56
+ 001B 3943              .byte 57,'C
+ 001D 4530              .byte 'E,48
+ 001F 4644              .byte 'F,'D
+ 0021                   .dbfunc e keyboard_getchar _keyboard_getchar fc
+ 0021                   .dbsym s last_col L6 I
+ 0021                   .dbsym s last_row L5 I
+ 0021           ;       char_map -> -20,x
+ 0021           ;            col -> -4,x
+ 0021           ;            row -> -2,x
+ 0021           _keyboard_getchar::
+ 0021 34                pshx
+ 0022 B775              tfr s,x
+ 0024 1BF1E6            leas -26,sp
+ 0027                   .dbline -1
+ 0027                   .dbline 30
+ 0027           ;               }
+ 0027           ;       }
+ 0027           ;       
+ 0027           ;       return 0;
+ 0027           ; }
+ 0027           ; 
+ 0027                   .dbline 33
+ 0027           ; /*
+ 0027           ; *
+ 0027           ; * The submit program won't let us sumbit the extra files, so here they are... commented out.
+ 0027 CC0000            ldd #0
+ 002A 6C1E              std -2,x
+ 002C                   .dbline 34
+ 002C           ; *
+ 002C CC0000            ldd #0
+ 002F 6C1C              std -4,x
+ 0031                   .dbline 36
+ 0031           ; */
+ 0031           ; 
+ 0031 19E1EC            leay -20,x
+ 0034 B7C6              xgdy
+ 0036 CD0011            ldy #L7
+ 0039 34                pshx
+ 003A B745              tfr d,x
+ 003C CC0008            ldd #8
+ 003F           X0:
+ 003F 18027131          movw 2,y+,2,x+
+ 0043 0434F9            dbne d,X0
+ 0046 30                pulx
+ 0047                   .dbline 41
+ 0047           ; 
+ 0047           ; 
+ 0047           ; // // /* keyboard.c */
+ 0047           ; // // By Korey Conway and Tanzeel Rana
+ 0047           ; 
+ 0047 160000            jsr _keyboard_init
+ 004A 18200091          lbra L9
+ 004E           L8:
+ 004E                   .dbline 43
+ 004E           ; // #include <hcs12dp256.h>
+ 004E           ; 
+ 004E                   .dbline 44
+ 004E           ; // #define    KEYBOARD_ROWS           4
+ 004E 1C025008          bset 0x250,#8
+ 0052                   .dbline 45
+ 0052           ; // #define    KEYBOARD_COLUMNS        4
+ 0052 CC0001            ldd #1
+ 0055 ED1E              ldy -2,x
+ 0057 8D0000            cpy #0
+ 005A 2704              beq X1
+ 005C           X2:
+ 005C 59                lsld
+ 005D 0436FC            dbne y,X2
+ 0060           X1:
+ 0060 7B0258            stab 0x258
+ 0063                   .dbline 46
+ 0063           ; // #define KEYBOARD_DEBOUNCE_DELAY    0x5000
+ 0063 1D025008          bclr 0x250,#0x8
+ 0067                   .dbline 48
+ 0067           ; // #define KEYBOARD_REPEAT_DELAY      0xF000
+ 0067           ; 
+ 0067 1600EA            jsr _keyboard_get_column
+ 006A 6C1C              std -4,x
+ 006C                   .dbline 51
+ 006C           ; // char keyboard_getchar(void);
+ 006C           ; // static void keyboard_init(void);
+ 006C           ; // static void keyboard_delay(unsigned int delay);
+ 006C EC1C              ldd -4,x
+ 006E 8CFFFF            cpd #-1
+ 0071 274F              beq L11
+ 0073                   .dbline 51
+ 0073                   .dbline 52
+ 0073           ; // static int  keyboard_get_column(void);
+ 0073 FC0000            ldd L5
+ 0076 AC1E              cpd -2,x
+ 0078 260F              bne L13
+ 007A FC0002            ldd L6
+ 007D AC1C              cpd -4,x
+ 007F 2608              bne L13
+ 0081                   .dbline 52
+ 0081                   .dbline 53
+ 0081           ; 
+ 0081 CCF000            ldd #0xf000
+ 0084 160140            jsr _keyboard_delay
+ 0087                   .dbline 54
+ 0087 2006              bra L14
+ 0089           L13:
+ 0089                   .dbline 54
+ 0089           ; // /*
+ 0089                   .dbline 55
+ 0089           ;       // Initialize ports for keyboard
+ 0089 CC5000            ldd #20480
+ 008C 160140            jsr _keyboard_delay
+ 008F                   .dbline 56
+ 008F           ; // */
+ 008F           L14:
+ 008F                   .dbline 59
+ 008F           ; // static void keyboard_init()
+ 008F           ; // {
+ 008F           ;       // SPI1CR1 = 0x00; // Turn off SPI (not explained why yet)
+ 008F 1600EA            jsr _keyboard_get_column
+ 0092 6CE1EA            std -22,x
+ 0095 EC1C              ldd -4,x
+ 0097 ACE1EA            cpd -22,x
+ 009A 2633              bne L12
+ 009C                   .dbline 59
+ 009C                   .dbline 61
+ 009C           ;       // DDRP    = 0x0F; // Enable keyboard and disable motors on port P
+ 009C           ;       // DDRH   &= 0x0F; // Enable reading from keyboard (High bits of DDRH)
+ 009C 18051E0000        movw -2,x,L5
+ 00A1                   .dbline 62
+ 00A1           ;       // DDRH   |= 0x08; // Enable writing to U7_EN
+ 00A1 18051C0002        movw -4,x,L6
+ 00A6                   .dbline 63
+ 00A6           ; // }
+ 00A6 EC1E              ldd -2,x
+ 00A8 59                lsld
+ 00A9 59                lsld
+ 00AA 19E1EC            leay -20,x
+ 00AD 6DE1E8            sty -24,x
+ 00B0 E3E1E8            addd -24,x
+ 00B3 6CE1E6            std -26,x
+ 00B6 EC1C              ldd -4,x
+ 00B8 E3E1E6            addd -26,x
+ 00BB B7C6              xgdy
+ 00BD E640              ldab 0,y
+ 00BF 87                clra
+ 00C0 2024              bra L4
+ 00C2           X3:
+ 00C2                   .dbline 65
+ 00C2           L11:
+ 00C2                   .dbline 65
+ 00C2           ; 
+ 00C2           ; // /*
+ 00C2 EC1E              ldd -2,x
+ 00C4 BC0000            cpd L5
+ 00C7 2606              bne L17
+ 00C9                   .dbline 65
+ 00C9                   .dbline 67
+ 00C9           ;       // Get a character from the keyboard
+ 00C9           ; // */
+ 00C9 CCFFFF            ldd #-1
+ 00CC 7C0002            std L6
+ 00CF                   .dbline 68
+ 00CF           ; // char keyboard_getchar()
+ 00CF           L17:
+ 00CF           L12:
+ 00CF                   .dbline 71
+ 00CF EC1E              ldd -2,x
+ 00D1 C30001            addd #1
+ 00D4 CD0004            ldy #4
+ 00D7 B7D6              exg x,y
+ 00D9 1815              idivs
+ 00DB B7D6              exg x,y
+ 00DD 6C1E              std -2,x
+ 00DF                   .dbline 72
+ 00DF           L9:
+ 00DF                   .dbline 43
+ 00DF 1820FF6B          lbra L8
+ 00E3           X4:
+ 00E3                   .dbline 74
+ 00E3           ; // {
+ 00E3           ;       // static int last_row = -1;
+ 00E3           ;       // static int last_col = -1;
+ 00E3           ;       // int row = 0;
+ 00E3           ;       // int col = 0;
+ 00E3           ;       // char char_map[KEYBOARD_ROWS][KEYBOARD_COLUMNS] =
  00E3 CC0000            ldd #0
- 00E6 6C1E              std -2,x
- 00E8                   .dbline 78
- 00E8           ; ä
- 00E8                   ; vol
- 00E8 F60260            ldab 0x260
- 00EB 87                clra
- 00EC 47                asra
- 00ED 56                rorb
- 00EE 47                asra
- 00EF 56                rorb
- 00F0 47                asra
- 00F1 56                rorb
- 00F2 47                asra
- 00F3 56                rorb
- 00F4 6C1C              std -4,x
- 00F6                   .dbline 81
- 00F6           ; ä
- 00F6           ; ä
- 00F6           ; ä
- 00F6 EC1C              ldd -4,x
- 00F8 2605              bne L20
- 00FA                   .dbline 81
- 00FA CCFFFF            ldd #-1
- 00FD 2031              bra L19
- 00FF           L20:
- 00FF                   .dbline 85
- 00FF CC0000            ldd #0
- 0102 6C1E              std -2,x
- 0104           L22:
- 0104                   .dbline 85
- 0104           ; ä
- 0104           ; ä
- 0104           ; ä
- 0104           ; ä
- 0104                   .dbline 86
- 0104           ; ä
- 0104 EC1C              ldd -4,x
- 0106 ED1E              ldy -2,x
- 0108 8D0000            cpy #0
- 010B 2705              beq X5
- 010D           X6:
- 010D 47                asra
- 010E 56                rorb
- 010F 0436FB            dbne y,X6
- 0112           X5:
- 0112 8400              anda #0
- 0114 C401              andb #1
- 0116 8C0000            cpd #0
- 0119 2704              beq L26
- 011B                   .dbline 86
- 011B                   .dbline 87
- 011B           ; ä
- 011B EC1E              ldd -2,x
- 011D 2011              bra L19
- 011F           L26:
- 011F                   .dbline 89
- 011F           L23:
- 011F                   .dbline 85
- 011F EC1E              ldd -2,x
- 0121 C30001            addd #1
- 0124 6C1E              std -2,x
- 0126                   .dbline 85
- 0126 EC1E              ldd -2,x
- 0128 8C0004            cpd #4
- 012B 2DD7              blt L22
- 012D                   .dbline 91
- 012D           ; ä
- 012D           ; ä
- 012D           ; ä
- 012D           ; ä
- 012D CCFFFF            ldd #-1
- 0130                   .dbline -2
- 0130           L19:
- 0130 B757              tfr x,s
- 0132 30                pulx
- 0133                   .dbline 0 ; func end
- 0133 3D                rts
- 0134                   .dbsym l input -4 I
- 0134                   .dbsym l col -2 I
- 0134                   .dbend
- 0134                   .dbfunc s keyboard_delay _keyboard_delay fV
- 0134           ;          delay -> 2,x
- 0134           _keyboard_delay:
- 0134 3B                pshd
- 0135 34                pshx
- 0136 B775              tfr s,x
- 0138                   .dbline -1
- 0138                   .dbline 98
- 0138           ; ä
- 0138           ; ä
- 0138           ; ä
- 0138           ; ä
- 0138           ; ä
- 0138           ; ä
- 0138           ; ä
- 0138                   .dbline 99
- 0138 2007              bra L32
- 013A           L29:
- 013A                   .dbline 99
- 013A                   .dbline 99
- 013A           L30:
- 013A                   .dbline 99
- 013A EC02              ldd 2,x
- 013C 830001            subd #1
- 013F 6C02              std 2,x
- 0141           L32:
- 0141                   .dbline 99
- 0141           ; ä
- 0141 EC02              ldd 2,x
- 0143 26F5              bne L29
- 0145                   .dbline -2
- 0145                   .dbline 100
- 0145           ; ä
- 0145           L28:
- 0145 B757              tfr x,s
- 0147 30                pulx
- 0148 1B82              leas 2,sp
- 014A                   .dbline 0 ; func end
- 014A 3D                rts
- 014B                   .dbsym l delay 2 i
- 014B                   .dbend
- 014B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1\assign41.c
- 014B                   .dbfunc e main _main fI
- 014B           ;            key -> -1,x
- 014B           _main::
- 014B 34                pshx
- 014C B775              tfr s,x
- 014E 1B9E              leas -2,sp
- 0150                   .dbline -1
- 0150                   .dbline 6
- 0150                   .dbline 10
- 0150 CC001A            ldd #26
- 0153 160000            jsr _setbaud
- 0156 2013              bra L35
- 0158           L34:
- 0158                   .dbline 12
- 0158                   .dbline 13
- 0158 16001D            jsr _keyboard_getchar
- 015B 6B1F              stab -1,x
- 015D                   .dbline 14
- 015D E61F              ldab -1,x
- 015F 87                clra
- 0160 160000            jsr _putchar
- 0163                   .dbline 16
- 0163 E61F              ldab -1,x
- 0165 C130              cmpb #48
- 0167 2602              bne L37
- 0169                   .dbline 16
- 0169                   .dbline 17
- 0169 2002              bra L36
- 016B           L37:
- 016B                   .dbline 19
- 016B           L35:
- 016B                   .dbline 12
- 016B 20EB              bra L34
- 016D           L36:
- 016D                   .dbline 21
- 016D CC0001            ldd #1
- 0170                   .dbline -2
- 0170           L33:
- 0170 B757              tfr x,s
- 0172 30                pulx
- 0173                   .dbline 0 ; func end
- 0173 3D                rts
- 0174                   .dbsym l key -1 c
- 0174                   .dbend
+ 00E6                   .dbline -2
+ 00E6           L4:
+ 00E6 B757              tfr x,s
+ 00E8 30                pulx
+ 00E9                   .dbline 0 ; func end
+ 00E9 3D                rts
+ 00EA                   .dbsym l char_map -20 A[16:4:4]c
+ 00EA                   .dbsym l col -4 I
+ 00EA                   .dbsym l row -2 I
+ 00EA                   .dbend
+ 00EA                   .dbfunc s keyboard_get_column _keyboard_get_column fI
+ 00EA           ;          input -> -4,x
+ 00EA           ;            col -> -2,x
+ 00EA           _keyboard_get_column:
+ 00EA 34                pshx
+ 00EB B775              tfr s,x
+ 00ED 1B9C              leas -4,sp
+ 00EF                   .dbline -1
+ 00EF                   .dbline 82
+ 00EF           ;               // {{'1', '2', '3', 'A'},
+ 00EF           ;               // {'4', '5', '6', 'B'},
+ 00EF           ;               // {'7', '8', '9', 'C'},
+ 00EF           ;               // {'E', '0', 'F', 'D'}};
+ 00EF           ;       
+ 00EF           ;       // keyboard_init();
+ 00EF           ; 
+ 00EF           ;       // while ( 1 ) {
+ 00EF                   .dbline 83
+ 00EF           ;               // PTM |= 0x08;         // Set U7_EN high (PM3)
+ 00EF CC0000            ldd #0
+ 00F2 6C1E              std -2,x
+ 00F4                   .dbline 84
+ 00F4           ;               // PTP  = 0x01 << row;  // Enable the correct row
+ 00F4                   ; vol
+ 00F4 F60260            ldab 0x260
+ 00F7 87                clra
+ 00F8 47                asra
+ 00F9 56                rorb
+ 00FA 47                asra
+ 00FB 56                rorb
+ 00FC 47                asra
+ 00FD 56                rorb
+ 00FE 47                asra
+ 00FF 56                rorb
+ 0100 6C1C              std -4,x
+ 0102                   .dbline 87
+ 0102           ;               // PTM &= ~0x08;                // Set U7_EN low (PM3)
+ 0102           ;               
+ 0102           ;               // col = keyboard_get_column(); // Get the button that is pushed in that row (if any)
+ 0102 EC1C              ldd -4,x
+ 0104 2605              bne L20
+ 0106                   .dbline 87
+ 0106 CCFFFF            ldd #-1
+ 0109 2031              bra L19
+ 010B           L20:
+ 010B                   .dbline 91
+ 010B CC0000            ldd #0
+ 010E 6C1E              std -2,x
+ 0110           L22:
+ 0110                   .dbline 91
+ 0110           ; 
+ 0110           ;               // // Only react if a button was pushed
+ 0110           ;               // if ( col != -1 ) {
+ 0110           ;                       // if ( last_row == row && last_col == col ) {
+ 0110                   .dbline 92
+ 0110           ;                               // keyboard_delay(KEYBOARD_REPEAT_DELAY); // add delay for debounce
+ 0110 EC1C              ldd -4,x
+ 0112 ED1E              ldy -2,x
+ 0114 8D0000            cpy #0
+ 0117 2705              beq X5
+ 0119           X6:
+ 0119 47                asra
+ 011A 56                rorb
+ 011B 0436FB            dbne y,X6
+ 011E           X5:
+ 011E 8400              anda #0
+ 0120 C401              andb #1
+ 0122 8C0000            cpd #0
+ 0125 2704              beq L26
+ 0127                   .dbline 92
+ 0127                   .dbline 93
+ 0127           ;                       // } else {
+ 0127 EC1E              ldd -2,x
+ 0129 2011              bra L19
+ 012B           L26:
+ 012B                   .dbline 95
+ 012B           L23:
+ 012B                   .dbline 91
+ 012B EC1E              ldd -2,x
+ 012D C30001            addd #1
+ 0130 6C1E              std -2,x
+ 0132                   .dbline 91
+ 0132 EC1E              ldd -2,x
+ 0134 8C0004            cpd #4
+ 0137 2DD7              blt L22
+ 0139                   .dbline 97
+ 0139           ;                               // keyboard_delay(KEYBOARD_DEBOUNCE_DELAY); // add simple delay for repeat
+ 0139           ;                       // }
+ 0139           ; 
+ 0139           ;                       // // Check if the same button is still being pushed
+ 0139 CCFFFF            ldd #-1
+ 013C                   .dbline -2
+ 013C           L19:
+ 013C B757              tfr x,s
+ 013E 30                pulx
+ 013F                   .dbline 0 ; func end
+ 013F 3D                rts
+ 0140                   .dbsym l input -4 I
+ 0140                   .dbsym l col -2 I
+ 0140                   .dbend
+ 0140                   .dbfunc s keyboard_delay _keyboard_delay fV
+ 0140           ;          delay -> 2,x
+ 0140           _keyboard_delay:
+ 0140 3B                pshd
+ 0141 34                pshx
+ 0142 B775              tfr s,x
+ 0144                   .dbline -1
+ 0144                   .dbline 104
+ 0144           ;                       // if ( col == keyboard_get_column() ) {
+ 0144           ;                               // // save the row/col of the character for repeat delays then return the char
+ 0144           ;                               // last_row = row;
+ 0144           ;                               // last_col = col;
+ 0144           ;                               // return char_map[row][col];
+ 0144           ;                       // }
+ 0144           ;               // } else if ( row == last_row )  {
+ 0144                   .dbline 105
+ 0144 2007              bra L32
+ 0146           L29:
+ 0146                   .dbline 105
+ 0146                   .dbline 105
+ 0146           L30:
+ 0146                   .dbline 105
+ 0146 EC02              ldd 2,x
+ 0148 830001            subd #1
+ 014B 6C02              std 2,x
+ 014D           L32:
+ 014D                   .dbline 105
+ 014D           ;                       // // clear the memory of the last column because the button was released so we don't want a repeat delay anymore
+ 014D EC02              ldd 2,x
+ 014F 26F5              bne L29
+ 0151                   .dbline -2
+ 0151                   .dbline 106
+ 0151           ;                       // last_col = -1; 
+ 0151           L28:
+ 0151 B757              tfr x,s
+ 0153 30                pulx
+ 0154 1B82              leas 2,sp
+ 0156                   .dbline 0 ; func end
+ 0156 3D                rts
+ 0157                   .dbsym l delay 2 i
+ 0157                   .dbend
+ 0157                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART1~1\assign41.c
+ 0157                   .dbfunc e main _main fI
+ 0157           ;            key -> -1,x
+ 0157           _main::
+ 0157 34                pshx
+ 0158 B775              tfr s,x
+ 015A 1B9E              leas -2,sp
+ 015C                   .dbline -1
+ 015C                   .dbline 13
+ 015C                   .dbline 17
+ 015C CC001A            ldd #26
+ 015F 160000            jsr _setbaud
+ 0162 2013              bra L35
+ 0164           L34:
+ 0164                   .dbline 19
+ 0164                   .dbline 20
+ 0164 160021            jsr _keyboard_getchar
+ 0167 6B1F              stab -1,x
+ 0169                   .dbline 21
+ 0169 E61F              ldab -1,x
+ 016B 87                clra
+ 016C 160000            jsr _putchar
+ 016F                   .dbline 23
+ 016F E61F              ldab -1,x
+ 0171 C130              cmpb #48
+ 0173 2602              bne L37
+ 0175                   .dbline 23
+ 0175                   .dbline 24
+ 0175 2002              bra L36
+ 0177           L37:
+ 0177                   .dbline 26
+ 0177           L35:
+ 0177                   .dbline 19
+ 0177 20EB              bra L34
+ 0179           L36:
+ 0179                   .dbline 28
+ 0179 CC0000            ldd #0
+ 017C                   .dbline -2
+ 017C           L33:
+ 017C B757              tfr x,s
+ 017E 30                pulx
+ 017F                   .dbline 0 ; func end
+ 017F 3D                rts
+ 0180                   .dbsym l key -1 c
+ 0180                   .dbend

@@ -1,5 +1,10 @@
 // By Korey Conway and Tanzeel Rana
 
+/*
+* READ THIS NOTE!!!! INCLUDED FILES ARE IN THIS FILE, COMMENTED OUT BELOW
+* The submit program won't let us sumbit the extra files, so here they are... commented out.
+*/
+
 #include <hcs12dp256.h>
 #include <stdio.h>
 #include "../lib/keyboard.c"
@@ -30,7 +35,8 @@ int main()
 */
 
 
-// /* keyboard.c */
+
+// // /* keyboard.c */
 // // By Korey Conway and Tanzeel Rana
 
 // #include <hcs12dp256.h>
@@ -141,7 +147,15 @@ int main()
 
 
 
+
+
+
+
+
+
+
 // /* lcd.c */
+
 // // By Korey Conway and Tanzeel Rana
 
 // asm (".include 'basicLCD.s'");
@@ -186,9 +200,6 @@ int main()
 
 // /*
 	// Print a string on the top line
-// */
-// void lcd_print_top(char *string)
-// {
 	// lcd_print(string, LCD_ROW_TOP);
 // }
 
@@ -205,6 +216,7 @@ int main()
 
 
 // /* stepper.c */
+
 // // By Korey Conway and Tanzeel Rana
 
 // #include <hcs12dp256.h>
@@ -213,10 +225,10 @@ int main()
 // #define STEPPER_STEPS_PER_QUARTER	5
 // #define STEPPER_STEPS_PER_TURN		STEPPER_STEPS_PER_QUARTER*4
 
-// void stepper_init(void);
+// static void stepper_init(void);
 // void stepper_turn_cw(int steps);
 // void stepper_turn_ccw(int steps);
-// void stepper_set_step(int step);
+// static void stepper_set_step(int step);
 // static void stepper_delay(unsigned int delay);
 
 // /*
@@ -224,6 +236,7 @@ int main()
 // */
 // void stepper_turn_cw(int steps)
 // {
+	// stepper_init();
 	// for ( ; steps > 0; steps-- ) {
 		// stepper_set_step(3 - (steps % 4));
 	// }
@@ -234,15 +247,16 @@ int main()
 // */
 // void stepper_turn_ccw(int steps)
 // {
+	// stepper_init();
 	// for ( ; steps > 0; steps-- ) {
 		// stepper_set_step(steps % 4);
 	// }
 // }
 
 // /*
-
+	// Perform a step (used internally)
 // */
-// void stepper_set_step(int step)
+// static void stepper_set_step(int step)
 // {
 	// int coded_step = 0;
 	
@@ -267,11 +281,11 @@ int main()
 // /*
 	// Initialize ports for the stepper motor
 // */
-// void stepper_init()
+// static void stepper_init()
 // {
-	// DDRP = DDRP | 0x20; // Enable output for the enable bit
-	// DDRT = DDRT | 0x60; // Enable output to the stepper motor
-	// PTP  = PTP  | 0x20; // Enable the stepper motor
+	// DDRP |= 0x20; // Enable output for the enable bit
+	// DDRT |= 0x60; // Enable output to the stepper motor
+	// PTP  |= 0x20; // Enable the stepper motor
 // }
 
 // /*
@@ -281,4 +295,8 @@ int main()
 // {
 	// for ( ; delay > 0 ; delay-- ) {}
 // }
+
+// */
+// void lcd_print_top(char *string)
+// {
 

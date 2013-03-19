@@ -6,7 +6,9 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
 --- 0000                   .dbfunc s keyboard_init _keyboard_init fV
 --- 0000           _keyboard_init:
 --- 0000                   .dbline -1
---- 0000                   .dbline 17
+--- 0000                   .dbline 19
+--- 0000           ; // By Korey Conway and Tanzeel Rana
+--- 0000           ; 
 --- 0000           ; #include <hcs12dp256.h>
 --- 0000           ; #include <stdio.h>
 --- 0000           ; #include "../lib/keyboard.c"
@@ -24,21 +26,21 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
 --- 0000           ;       
 --- 0000           ;       // Setup keyboard, terminal, and lcd
 --- 0000           ;       lcd_init();
---- 0000                   .dbline 18
+--- 0000                   .dbline 20
 --- 0000           ;       
 --- 0000 7900F0            clr 0xf0
---- 0003                   .dbline 19
+--- 0003                   .dbline 21
 --- 0003           ;       // Initial lcd display
 --- 0003 C60F              ldab #15
 --- 0005 7B025A            stab 0x25a
---- 0008                   .dbline 20
+--- 0008                   .dbline 22
 --- 0008           ;       lcd_display_speed(speed);
 --- 0008 1D0262F0          bclr 0x262,#0xf0
---- 000C                   .dbline 21
+--- 000C                   .dbline 23
 --- 000C           ;       lcd_display_temperature(temp);
 --- 000C 1C026208          bset 0x262,#8
 --- 0010                   .dbline -2
---- 0010                   .dbline 22
+--- 0010                   .dbline 24
 --- 0010           ;       
 --- 0010           L3:
 --- 0010                   .dbline 0 ; func end
@@ -80,24 +82,24 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  404C  B775              tfr s,x
  404E  1BF1E6            leas -26,sp
  4051                    .dbline -1
- 4051                    .dbline 28
+ 4051                    .dbline 30
  4051            ;       while ( 1 ) {
  4051            ;               key = keyboard_getchar();
  4051            ;               putchar(key);
  4051            ;               
  4051            ;               if ( key == '0' ) {
  4051            ;                       break;
- 4051                    .dbline 31
+ 4051                    .dbline 33
  4051            ;               } else if ( key == 'E' ) {
  4051            ;                       ++speed;
  4051            ;                       printf("Increasing speed to %d\n", speed);
  4051  CC0000            ldd #0
  4054  6C1E              std -2,x
- 4056                    .dbline 32
+ 4056                    .dbline 34
  4056            ;                       lcd_display_speed(speed);
  4056  CC0000            ldd #0
  4059  6C1C              std -4,x
- 405B                    .dbline 34
+ 405B                    .dbline 36
  405B            ;                       lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
  405B            ;               } else if ( key == 'D' ) {
  405B  19E1EC            leay -20,x
@@ -110,7 +112,7 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4069  18027131          movw 2,y+,2,x+
  406D  0434F9            dbne d,X0
  4070  30                pulx
- 4071                    .dbline 39
+ 4071                    .dbline 41
  4071            ;                       --speed;
  4071            ;                       printf("Decreasing speed to %d\n", speed);
  4071            ;                       lcd_display_speed(speed);
@@ -119,13 +121,13 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4071  16402A            jsr _keyboard_init
  4074  18200091          lbra L9
  4078            L8:
- 4078                    .dbline 41
+ 4078                    .dbline 43
  4078            ;       }
  4078            ;       
- 4078                    .dbline 42
- 4078            ;       return 1;
+ 4078                    .dbline 44
+ 4078            ;       return 0;
  4078  1C025008          bset 0x250,#8
- 407C                    .dbline 43
+ 407C                    .dbline 45
  407C            ; }
  407C  CC0001            ldd #1
  407F  ED1E              ldy -2,x
@@ -136,23 +138,23 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4087  0436FC            dbne y,X2
  408A            X1:
  408A  7B0258            stab 0x258
- 408D                    .dbline 44
+ 408D                    .dbline 46
  408D            ; 
  408D  1D025008          bclr 0x250,#0x8
- 4091                    .dbline 46
+ 4091                    .dbline 48
  4091            ; void lcd_display_speed(int speed)
  4091            ; {
  4091  164114            jsr _keyboard_get_column
  4094  6C1C              std -4,x
- 4096                    .dbline 49
+ 4096                    .dbline 51
  4096            ;       char *string;
  4096            ;       sprintf(string, "Speed: %d", speed);
  4096            ;       lcd_print_top(string);
  4096  EC1C              ldd -4,x
  4098  8CFFFF            cpd #-1
  409B  274F              beq L11
- 409D                    .dbline 49
- 409D                    .dbline 50
+ 409D                    .dbline 51
+ 409D                    .dbline 52
  409D            ; }
  409D  FC1000            ldd L5
  40A0  AC1E              cpd -2,x
@@ -160,24 +162,24 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  40A4  FC1002            ldd L6
  40A7  AC1C              cpd -4,x
  40A9  2608              bne L13
- 40AB                    .dbline 50
- 40AB                    .dbline 51
+ 40AB                    .dbline 52
+ 40AB                    .dbline 53
  40AB            ; 
  40AB  CCF000            ldd #0xf000
  40AE  16416A            jsr _keyboard_delay
- 40B1                    .dbline 52
+ 40B1                    .dbline 54
  40B1  2006              bra L14
  40B3            L13:
- 40B3                    .dbline 52
+ 40B3                    .dbline 54
  40B3            ; void lcd_display_temperature(int temp)
- 40B3                    .dbline 53
+ 40B3                    .dbline 55
  40B3            ; {
  40B3  CC5000            ldd #20480
  40B6  16416A            jsr _keyboard_delay
- 40B9                    .dbline 54
+ 40B9                    .dbline 56
  40B9            ;       char *string;
  40B9            L14:
- 40B9                    .dbline 57
+ 40B9                    .dbline 59
  40B9            ;       sprintf(string, "Temperature: %dC", temp);
  40B9            ;       lcd_print_bottom(string);
  40B9            ; }
@@ -186,15 +188,15 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  40BF  EC1C              ldd -4,x
  40C1  ACE1EA            cpd -22,x
  40C4  2633              bne L12
- 40C6                    .dbline 57
  40C6                    .dbline 59
+ 40C6                    .dbline 61
  40C6            ; }
  40C6            ; }
  40C6  18051E1000        movw -2,x,L5
- 40CB                    .dbline 60
+ 40CB                    .dbline 62
  40CB            ; }
  40CB  18051C1002        movw -4,x,L6
- 40D0                    .dbline 61
+ 40D0                    .dbline 63
  40D0            ; }
  40D0  EC1E              ldd -2,x
  40D2  59                lsld
@@ -210,25 +212,25 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  40E9  87                clra
  40EA  2024              bra L4
  40EC            X3:
- 40EC                    .dbline 63
+ 40EC                    .dbline 65
  40EC            L11:
- 40EC                    .dbline 63
+ 40EC                    .dbline 65
  40EC            ; }
  40EC            ; }
  40EC  EC1E              ldd -2,x
  40EE  BC1000            cpd L5
  40F1  2606              bne L17
- 40F3                    .dbline 63
  40F3                    .dbline 65
+ 40F3                    .dbline 67
  40F3            ; }
  40F3            ; }
  40F3  CCFFFF            ldd #-1
  40F6  7C1002            std L6
- 40F9                    .dbline 66
+ 40F9                    .dbline 68
  40F9            ; }
  40F9            L17:
  40F9            L12:
- 40F9                    .dbline 69
+ 40F9                    .dbline 71
  40F9  EC1E              ldd -2,x
  40FB  C30001            addd #1
  40FE  CD0004            ldy #4
@@ -236,12 +238,12 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4103  1815              idivs
  4105  B7D6              exg x,y
  4107  6C1E              std -2,x
- 4109                    .dbline 70
+ 4109                    .dbline 72
  4109            L9:
- 4109                    .dbline 41
+ 4109                    .dbline 43
  4109  1820FF6B          lbra L8
  410D            X4:
- 410D                    .dbline 72
+ 410D                    .dbline 74
  410D            ; }
  410D            ; }
  410D            ; }
@@ -267,7 +269,7 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4115  B775              tfr s,x
  4117  1B9C              leas -4,sp
  4119                    .dbline -1
- 4119                    .dbline 80
+ 4119                    .dbline 82
  4119            ; ä
  4119            ; ä
  4119            ; ä
@@ -276,11 +278,11 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4119            ; ä
  4119            ; ä
  4119            ; ä
- 4119                    .dbline 81
+ 4119                    .dbline 83
  4119            ; ä
  4119  CC0000            ldd #0
  411C  6C1E              std -2,x
- 411E                    .dbline 82
+ 411E                    .dbline 84
  411E            ; ä
  411E                    ; vol
  411E  F60260            ldab 0x260
@@ -294,26 +296,26 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4128  47                asra
  4129  56                rorb
  412A  6C1C              std -4,x
- 412C                    .dbline 85
+ 412C                    .dbline 87
  412C            ; ä
  412C            ; ä
  412C            ; ä
  412C  EC1C              ldd -4,x
  412E  2605              bne L20
- 4130                    .dbline 85
+ 4130                    .dbline 87
  4130  CCFFFF            ldd #-1
  4133  2031              bra L19
  4135            L20:
- 4135                    .dbline 89
+ 4135                    .dbline 91
  4135  CC0000            ldd #0
  4138  6C1E              std -2,x
  413A            L22:
- 413A                    .dbline 89
+ 413A                    .dbline 91
  413A            ; ä
  413A            ; ä
  413A            ; ä
  413A            ; ä
- 413A                    .dbline 90
+ 413A                    .dbline 92
  413A            ; ä
  413A  EC1C              ldd -4,x
  413C  ED1E              ldy -2,x
@@ -328,23 +330,23 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  414A  C401              andb #1
  414C  8C0000            cpd #0
  414F  2704              beq L26
- 4151                    .dbline 90
- 4151                    .dbline 91
+ 4151                    .dbline 92
+ 4151                    .dbline 93
  4151            ; ä
  4151  EC1E              ldd -2,x
  4153  2011              bra L19
  4155            L26:
- 4155                    .dbline 93
+ 4155                    .dbline 95
  4155            L23:
- 4155                    .dbline 89
+ 4155                    .dbline 91
  4155  EC1E              ldd -2,x
  4157  C30001            addd #1
  415A  6C1E              std -2,x
- 415C                    .dbline 89
+ 415C                    .dbline 91
  415C  EC1E              ldd -2,x
  415E  8C0004            cpd #4
  4161  2DD7              blt L22
- 4163                    .dbline 95
+ 4163                    .dbline 97
  4163            ; ä
  4163            ; ä
  4163            ; ä
@@ -366,7 +368,7 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  416B  34                pshx
  416C  B775              tfr s,x
  416E                    .dbline -1
- 416E                    .dbline 102
+ 416E                    .dbline 104
  416E            ; ä
  416E            ; ä
  416E            ; ä
@@ -374,23 +376,23 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  416E            ; ä
  416E            ; ä
  416E            ; ä
- 416E                    .dbline 103
+ 416E                    .dbline 105
  416E  2007              bra L32
  4170            L29:
- 4170                    .dbline 103
- 4170                    .dbline 103
+ 4170                    .dbline 105
+ 4170                    .dbline 105
  4170            L30:
- 4170                    .dbline 103
+ 4170                    .dbline 105
  4170  EC02              ldd 2,x
  4172  830001            subd #1
  4175  6C02              std 2,x
  4177            L32:
- 4177                    .dbline 103
+ 4177                    .dbline 105
  4177            ; ä
  4177  EC02              ldd 2,x
  4179  26F5              bne L29
  417B                    .dbline -2
- 417B                    .dbline 104
+ 417B                    .dbline 106
  417B            ; ä
  417B            L28:
  417B  B757              tfr x,s
@@ -1081,11 +1083,11 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4269                    .dbfunc e lcd_init _lcd_init fV
  4269            _lcd_init::
  4269                    .dbline -1
- 4269                    .dbline 19
- 4269                    .dbline 20
+ 4269                    .dbline 21
+ 4269                    .dbline 22
  4269  164199            jsr _Lcd2PP_Init
  426C                    .dbline -2
- 426C                    .dbline 21
+ 426C                    .dbline 23
  426C            L33:
  426C                    .dbline 0 ; func end
  426C  3D                rts
@@ -1100,29 +1102,29 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  426F  B775              tfr s,x
  4271  1B9E              leas -2,sp
  4273                    .dbline -1
- 4273                    .dbline 27
- 4273                    .dbline 28
+ 4273                    .dbline 29
+ 4273                    .dbline 30
  4273  C60F              ldab #15
  4275  7B0242            stab 0x242
- 4278                    .dbline 29
+ 4278                    .dbline 31
  4278  790240            clr 0x240
- 427B                    .dbline 30
+ 427B                    .dbline 32
  427B  C6FE              ldab #254
  427D  7B0252            stab 0x252
- 4280                    .dbline 31
+ 4280                    .dbline 33
  4280  790250            clr 0x250
- 4283                    .dbline 32
+ 4283                    .dbline 34
  4283  1C025A0F          bset 0x25a,#15
- 4287                    .dbline 33
+ 4287                    .dbline 35
  4287  1D00F040          bclr 0xf0,#0x40
- 428B                    .dbline 35
+ 428B                    .dbline 37
  428B  EC06              ldd 6,x
  428D  87                clra
  428E  164181            jsr _LCD_instruction
  4291  2013              bra L36
  4293            L35:
- 4293                    .dbline 36
- 4293                    .dbline 37
+ 4293                    .dbline 38
+ 4293                    .dbline 39
  4293  1802021E          movw 2,x,-2,x
  4297  EC1E              ldd -2,x
  4299  C30001            addd #1
@@ -1131,14 +1133,14 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  42A0  E640              ldab 0,y
  42A2  87                clra
  42A3  16418D            jsr _LCD_display
- 42A6                    .dbline 38
+ 42A6                    .dbline 40
  42A6            L36:
- 42A6                    .dbline 36
+ 42A6                    .dbline 38
  42A6  ED02              ldy 2,x
  42A8  E740              tst 0,y
  42AA  26E7              bne L35
  42AC                    .dbline -2
- 42AC                    .dbline 39
+ 42AC                    .dbline 41
  42AC            L34:
  42AC  B757              tfr x,s
  42AE  30                pulx
@@ -1156,14 +1158,14 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  42B4  B775              tfr s,x
  42B6  1B9E              leas -2,sp
  42B8                    .dbline -1
- 42B8                    .dbline 45
- 42B8                    .dbline 46
+ 42B8                    .dbline 47
+ 42B8                    .dbline 48
  42B8  CC0000            ldd #0
  42BB  6C80              std 0,sp
  42BD  EC02              ldd 2,x
  42BF  16426D            jsr _lcd_print
  42C2                    .dbline -2
- 42C2                    .dbline 47
+ 42C2                    .dbline 49
  42C2            L38:
  42C2  B757              tfr x,s
  42C4  30                pulx
@@ -1180,14 +1182,14 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  42CA  B775              tfr s,x
  42CC  1B9E              leas -2,sp
  42CE                    .dbline -1
- 42CE                    .dbline 53
- 42CE                    .dbline 54
+ 42CE                    .dbline 55
+ 42CE                    .dbline 56
  42CE  CC00C0            ldd #192
  42D1  6C80              std 0,sp
  42D3  EC02              ldd 2,x
  42D5  16426D            jsr _lcd_print
  42D8                    .dbline -2
- 42D8                    .dbline 55
+ 42D8                    .dbline 57
  42D8            L39:
  42D8  B757              tfr x,s
  42DA  30                pulx
@@ -1222,84 +1224,84 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  42DF  B775              tfr s,x
  42E1  1B9C              leas -4,sp
  42E3                    .dbline -1
- 42E3                    .dbline 13
- 42E3                    .dbline 17
+ 42E3                    .dbline 15
+ 42E3                    .dbline 19
  42E3  164269            jsr _lcd_init
- 42E6                    .dbline 20
+ 42E6                    .dbline 22
  42E6  FC1004            ldd _speed
  42E9  16435E            jsr _lcd_display_speed
- 42EC                    .dbline 21
+ 42EC                    .dbline 23
  42EC  FC1006            ldd _temp
  42EF  16437D            jsr _lcd_display_temperature
  42F2  2061              bra L42
  42F4            L41:
- 42F4                    .dbline 23
- 42F4                    .dbline 24
+ 42F4                    .dbline 25
+ 42F4                    .dbline 26
  42F4  16404B            jsr _keyboard_getchar
  42F7  6B1F              stab -1,x
- 42F9                    .dbline 25
+ 42F9                    .dbline 27
  42F9  E61F              ldab -1,x
  42FB  87                clra
  42FC  1643E7            jsr _putchar
- 42FF                    .dbline 27
+ 42FF                    .dbline 29
  42FF  E61F              ldab -1,x
  4301  C130              cmpb #48
  4303  2602              bne L44
- 4305                    .dbline 27
- 4305                    .dbline 28
+ 4305                    .dbline 29
+ 4305                    .dbline 30
  4305  2050              bra L43
  4307            L44:
- 4307                    .dbline 29
+ 4307                    .dbline 31
  4307  E61F              ldab -1,x
  4309  C145              cmpb #69
  430B  2622              bne L46
- 430D                    .dbline 29
- 430D                    .dbline 30
+ 430D                    .dbline 31
+ 430D                    .dbline 32
  430D  FC1004            ldd _speed
  4310  C30001            addd #1
  4313  7C1004            std _speed
- 4316                    .dbline 31
+ 4316                    .dbline 33
  4316  1801801004        movw _speed,0,sp
  431B  CC43CF            ldd #L48
  431E  164837            jsr _printf
- 4321                    .dbline 32
+ 4321                    .dbline 34
  4321  FC1004            ldd _speed
  4324  16435E            jsr _lcd_display_speed
- 4327                    .dbline 33
+ 4327                    .dbline 35
  4327  FC1006            ldd _temp
  432A  16437D            jsr _lcd_display_temperature
- 432D                    .dbline 34
+ 432D                    .dbline 36
  432D  2026              bra L47
  432F            L46:
- 432F                    .dbline 34
+ 432F                    .dbline 36
  432F  E61F              ldab -1,x
  4331  C144              cmpb #68
  4333  2620              bne L49
- 4335                    .dbline 34
- 4335                    .dbline 35
+ 4335                    .dbline 36
+ 4335                    .dbline 37
  4335  FC1004            ldd _speed
  4338  830001            subd #1
  433B  7C1004            std _speed
- 433E                    .dbline 36
+ 433E                    .dbline 38
  433E  1801801004        movw _speed,0,sp
  4343  CC43B7            ldd #L51
  4346  164837            jsr _printf
- 4349                    .dbline 37
+ 4349                    .dbline 39
  4349  FC1004            ldd _speed
  434C  16435E            jsr _lcd_display_speed
- 434F                    .dbline 38
+ 434F                    .dbline 40
  434F  FC1006            ldd _temp
  4352  16437D            jsr _lcd_display_temperature
- 4355                    .dbline 39
+ 4355                    .dbline 41
  4355            L49:
  4355            L47:
- 4355                    .dbline 40
+ 4355                    .dbline 42
  4355            L42:
- 4355                    .dbline 23
+ 4355                    .dbline 25
  4355  209D              bra L41
  4357            L43:
- 4357                    .dbline 42
- 4357  CC0001            ldd #1
+ 4357                    .dbline 44
+ 4357  CC0000            ldd #0
  435A                    .dbline -2
  435A            L40:
  435A  B757              tfr x,s
@@ -1317,18 +1319,18 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4360  B775              tfr s,x
  4362  1B9A              leas -6,sp
  4364                    .dbline -1
- 4364                    .dbline 46
  4364                    .dbline 48
+ 4364                    .dbline 50
  4364  18020282          movw 2,x,2,sp
  4368  CC43AD            ldd #L53
  436B  6C80              std 0,sp
  436D  EC1E              ldd -2,x
  436F  164885            jsr _sprintf
- 4372                    .dbline 49
+ 4372                    .dbline 51
  4372  EC1E              ldd -2,x
  4374  1642B2            jsr _lcd_print_top
  4377                    .dbline -2
- 4377                    .dbline 50
+ 4377                    .dbline 52
  4377            L52:
  4377  B757              tfr x,s
  4379  30                pulx
@@ -1347,18 +1349,18 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  437F  B775              tfr s,x
  4381  1B9A              leas -6,sp
  4383                    .dbline -1
- 4383                    .dbline 53
  4383                    .dbline 55
+ 4383                    .dbline 57
  4383  18020282          movw 2,x,2,sp
  4387  CC439C            ldd #L55
  438A  6C80              std 0,sp
  438C  EC1E              ldd -2,x
  438E  164885            jsr _sprintf
- 4391                    .dbline 56
+ 4391                    .dbline 58
  4391  EC1E              ldd -2,x
  4393  1642C8            jsr _lcd_print_bottom
  4396                    .dbline -2
- 4396                    .dbline 57
+ 4396                    .dbline 59
  4396            L54:
  4396  B757              tfr x,s
  4398  30                pulx

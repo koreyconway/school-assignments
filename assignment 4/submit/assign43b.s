@@ -27,13 +27,16 @@ _stepper_turn_cw::
 ; 
 ; // Global variables
 ; int collision_detected = 0;
-; int temperature = 0;
 ; 
+; int main()
 	.dbline 20
+; {
+	jsr _stepper_init
+	.dbline 21
 	bra L7
 L4:
-	.dbline 20
 	.dbline 21
+	.dbline 22
 	ldd 2,x
 	ldy #4
 	exg x,y
@@ -43,22 +46,22 @@ L4:
 	ldd #3
 	subd -2,x
 	jsr _stepper_set_step
-	.dbline 22
+	.dbline 23
 L5:
-	.dbline 20
+	.dbline 21
 	ldd 2,x
 	subd #1
 	std 2,x
 L7:
-	.dbline 20
-; int main()
+	.dbline 21
+; 	char key;
 	ldd 2,x
 	bgt L4
 	.dbline -2
-	.dbline 23
-; {
+	.dbline 24
+; 
+; 	// Initialization
 ; 	setbaud(BAUD19K);
-; 	stepper_init();
 L3:
 	tfr x,s
 	pulx
@@ -74,40 +77,43 @@ _stepper_turn_ccw::
 	pshx
 	tfr s,x
 	.dbline -1
-	.dbline 29
-; 	rti_init();
-; 	
-; 	temperature = 56; // not sure why we need a global temperature variable but the assignment asks for it
-; 
-; 	while ( 1 );
-; 	return 0;
 	.dbline 30
+; 	rti_init();	
+; 	
+; 	while ( 1 );
+; 	
+; 	return 0;
+; }
+	.dbline 31
+; 
+	jsr _stepper_init
+	.dbline 32
 	bra L12
 L9:
-	.dbline 30
-	.dbline 31
+	.dbline 32
+	.dbline 33
 	ldd 2,x
 	ldy #4
 	exg x,y
 	idivs
 	exg x,y
 	jsr _stepper_set_step
-	.dbline 32
+	.dbline 34
 L10:
-	.dbline 30
+	.dbline 32
 	ldd 2,x
 	subd #1
 	std 2,x
 L12:
-	.dbline 30
-; }
+	.dbline 32
+; /*
 	ldd 2,x
 	bgt L9
 	.dbline -2
-	.dbline 33
-; 
-; /*
+	.dbline 35
 ; 	Initialize the real-time interrupt
+; */
+; void rti_init()
 L8:
 	tfr x,s
 	pulx
@@ -116,67 +122,67 @@ L8:
 	rts
 	.dbsym l steps 2 I
 	.dbend
-	.dbfunc e stepper_set_step _stepper_set_step fV
+	.dbfunc s stepper_set_step _stepper_set_step fV
 ;     coded_step -> -2,x
 ;           step -> 2,x
-_stepper_set_step::
+_stepper_set_step:
 	pshd
 	pshx
 	tfr s,x
 	leas -4,sp
 	.dbline -1
-	.dbline 39
-; */
-; void rti_init()
+	.dbline 41
 ; {
 ; 	CRGINT |= 0x80;
 ; 	RTICTL = 0x7F; // runs at 8Hz
 ; 	asm("cli");
-	.dbline 40
 ; }
+; 
+	.dbline 42
+; /*
 	ldd #0
 	std -2,x
-	.dbline 43
-; 
-; /*
+	.dbline 45
 ; 	The RTI handler. For now this simply calls rti_every_second() every second
+; */
+; #pragma interrupt_handler rti_handler
 	ldd 2,x
 	cpd #2
 	bne L14
-	.dbline 43
-	.dbline 44
-; */
-	ldd #3
-	std -2,x
-	.dbline 45
-	bra L15
-L14:
-	.dbline 45
-; #pragma interrupt_handler rti_handler
-	ldd 2,x
-	cpd #3
-	bne L16
 	.dbline 45
 	.dbline 46
 ; void rti_handler()
-	ldd #2
+	ldd #3
 	std -2,x
 	.dbline 47
-	bra L17
-L16:
+	bra L15
+L14:
 	.dbline 47
 ; {
+	ldd 2,x
+	cpd #3
+	bne L16
+	.dbline 47
 	.dbline 48
 ; 	static int count = 0;
-	movw 2,x,-2,x
+	ldd #2
+	std -2,x
+	.dbline 49
+	bra L17
+L16:
 	.dbline 49
 ; 	
+	.dbline 50
+; 	if ( ++count == RTI_FREQUENCY ) {
+	movw 2,x,-2,x
+	.dbline 51
+; 		count = 0;
 L17:
 L15:
-	.dbline 52
-; 	if ( ++count == RTI_FREQUENCY ) {
-; 		count = 0;
+	.dbline 54
 ; 		rti_every_second();
+; 	}
+; 	
 	ldd -2,x
 	lsld
 	lsld
@@ -192,17 +198,17 @@ L15:
 	ora -4,x
 	orb -3,x
 	stab 0x240
-	.dbline 57
-; 	}
-; 	
+	.dbline 59
 ; 	// Clear the interrupt
 ; 	CRGFLG |= 0x80;
 ; }
+; 
+; /*
 	ldd #0xf000
 	jsr _stepper_delay
 	.dbline -2
-	.dbline 58
-; 
+	.dbline 60
+; 	Simulate a collision warning
 L13:
 	tfr x,s
 	pulx
@@ -212,28 +218,28 @@ L13:
 	.dbsym l coded_step -2 I
 	.dbsym l step 2 I
 	.dbend
-	.dbfunc e stepper_init _stepper_init fV
-_stepper_init::
+	.dbfunc s stepper_init _stepper_init fV
+_stepper_init:
 	.dbline -1
-	.dbline 64
-; /*
-; 	Simulate a collision warning
+	.dbline 66
 ; */
 ; void trigger_collision()
 ; {
 ; 	collision_detected = 1;
-	.dbline 65
 ; }
-	bset 0x25a,#32
-	.dbline 66
 ; 
-	bset 0x242,#96
 	.dbline 67
 ; /*
-	bset 0x258,#32
-	.dbline -2
+	bset 0x25a,#32
 	.dbline 68
 ; 	This gets run every second
+	bset 0x242,#96
+	.dbline 69
+; */
+	bset 0x258,#32
+	.dbline -2
+	.dbline 70
+; void rti_every_second()
 L18:
 	.dbline 0 ; func end
 	rts
@@ -245,31 +251,31 @@ _stepper_delay:
 	pshx
 	tfr s,x
 	.dbline -1
-	.dbline 74
-; */
-; void rti_every_second()
+	.dbline 76
 ; {
 ; 	static int seconds = 0;
-; 	
+; 
 ; 	// Run the collision avoidance algorithm
-	.dbline 75
+; 	collision_avoidance();
+; 
+	.dbline 77
 	bra L23
 L20:
-	.dbline 75
-	.dbline 75
+	.dbline 77
+	.dbline 77
 L21:
-	.dbline 75
+	.dbline 77
 	ldd 2,x
 	subd #1
 	std 2,x
 L23:
-	.dbline 75
-; 	collision_avoidance();
+	.dbline 77
+; 	// Simulate collisions at an interval
 	ldd 2,x
 	bne L20
 	.dbline -2
-	.dbline 76
-; 	
+	.dbline 78
+; 	seconds = (seconds + 1) % 6;
 L19:
 	tfr x,s
 	pulx
@@ -288,41 +294,36 @@ _collision_detected::
 	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1/../lib/stepper.c
 	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
 	.dbsym e collision_detected _collision_detected I
-_temperature::
-	.blkb 2
-	.area idata
-	.word 0
-	.area data
-	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
-	.dbsym e temperature _temperature I
 	.area text
 	.dbfile M:\SYSC20~2\Assignments\ASSIGN~3\PART3B~1\assign43b.c
 	.dbfunc e main _main fI
+;            key -> -1,x
 _main::
+	pshx
+	tfr s,x
+	leas -2,sp
 	.dbline -1
-	.dbline 21
-	.dbline 22
+	.dbline 20
+	.dbline 24
 	ldd #26
 	jsr _setbaud
-	.dbline 23
-	jsr _stepper_init
-	.dbline 24
+	.dbline 25
 	jsr _rti_init
-	.dbline 26
-	ldd #56
-	std _temperature
 L25:
-	.dbline 28
+	.dbline 27
 L26:
-	.dbline 28
+	.dbline 27
 	bra L25
 X0:
 	.dbline 29
 	ldd #0
 	.dbline -2
 L24:
+	tfr x,s
+	pulx
 	.dbline 0 ; func end
 	rts
+	.dbsym l key -1 c
 	.dbend
 	.dbfunc e rti_init _rti_init fV
 _rti_init::
@@ -435,8 +436,6 @@ _rti_every_second::
 L36:
 	.dbline -2
 	.dbline 82
-; 	// Simulate collisions at an interval
-; 	seconds = (seconds + 1) % 6;
 ; 	if ( seconds == 0 ) {
 ; 		trigger_collision();
 ; 	}
