@@ -1,6 +1,5 @@
 [Files]
-assign51.c
+assign52.c
 vectors_dp256_NoICE.c
-..\lib\basicLCD.s
 [Headers]
 [Documents]

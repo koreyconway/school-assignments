@@ -1,0 +1,9 @@
+NoICE Debug Context File verion 1.0
+DEBUGFILE "M:\SYSC 2003\Assignments\Assigment 5\Part 2\assign52.dbg" 1364336571
+SOURCEFILE "motor.c" 1364336561
+SOURCEFILE "assign52.c" 1364335507
+SOURCEFILE "serial.c" 0
+SOURCEFILE "vectors_dp256_NoICE.c" 1364335436
+
+
+

@@ -1,0 +1,140 @@
+XH
+H 1 areas 7 global symbols
+M assign52.c
+S _setbaud Ref0000
+S _printf Ref0000
+A text size 7E flags 0
+dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+dbfunc e motor_init 0 fV
+dbline FFFFFFFF 0
+dbline 9 0
+dbline B 0
+dbline C 4
+dbline D 8
+dbline E C
+dbline F 11
+dbline 10 16
+dbline 11 1A
+dbline 12 1E
+dbline 13 22
+dbline 14 25
+dbline FFFFFFFE 29
+dbline 15 29
+dbline 0 29
+dbfunc e motor_set_duty 2A fV
+dbsym l duty 2 I
+dbline FFFFFFFF 2E
+dbline 18 2E
+dbline 19 2E
+dbline FFFFFFFE 33
+dbline 1A 33
+dbline 0 38
+dbfunc e optical_init 39 fV
+dbline FFFFFFFF 39
+dbline 1D 39
+dbline 1E 39
+dbline 1F 3D
+dbline FFFFFFFE 4C
+dbline 20 4C
+dbline 0 4C
+dbfunc e optical_isr 4D fV
+dbline FFFFFFFF 4D
+dbline 24 4D
+dbline 25 4D
+dbline 26 53
+dbline FFFFFFFE 57
+dbline 27 57
+dbline 0 57
+dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\assign52.c
+dbfunc e main 58 fI
+dbsym l key FFFFFFFF c
+dbline FFFFFFFF 5D
+dbline 8 5D
+dbline C 5D
+dbline E 63
+dbline F 66
+dbline 11 69
+dbline 13 6B
+dbline 15 71
+dbline 15 71
+dbline 15 71
+dbline 17 73
+dbline FFFFFFFE 76
+dbline 0 79
+dbfile assign52.s
+dbfunc 0 ? 0 I
+dbline 14 0
+dbline 17 4
+dbline 1A 8
+dbline 1D C
+dbline 1E E
+dbline 21 11
+dbline 22 13
+dbline 25 16
+dbline 28 1A
+dbline 2B 1E
+dbline 2E 22
+dbline 31 25
+dbline 37 29
+dbline 3C 2A
+dbline 3D 2B
+dbline 3E 2C
+dbline 46 2E
+dbline 47 30
+dbline 4C 33
+dbline 4D 35
+dbline 4E 36
+dbline 50 38
+dbline 5C 39
+dbline 60 3D
+dbline 61 40
+dbline 62 41
+dbline 63 43
+dbline 64 45
+dbline 65 47
+dbline 66 49
+dbline 6C 4C
+dbline 78 4D
+dbline 79 50
+dbline 7C 53
+dbline 82 57
+dbline 88 58
+dbline 89 59
+dbline 8A 5B
+dbline 8E 5D
+dbline 8F 60
+dbline 91 63
+dbline 93 66
+dbline 95 69
+dbline 98 6B
+dbline 99 6E
+dbline 9F 71
+dbline A2 73
+dbline A5 76
+dbline A6 78
+dbline A8 79
+S _main Def0058
+S _optical_init Def0039
+S _motor_set_duty Def002A
+S _motor_init Def0000
+S _optical_isr Def004D
+T 00 00 1C 00 A1 80 1D 00 A4 80 1D 00 A5 80 C6 FF
+R 00 00 00 00
+T 00 0E 7B 00 A9 C6 64 7B 00 BB 1D 00 A3 70 1C
+R 00 00 00 00
+T 00 1B 02 5A 40 1C 02 58 40 79 00 C3 1C 00 A0 80
+R 00 00 00 00
+T 00 29 3D 3B 34 B7 75 EC 02 7B 00 C3 B7 57 30 1B
+R 00 00 00 00
+T 00 37 82 3D 1C 00 61 01 F6 00 60 87 84 FF C4 8E
+R 00 00 00 00
+T 00 45 8A 00 CA 51 7B 00 60 3D CC 00 7A 16 00 00
+R 00 00 00 00 00 0B 00 00 02 0E 00 01
+T 00 53 1C 00 61 01 0B 34 B7 75 1B 9E CC 00 1A 16
+R 00 00 00 00
+T 00 61 00 00 16 00 00 16 00 39 10 EF CC 00 32 16
+R 00 00 00 00 02 02 00 00 00 05 00 00 00 08 00 00
+T 00 6F 00 2A 20 FE CC 00 00 B7 57 30 3D 32 33 0A
+R 00 00 00 00 00 02 00 00
+T 00 7D 00
+R 00 00 00 00

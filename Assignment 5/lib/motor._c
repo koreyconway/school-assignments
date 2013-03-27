@@ -1,0 +1,24 @@
+// By Korey Conway and Tanzeel Rana
+
+void motor_init(void);
+void motor_set_speed(int speed);
+
+void motor_init()
+{
+	// Motor is attached to PWM7
+	PWMPOL |= 0X80; // Set polarity high
+	PWMCAE &= ~0x80; // Set to left aligned
+	PWMCTL &= ~0x80; // Make sure PWM7 is not concatenated with PWM6
+	PWMSCLB = 0xFF; // Set the clock scale
+	PWMPER7 = 100; // Set the period
+	PWMPRCLK &= ~0x70; // Set clock B
+	DDRP |= 0x40; // Enable write on PP6 (to set direction of motor)
+	PTP  |= 0x40; // Set to counter-clockwise
+	PWMDTY7 = 0; // Set initial duty to 0
+	PWME |= 0x80; // Enable PWM7
+}
+
+void motor_set_speed(int speed)
+{
+	PWMDTY7 = speed;
+}

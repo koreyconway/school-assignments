@@ -1,0 +1,172 @@
+                        .module assign52.c
+                        .area text
+ 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+ 0000                   .dbfunc e motor_init _motor_init fV
+ 0000           _motor_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 9
+ 0000           ; // By Korey Conway and Tanzeel Rana
+ 0000           ; 
+ 0000           ; #include <hcs12dp256.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include "../lib/motor.c"
+ 0000           ; 
+ 0000           ; int main()
+ 0000           ; {
+ 0000           ;       char key;
+ 0000                   .dbline 11
+ 0000           ;       
+ 0000           ;       // Setup terminal
+ 0000 1C00A180          bset 0xa1,#128
+ 0004                   .dbline 12
+ 0004           ;       setbaud(BAUD19K);
+ 0004 1D00A480          bclr 0xa4,#0x80
+ 0008                   .dbline 13
+ 0008           ;       
+ 0008 1D00A580          bclr 0xa5,#0x80
+ 000C                   .dbline 14
+ 000C           ;       motor_init();
+ 000C C6FF              ldab #255
+ 000E 7B00A9            stab 0xa9
+ 0011                   .dbline 15
+ 0011           ;       optical_init();
+ 0011 C664              ldab #100
+ 0013 7B00BB            stab 0xbb
+ 0016                   .dbline 16
+ 0016           ;       
+ 0016 1D00A370          bclr 0xa3,#0x70
+ 001A                   .dbline 17
+ 001A           ;       INTR_ON();
+ 001A 1C025A40          bset 0x25a,#64
+ 001E                   .dbline 18
+ 001E           ;       
+ 001E 1C025840          bset 0x258,#64
+ 0022                   .dbline 19
+ 0022           ;       motor_set_duty(50);
+ 0022 7900C3            clr 0xc3
+ 0025                   .dbline 20
+ 0025           ;       
+ 0025 1C00A080          bset 0xa0,#128
+ 0029                   .dbline -2
+ 0029                   .dbline 21
+ 0029           ;       while ( 1 ) {}
+ 0029           L3:
+ 0029                   .dbline 0 ; func end
+ 0029 3D                rts
+ 002A                   .dbend
+ 002A                   .dbfunc e motor_set_duty _motor_set_duty fV
+ 002A           ;           duty -> 2,x
+ 002A           _motor_set_duty::
+ 002A 3B                pshd
+ 002B 34                pshx
+ 002C B775              tfr s,x
+ 002E                   .dbline -1
+ 002E                   .dbline 24
+ 002E           ;       
+ 002E           ;       return 0;
+ 002E           ; }
+ 002E                   .dbline 25
+ 002E           ; }
+ 002E EC02              ldd 2,x
+ 0030 7B00C3            stab 0xc3
+ 0033                   .dbline -2
+ 0033                   .dbline 26
+ 0033           ; }
+ 0033           L4:
+ 0033 B757              tfr x,s
+ 0035 30                pulx
+ 0036 1B82              leas 2,sp
+ 0038                   .dbline 0 ; func end
+ 0038 3D                rts
+ 0039                   .dbsym l duty 2 I
+ 0039                   .dbend
+ 0039                   .dbfunc e optical_init _optical_init fV
+ 0039           _optical_init::
+ 0039                   .dbline -1
+ 0039                   .dbline 29
+ 0039           ; }
+ 0039           ; }
+ 0039           ; }
+ 0039                   .dbline 30
+ 0039           ; }
+ 0039 1C006101          bset 0x61,#1
+ 003D                   .dbline 31
+ 003D           ; }
+ 003D                   ; vol
+ 003D F60060            ldab 0x60
+ 0040 87                clra
+ 0041 84FF              anda #255
+ 0043 C48E              andb #142
+ 0045 8A00              ora #0
+ 0047 CA51              orb #81
+ 0049 7B0060            stab 0x60
+ 004C                   .dbline -2
+ 004C                   .dbline 32
+ 004C           ; }
+ 004C           L5:
+ 004C                   .dbline 0 ; func end
+ 004C 3D                rts
+ 004D                   .dbend
+ 004D                   .dbfunc e optical_isr _optical_isr fV
+ 004D           _optical_isr::
+ 004D                   .dbline -1
+ 004D                   .dbline 36
+ 004D           ; }
+ 004D           ; }
+ 004D           ; }
+ 004D           ; }
+ 004D                   .dbline 37
+ 004D           ; }
+ 004D CC007A            ldd #L7
+ 0050 160000            jsr _printf
+ 0053                   .dbline 38
+ 0053           ; }
+ 0053 1C006101          bset 0x61,#1
+ 0057                   .dbline -2
+ 0057                   .dbline 39
+ 0057           ; }
+ 0057           L6:
+ 0057                   .dbline 0 ; func end
+ 0057 0B                rti
+ 0058                   .dbend
+ 0058                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\assign52.c
+ 0058                   .dbfunc e main _main fI
+ 0058           ;            key -> -1,x
+ 0058           _main::
+ 0058 34                pshx
+ 0059 B775              tfr s,x
+ 005B 1B9E              leas -2,sp
+ 005D                   .dbline -1
+ 005D                   .dbline 8
+ 005D                   .dbline 12
+ 005D CC001A            ldd #26
+ 0060 160000            jsr _setbaud
+ 0063                   .dbline 14
+ 0063 160000            jsr _motor_init
+ 0066                   .dbline 15
+ 0066 160039            jsr _optical_init
+ 0069                   .dbline 17
+ 0069 10EF                      cli
+ 006B           
+ 006B                   .dbline 19
+ 006B CC0032            ldd #50
+ 006E 16002A            jsr _motor_set_duty
+ 0071           L9:
+ 0071                   .dbline 21
+ 0071                   .dbline 21
+ 0071           L10:
+ 0071                   .dbline 21
+ 0071 20FE              bra L9
+ 0073           X0:
+ 0073                   .dbline 23
+ 0073 CC0000            ldd #0
+ 0076                   .dbline -2
+ 0076           L8:
+ 0076 B757              tfr x,s
+ 0078 30                pulx
+ 0079                   .dbline 0 ; func end
+ 0079 3D                rts
+ 007A                   .dbsym l key -1 c
+ 007A                   .dbend
+ 007A           L7:
+ 007A 32330A00          .byte 50,51,10,0

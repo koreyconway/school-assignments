@@ -8,7 +8,6 @@
 #define KEYBOARD_REPEAT_DELAY	0xF000
 
 char keyboard_getchar(void);
-void keyboard_clearchar(void);
 void keyboard_init(void);
 void keyboard_isr(void);
 
@@ -32,7 +31,7 @@ void keyboard_init()
 	PPSH |= 0xF0; // Rising edge interupt on port H
 	PIFH  = 0xFF; // Acknowledge previous interrupts
 	PERH  = 0x00; // Disasble pull-up/down devices
-	PIEH |= 0xF0; // Enable Port H interrupts on the 4 high bits
+	PIEH  = 0xF0; // Enable Port H interrupts (only the 4 high bits)
 }
 
 /*
@@ -41,23 +40,23 @@ void keyboard_init()
 #pragma interrupt_handler keyboard_isr
 void keyboard_isr()
 {
-	int i;
 	int row = 0;
 	int col = 0;
-	int col_mask = PIFH >> 4;
-	char char_map[KEYBOARD_ROWS][KEYBOARD_COLUMNS] =
+	int col_mask;
+	static char char_map[KEYBOARD_ROWS][KEYBOARD_COLUMNS] =
 		{{'1', '2', '3', 'A'},
 		{'4', '5', '6', 'B'},
 		{'7', '8', '9', 'C'},
 		{'E', '0', 'F', 'D'}};
 	
-	INTR_OFF();  // Turn off global interrupts
+	PIEH  = 0x00; // Turn off Port H interrupts
+	
+	col_mask = PIFH >> 4;
 	
 	// Find the row
 	for ( row = 0; row < KEYBOARD_ROWS; row++ ) {
 		PTM |= 0x08;		// Set U7_EN high (PM3)
 		PTP = (PTP & ~0x0F) | ((0x01 << row) & 0x0F);	// Enable the correct row (without affecting high bits)
-		for (i = 0; i < 5000; i++);
 		PTM &= ~0x08;		// Set U7_EN low (PM3)
 		
 		if ( PTH & 0xF0 ) {
@@ -72,16 +71,16 @@ void keyboard_isr()
 	}
 	
 	if ( col < KEYBOARD_COLUMNS && row < KEYBOARD_ROWS ) {
-		key = char_map[row][col];	
+		key = char_map[row][col];
 	} else {
 		key = 0x00; // Something strange happened if we get here
 	}
-		
+	
 	PTM |= 0x08;  // Set U7_EN high (PM3)
 	PTP |= 0x0F;  // Turn all rows on again
 	PTM &= ~0x08; // Set U7_EN low (PM3)
 	PIFH = 0xFF;  // Acknowlege the interrupt
-	INTR_ON();    // Turn interrupts back on
+	PIEH  = 0xF0;
 }
 
 /*
@@ -89,15 +88,9 @@ void keyboard_isr()
 */
 char keyboard_getchar()
 {
-	return key;
-}
-
-/*
-	Clear the last character pushed
-*/
-void keyboard_clearchar()
-{
+	char temp = key;
 	key = 0x00;
+	return temp;
 }
 
 
