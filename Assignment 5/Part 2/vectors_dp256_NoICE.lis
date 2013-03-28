@@ -41,10 +41,10 @@
  3FD4 F8CF              .word 63695
  3FD6 F8CF              .word 63695
  3FD8 F8CF              .word 63695
- 3FDA 0000              .word _optical_isr
+ 3FDA F8CF              .word 63695
  3FDC F8CF              .word 63695
  3FDE F8CF              .word 63695
- 3FE0 F8CF              .word 63695
+ 3FE0 0000              .word _optical_isr
  3FE2 F8CF              .word 63695
  3FE4 F8CF              .word 63695
  3FE6 F8CF              .word 63695

@@ -41,10 +41,10 @@ _interrupt_vectors::
 	.word 63695
 	.word 63695
 	.word 63695
+	.word 63695
+	.word 63695
+	.word 63695
 	.word _optical_isr
-	.word 63695
-	.word 63695
-	.word 63695
 	.word 63695
 	.word 63695
 	.word 63695

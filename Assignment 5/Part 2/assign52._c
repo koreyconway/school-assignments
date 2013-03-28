@@ -7,16 +7,30 @@
 int main()
 {
 	char key;
+	int duty;
+	unsigned int i;
 	
 	// Setup terminal
 	setbaud(BAUD19K);
 	
 	motor_init();
+	optical_init();
+	
 	INTR_ON();
 	
-	motor_set_duty(50);
+	motor_set_duty(40);
 	
-	while ( 1 ) {}
+	while ( 1 ) {
+		// for ( duty = 25; duty <= 50; duty++ ) {
+			// motor_set_duty(duty);
+			// for ( i = 0; i < -1; i++ ) {}
+		// }
+	
+		// for ( duty = 50; duty >= 25; duty-- ) {
+			// motor_set_duty(duty);		
+			// for ( i = 0; i < -1; i++ ) {}
+		// }
+	}
 	
 	return 0;
 }

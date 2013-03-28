@@ -6,7 +6,7 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
 --- 0000                   .dbfunc e motor_init _motor_init fV
  402A            _motor_init::
  402A                    .dbline -1
- 402A                    .dbline 9
+ 402A                    .dbline 12
  402A            ; // By Korey Conway and Tanzeel Rana
  402A            ; 
  402A            ; #include <hcs12dp256.h>
@@ -16,42 +16,45 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  402A            ; int main()
  402A            ; {
  402A            ;       char key;
- 402A                    .dbline 11
+ 402A            ;       int duty;
+ 402A            ;       unsigned int i;
  402A            ;       
+ 402A                    .dbline 14
  402A            ;       // Setup terminal
+ 402A            ;       setbaud(BAUD19K);
  402A  1C00A180          bset 0xa1,#128
- 402E                    .dbline 12
- 402E            ;       setbaud(BAUD19K);
+ 402E                    .dbline 15
+ 402E            ;       
  402E  1D00A480          bclr 0xa4,#0x80
- 4032                    .dbline 13
- 4032            ;       
+ 4032                    .dbline 16
+ 4032            ;       motor_init();
  4032  1D00A580          bclr 0xa5,#0x80
- 4036                    .dbline 14
- 4036            ;       motor_init();
+ 4036                    .dbline 17
+ 4036            ;       optical_init();
  4036  C6FF              ldab #255
  4038  7B00A9            stab 0xa9
- 403B                    .dbline 15
- 403B            ;       optical_init();
- 403B  C664              ldab #100
+ 403B                    .dbline 18
+ 403B            ;       
+ 403B  C663              ldab #99
  403D  7B00BB            stab 0xbb
- 4040                    .dbline 16
- 4040            ;       
+ 4040                    .dbline 19
+ 4040            ;       INTR_ON();
  4040  1D00A370          bclr 0xa3,#0x70
- 4044                    .dbline 17
- 4044            ;       INTR_ON();
+ 4044                    .dbline 20
+ 4044            ;       
  4044  1C025A40          bset 0x25a,#64
- 4048                    .dbline 18
- 4048            ;       
+ 4048                    .dbline 21
+ 4048            ;       motor_set_duty(50);
  4048  1C025840          bset 0x258,#64
- 404C                    .dbline 19
- 404C            ;       motor_set_duty(50);
+ 404C                    .dbline 22
+ 404C            ;       
  404C  7900C3            clr 0xc3
- 404F                    .dbline 20
- 404F            ;       
+ 404F                    .dbline 23
+ 404F            ;       while ( 1 ) {
  404F  1C00A080          bset 0xa0,#128
  4053                    .dbline -2
- 4053                    .dbline 21
- 4053            ;       while ( 1 ) {}
+ 4053                    .dbline 24
+ 4053            ;               // for ( duty = 25; duty <= 50; duty++ ) {
  4053            L3:
  4053                    .dbline 0 ; func end
  4053  3D                rts
@@ -63,115 +66,195 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4055  34                pshx
  4056  B775              tfr s,x
  4058                    .dbline -1
- 4058                    .dbline 24
- 4058            ;       
- 4058            ;       return 0;
- 4058            ; }
- 4058                    .dbline 25
- 4058            ; }
+ 4058                    .dbline 30
+ 4058                    .dbline 31
  4058  EC02              ldd 2,x
- 405A  7B00C3            stab 0xc3
- 405D                    .dbline -2
- 405D                    .dbline 26
- 405D            ; }
- 405D            L4:
- 405D  B757              tfr x,s
- 405F  30                pulx
- 4060  1B82              leas 2,sp
- 4062                    .dbline 0 ; func end
- 4062  3D                rts
- 4063                    .dbsym l duty 2 I
- 4063                    .dbend
- 4063                    .dbfunc e optical_init _optical_init fV
- 4063            _optical_init::
- 4063                    .dbline -1
- 4063                    .dbline 29
- 4063            ; }
- 4063            ; }
- 4063            ; }
- 4063                    .dbline 30
- 4063            ; }
- 4063  1C006101          bset 0x61,#1
- 4067                    .dbline 31
- 4067            ; }
- 4067                    ; vol
- 4067  F60060            ldab 0x60
- 406A  87                clra
- 406B  84FF              anda #255
- 406D  C48E              andb #142
- 406F  8A00              ora #0
- 4071  CA51              orb #81
- 4073  7B0060            stab 0x60
- 4076                    .dbline -2
- 4076                    .dbline 32
+ 405A  2D0C              blt L5
+ 405C  EC02              ldd 2,x
+ 405E  8C0032            cpd #50
+ 4061  2E05              bgt L5
+ 4063                    .dbline 31
+ 4063                    .dbline 32
+ 4063  EC02              ldd 2,x
+ 4065  7B00C3            stab 0xc3
+ 4068                    .dbline 33
+ 4068            L5:
+ 4068                    .dbline -2
+ 4068                    .dbline 34
+ 4068            ;                       // motor_set_duty(duty);
+ 4068            ;                       // for ( i = 0; i < -1; i++ ) {}
+ 4068            ;               // }
+ 4068            ;       
+ 4068            ;               // for ( duty = 50; duty >= 25; duty-- ) {
+ 4068            ;                       // motor_set_duty(duty);                
+ 4068            ;                       // for ( i = 0; i < -1; i++ ) {}
+ 4068            ;               // }
+ 4068            ;       }
+ 4068            ;       
+ 4068            L4:
+ 4068  B757              tfr x,s
+ 406A  30                pulx
+ 406B  1B82              leas 2,sp
+ 406D                    .dbline 0 ; func end
+ 406D  3D                rts
+ 406E                    .dbsym l duty 2 I
+ 406E                    .dbend
+ 406E                    .dbfunc e optical_init _optical_init fV
+ 406E            _optical_init::
+ 406E                    .dbline -1
+ 406E                    .dbline 37
+ 406E            ;       return 0;
+ 406E            ; }
+ 406E            ; }
+ 406E                    .dbline 40
+ 406E            ; }
+ 406E            ; }
+ 406E            ; }
+ 406E  1C004A40          bset 0x4a,#64
+ 4072                    .dbline 41
+ 4072            ; }
+ 4072  1C004C80          bset 0x4c,#128
+ 4076                    .dbline 42
  4076            ; }
- 4076            L5:
- 4076                    .dbline 0 ; func end
- 4076  3D                rts
- 4077                    .dbend
- 4077                    .dbfunc e optical_isr _optical_isr fV
- 4077            _optical_isr::
- 4077                    .dbline -1
- 4077                    .dbline 36
- 4077            ; }
- 4077            ; }
- 4077            ; }
- 4077            ; }
- 4077                    .dbline 37
- 4077            ; }
- 4077  CC40A4            ldd #L7
- 407A  164528            jsr _printf
- 407D                    .dbline 38
- 407D            ; }
- 407D  1C006101          bset 0x61,#1
- 4081                    .dbline -2
- 4081                    .dbline 39
- 4081            ; }
- 4081            L6:
- 4081                    .dbline 0 ; func end
- 4081  0B                rti
- 4082                    .dbend
- 4082                    .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\assign52.c
- 4082                    .dbfunc e main _main fI
- 4082            ;            key -> -1,x
- 4082            _main::
- 4082  34                pshx
- 4083  B775              tfr s,x
- 4085  1B9E              leas -2,sp
- 4087                    .dbline -1
- 4087                    .dbline 8
- 4087                    .dbline 12
- 4087  CC001A            ldd #26
- 408A  1640A8            jsr _setbaud
- 408D                    .dbline 14
- 408D  16402A            jsr _motor_init
- 4090                    .dbline 15
- 4090  164063            jsr _optical_init
- 4093                    .dbline 17
- 4093  10EF                      cli
- 4095            
- 4095                    .dbline 19
- 4095  CC0032            ldd #50
- 4098  164054            jsr _motor_set_duty
- 409B            L9:
- 409B                    .dbline 21
- 409B                    .dbline 21
- 409B            L10:
- 409B                    .dbline 21
- 409B  20FE              bra L9
- 409D            X0:
- 409D                    .dbline 23
- 409D  CC0000            ldd #0
- 40A0                    .dbline -2
- 40A0            L8:
- 40A0  B757              tfr x,s
- 40A2  30                pulx
- 40A3                    .dbline 0 ; func end
- 40A3  3D                rts
- 40A4                    .dbsym l key -1 c
- 40A4                    .dbend
- 40A4            L7:
- 40A4  32330A00          .byte 50,51,10,0
+ 4076  1D004080          bclr 0x40,#0x80
+ 407A                    .dbline 43
+ 407A            ; }
+ 407A  1C004D07          bset 0x4d,#7
+ 407E                    .dbline 44
+ 407E            ; }
+ 407E  1C004690          bset 0x46,#144
+ 4082                    .dbline -2
+ 4082                    .dbline 45
+ 4082            ; }
+ 4082            L7:
+ 4082                    .dbline 0 ; func end
+ 4082  3D                rts
+ 4083                    .dbend
+                        .area data
+--- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+--- 0000           L9:
+--- 0000                   .blkb 2
+                        .area idata
+--- 0000 0000              .word 0
+                        .area data
+--- 0002                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+                        .area text
+--- 0059                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+--- 0059                   .dbfunc e optical_isr _optical_isr fV
+--- 0059                   .dbsym s start L9 I
+--- 0059           ;           time -> -2,x
+ 4083            _optical_isr::
+ 4083  34                pshx
+ 4084  B775              tfr s,x
+ 4086  1B9C              leas -4,sp
+ 4088                    .dbline -1
+ 4088                    .dbline 49
+ 4088            ; ä
+ 4088            ; ä
+ 4088            ; ä
+ 4088            ; ä
+ 4088                    .dbline 51
+ 4088            ; ä
+ 4088            ; ä
+ 4088  CC0000            ldd #0
+ 408B  6C1E              std -2,x
+ 408D                    .dbline 53
+ 408D            ; ä
+ 408D            ; ä
+ 408D  FC1000            ldd L9
+ 4090  271A              beq L10
+ 4092                    .dbline 53
+ 4092                    .dbline 54
+ 4092            ; ä
+ 4092                    ; vol
+ 4092  FC0044            ldd 0x44
+ 4095  B31000            subd L9
+ 4098  6C1E              std -2,x
+ 409A                    .dbline 55
+ 409A            ; ä
+ 409A  CC0000            ldd #0
+ 409D  7C1000            std L9
+ 40A0                    .dbline 56
+ 40A0            ; ä
+ 40A0  18021E80          movw -2,x,0,sp
+ 40A4  CC40DE            ldd #L12
+ 40A7  164562            jsr _printf
+ 40AA                    .dbline 57
+ 40AA  2006              bra L11
+ 40AC            L10:
+ 40AC                    .dbline 57
+ 40AC            ; ä
+ 40AC                    .dbline 58
+ 40AC            ; ä
+ 40AC                    ; vol
+ 40AC  FC0044            ldd 0x44
+ 40AF  7C1000            std L9
+ 40B2                    .dbline 59
+ 40B2            ; ä
+ 40B2            L11:
+ 40B2                    .dbline 61
+ 40B2            ; ä
+ 40B2            ; ä
+ 40B2                    ; vol
+ 40B2  F6004E            ldab 0x4e
+ 40B5  7B004E            stab 0x4e
+ 40B8                    .dbline -2
+ 40B8                    .dbline 64
+ 40B8            ; ä
+ 40B8            ; ä
+ 40B8            ; ä
+ 40B8            L8:
+ 40B8  B757              tfr x,s
+ 40BA  30                pulx
+ 40BB                    .dbline 0 ; func end
+ 40BB  0B                rti
+ 40BC                    .dbsym l time -2 I
+ 40BC                    .dbend
+ 40BC                    .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\assign52.c
+ 40BC                    .dbfunc e main _main fI
+ 40BC            ;              i -> -5,x
+ 40BC            ;           duty -> -3,x
+ 40BC            ;            key -> -1,x
+ 40BC            _main::
+ 40BC  34                pshx
+ 40BD  B775              tfr s,x
+ 40BF  1B9A              leas -6,sp
+ 40C1                    .dbline -1
+ 40C1                    .dbline 8
+ 40C1                    .dbline 14
+ 40C1  CC001A            ldd #26
+ 40C4  1640E2            jsr _setbaud
+ 40C7                    .dbline 16
+ 40C7  16402A            jsr _motor_init
+ 40CA                    .dbline 17
+ 40CA  16406E            jsr _optical_init
+ 40CD                    .dbline 19
+ 40CD  10EF                      cli
+ 40CF            
+ 40CF                    .dbline 21
+ 40CF  CC0032            ldd #50
+ 40D2  164054            jsr _motor_set_duty
+ 40D5            L14:
+ 40D5                    .dbline 23
+ 40D5                    .dbline 33
+ 40D5            L15:
+ 40D5                    .dbline 23
+ 40D5  20FE              bra L14
+ 40D7            X0:
+ 40D7                    .dbline 35
+ 40D7  CC0000            ldd #0
+ 40DA                    .dbline -2
+ 40DA            L13:
+ 40DA  B757              tfr x,s
+ 40DC  30                pulx
+ 40DD                    .dbline 0 ; func end
+ 40DD  3D                rts
+ 40DE                    .dbsym l i -5 i
+ 40DE                    .dbsym l duty -3 I
+ 40DE                    .dbsym l key -1 c
+ 40DE                    .dbend
+ 40DE            L12:
+ 40DE  25750A00          .byte 37,'u,10,0
                         .module vectors_dp256_NoICE.c
                         .area memory(abs)
                         .org 0x3f8c
@@ -215,10 +298,10 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  3FD4  F8CF              .word 63695
  3FD6  F8CF              .word 63695
  3FD8  F8CF              .word 63695
- 3FDA  4077              .word _optical_isr
+ 3FDA  F8CF              .word 63695
  3FDC  F8CF              .word 63695
  3FDE  F8CF              .word 63695
- 3FE0  F8CF              .word 63695
+ 3FE0  4083              .word _optical_isr
  3FE2  F8CF              .word 63695
  3FE4  F8CF              .word 63695
  3FE6  F8CF              .word 63695

@@ -1,140 +1,193 @@
 XH
-H 1 areas 7 global symbols
+H 3 areas 7 global symbols
 M assign52.c
 S _setbaud Ref0000
 S _printf Ref0000
-A text size 7E flags 0
+A text size B8 flags 0
 dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
 dbfunc e motor_init 0 fV
 dbline FFFFFFFF 0
-dbline 9 0
-dbline B 0
-dbline C 4
-dbline D 8
-dbline E C
-dbline F 11
-dbline 10 16
-dbline 11 1A
-dbline 12 1E
-dbline 13 22
-dbline 14 25
+dbline C 0
+dbline E 0
+dbline F 4
+dbline 10 8
+dbline 11 C
+dbline 12 11
+dbline 13 16
+dbline 14 1A
+dbline 15 1E
+dbline 16 22
+dbline 17 25
 dbline FFFFFFFE 29
-dbline 15 29
+dbline 18 29
 dbline 0 29
 dbfunc e motor_set_duty 2A fV
 dbsym l duty 2 I
 dbline FFFFFFFF 2E
-dbline 18 2E
-dbline 19 2E
-dbline FFFFFFFE 33
-dbline 1A 33
-dbline 0 38
-dbfunc e optical_init 39 fV
-dbline FFFFFFFF 39
-dbline 1D 39
-dbline 1E 39
-dbline 1F 3D
-dbline FFFFFFFE 4C
-dbline 20 4C
-dbline 0 4C
-dbfunc e optical_isr 4D fV
-dbline FFFFFFFF 4D
-dbline 24 4D
-dbline 25 4D
-dbline 26 53
-dbline FFFFFFFE 57
-dbline 27 57
-dbline 0 57
+dbline 1E 2E
+dbline 1F 2E
+dbline 1F 39
+dbline 20 39
+dbline 21 3E
+dbline FFFFFFFE 3E
+dbline 22 3E
+dbline 0 43
+dbfunc e optical_init 44 fV
+dbline FFFFFFFF 44
+dbline 25 44
+dbline 28 44
+dbline 29 48
+dbline 2A 4C
+dbline 2B 50
+dbline 2C 54
+dbline FFFFFFFE 58
+dbline 2D 58
+dbline 0 58
+dbfunc e optical_isr 59 fV
+dbsym l time FFFFFFFE I
+dbline FFFFFFFF 5E
+dbline 31 5E
+dbline 33 5E
+dbline 35 63
+dbline 35 68
+dbline 36 68
+dbline 37 70
+dbline 38 76
+dbline 39 80
+dbline 39 82
+dbline 3A 82
+dbline 3B 88
+dbline 3D 88
+dbline FFFFFFFE 8E
+dbline 40 8E
+dbline 0 91
 dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\assign52.c
-dbfunc e main 58 fI
+dbfunc e main 92 fI
+dbsym l i FFFFFFFB i
+dbsym l duty FFFFFFFD I
 dbsym l key FFFFFFFF c
-dbline FFFFFFFF 5D
-dbline 8 5D
-dbline C 5D
-dbline E 63
-dbline F 66
-dbline 11 69
-dbline 13 6B
-dbline 15 71
-dbline 15 71
-dbline 15 71
-dbline 17 73
-dbline FFFFFFFE 76
-dbline 0 79
+dbline FFFFFFFF 97
+dbline 8 97
+dbline E 97
+dbline 10 9D
+dbline 11 A0
+dbline 13 A3
+dbline 15 A5
+dbline 17 AB
+dbline 21 AB
+dbline 17 AB
+dbline 23 AD
+dbline FFFFFFFE B0
+dbline 0 B3
 dbfile assign52.s
 dbfunc 0 ? 0 I
-dbline 14 0
-dbline 17 4
-dbline 1A 8
-dbline 1D C
-dbline 1E E
-dbline 21 11
-dbline 22 13
-dbline 25 16
-dbline 28 1A
-dbline 2B 1E
-dbline 2E 22
-dbline 31 25
-dbline 37 29
-dbline 3C 2A
-dbline 3D 2B
-dbline 3E 2C
-dbline 46 2E
-dbline 47 30
-dbline 4C 33
-dbline 4D 35
-dbline 4E 36
-dbline 50 38
-dbline 5C 39
-dbline 60 3D
-dbline 61 40
-dbline 62 41
-dbline 63 43
-dbline 64 45
-dbline 65 47
-dbline 66 49
-dbline 6C 4C
-dbline 78 4D
-dbline 79 50
-dbline 7C 53
-dbline 82 57
-dbline 88 58
-dbline 89 59
-dbline 8A 5B
-dbline 8E 5D
-dbline 8F 60
-dbline 91 63
-dbline 93 66
-dbline 95 69
-dbline 98 6B
-dbline 99 6E
-dbline 9F 71
-dbline A2 73
-dbline A5 76
-dbline A6 78
-dbline A8 79
-S _main Def0058
-S _optical_init Def0039
+dbline 17 0
+dbline 1A 4
+dbline 1D 8
+dbline 20 C
+dbline 21 E
+dbline 24 11
+dbline 25 13
+dbline 28 16
+dbline 2B 1A
+dbline 2E 1E
+dbline 31 22
+dbline 34 25
+dbline 3A 29
+dbline 3F 2A
+dbline 40 2B
+dbline 41 2C
+dbline 45 2E
+dbline 46 30
+dbline 47 32
+dbline 48 34
+dbline 49 37
+dbline 4C 39
+dbline 4D 3B
+dbline 5D 3E
+dbline 5E 40
+dbline 5F 41
+dbline 61 43
+dbline 6F 44
+dbline 72 48
+dbline 75 4C
+dbline 78 50
+dbline 7B 54
+dbline 81 58
+dbline 91 59
+dbline 92 5A
+dbline 93 5C
+dbline 9D 5E
+dbline 9E 61
+dbline A2 63
+dbline A3 66
+dbline A8 68
+dbline A9 6B
+dbline AA 6E
+dbline AD 70
+dbline AE 73
+dbline B1 76
+dbline B2 7A
+dbline B3 7D
+dbline B5 80
+dbline BC 82
+dbline BD 85
+dbline C5 88
+dbline C6 8B
+dbline CD 8E
+dbline CE 90
+dbline D0 91
+dbline D9 92
+dbline DA 93
+dbline DB 95
+dbline DF 97
+dbline E0 9A
+dbline E2 9D
+dbline E4 A0
+dbline E6 A3
+dbline E9 A5
+dbline EA A8
+dbline F0 AB
+dbline F3 AD
+dbline F6 B0
+dbline F7 B2
+dbline F9 B3
+S _main Def0092
+S _optical_init Def0044
 S _motor_set_duty Def002A
 S _motor_init Def0000
-S _optical_isr Def004D
+S _optical_isr Def0059
+A data size 2 flags 0
+dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+dbsym s start 0 I
+A idata size 2 flags 0
 T 00 00 1C 00 A1 80 1D 00 A4 80 1D 00 A5 80 C6 FF
 R 00 00 00 00
-T 00 0E 7B 00 A9 C6 64 7B 00 BB 1D 00 A3 70 1C
+T 00 0E 7B 00 A9 C6 63 7B 00 BB 1D 00 A3 70 1C
 R 00 00 00 00
 T 00 1B 02 5A 40 1C 02 58 40 79 00 C3 1C 00 A0 80
 R 00 00 00 00
-T 00 29 3D 3B 34 B7 75 EC 02 7B 00 C3 B7 57 30 1B
+T 00 29 3D 3B 34 B7 75 EC 02 2D 0C EC 02 8C 00 32
 R 00 00 00 00
-T 00 37 82 3D 1C 00 61 01 F6 00 60 87 84 FF C4 8E
+T 00 37 2E 05 EC 02 7B 00 C3 B7 57 30 1B 82 3D 1C
 R 00 00 00 00
-T 00 45 8A 00 CA 51 7B 00 60 3D CC 00 7A 16 00 00
-R 00 00 00 00 00 0B 00 00 02 0E 00 01
-T 00 53 1C 00 61 01 0B 34 B7 75 1B 9E CC 00 1A 16
+T 00 45 00 4A 40 1C 00 4C 80 1D 00 40 80 1C 00 4D
 R 00 00 00 00
-T 00 61 00 00 16 00 00 16 00 39 10 EF CC 00 32 16
-R 00 00 00 00 02 02 00 00 00 05 00 00 00 08 00 00
-T 00 6F 00 2A 20 FE CC 00 00 B7 57 30 3D 32 33 0A
-R 00 00 00 00 00 02 00 00
-T 00 7D 00
+T 00 53 07 1C 00 46 90 3D
+R 00 00 00 00
+T 00 00 00 00
+R 00 00 00 02
+T 00 59 34 B7 75 1B 9C CC 00 00 6C 1E FC 00 00 27
+R 00 00 00 00 00 0D 00 01
+T 00 67 1A FC 00 44 B3 00 00 6C 1E CC 00 00 7C
+R 00 00 00 00 00 07 00 01
+T 00 74 00 00 18 02 1E 80 CC 00 B4 16 00 00 20 06
+R 00 00 00 00 00 02 00 01 00 09 00 00 02 0C 00 01
+T 00 82 FC 00 44 7C 00 00 F6 00 4E 7B 00 4E B7 57
+R 00 00 00 00 00 06 00 01
+T 00 90 30 0B 34 B7 75 1B 9A CC 00 1A 16 00 00 16
+R 00 00 00 00 02 0D 00 00
+T 00 9E 00 00 16 00 44 10 EF CC 00 32 16 00 2A 20
+R 00 00 00 00 00 02 00 00 00 05 00 00 00 0D 00 00
+T 00 AC FE CC 00 00 B7 57 30 3D 25 75 0A 00
 R 00 00 00 00

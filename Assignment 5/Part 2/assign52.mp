@@ -1,7 +1,7 @@
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                            text   4000   0557 =   1367. bytes (rel,con,rom)
+                            text   4000   0591 =   1425. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
@@ -10,31 +10,49 @@ Area                               Addr   Size   Decimal Bytes (Attributes)
        402A  __text_start
        402A  _motor_init
        4054  _motor_set_duty
-       4063  _optical_init
-       4077  _optical_isr
-       4082  _main
-       40A8  _setbaud
-       40D8  _putchar
-       4100  _strcpy
-       410F  __va_start
-       412D  __HC12Setup
-       4132  _itoa
-       41BA  _islower
-       41D2  __ctype
-       42D3  _toupper
-       42F3  __print
-       4528  _printf
-       4557  __text_end
+       406E  _optical_init
+       4083  _optical_isr
+       40BC  _main
+       40E2  _setbaud
+       4112  _putchar
+       413A  _strcpy
+       4149  __va_start
+       4167  __HC12Setup
+       416C  _itoa
+       41F4  _islower
+       420C  __ctype
+       430D  _toupper
+       432D  __print
+       4562  _printf
+       4591  __text_end
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                             bss   1000   001B =     27. bytes (rel,con,rom)
+                           idata   4591   0002 =      2. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
-       1000  __bss_start
-       1019  __textmode
-       101B  __bss_end
+       4591  __idata_start
+       4593  __idata_end
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+                            data   1000   0002 =      2. bytes (rel,con,rom)
+
+       Addr  Global Symbol
+      -----  --------------------------------
+       1000  __data_start
+       1002  __data_end
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+                             bss   1002   001B =     27. bytes (rel,con,rom)
+
+       Addr  Global Symbol
+      -----  --------------------------------
+       1002  __bss_start
+       101B  __textmode
+       101D  __bss_end
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
