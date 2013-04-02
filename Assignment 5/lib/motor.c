@@ -1,12 +1,22 @@
 // By Korey Conway and Tanzeel Rana
 
 void motor_init(void);
-void motor_set_speed(int speed);
-void optical_init(void);
-void optical_isr(void);
+int motor_get_speed(void);
+void motor_set_duty(int duty);
+int motor_get_duty(void);
+void motor_update_speed(int quarter);
+int motor_get_desired_speed(void);
+void motor_set_desired_speed(int speed);
 
-#define	MIN_DUTY	0
-#define MAX_DUTY	50
+#define	MOTOR_MIN_DUTY	0
+#define MOTOR_MAX_DUTY	50
+
+#ifndef PACA
+#define PACA		_LP(0x62)
+#endif
+
+static int current_speed = 0; // speed in rotations per second
+static int desired_speed = 0;
 
 void motor_init()
 {
@@ -21,6 +31,7 @@ void motor_init()
 	PTP  |= 0x40; // Set to counter-clockwise
 	PWMDTY7 = 0; // Set initial duty to 0
 	PWME |= 0x80; // Enable PWM7
+	PACTL = (PACTL & ~0xFF) | (0x50 & 0xFF); // Enable PACA and sets rising edge detect
 }
 
 /*
@@ -28,37 +39,63 @@ void motor_init()
 */
 void motor_set_duty(int duty)
 {
-	if ( (duty >= MIN_DUTY) && (duty <= MAX_DUTY) ) {
+	if ( duty < MOTOR_MIN_DUTY ) {
+		PWMDTY7 = MOTOR_MIN_DUTY;
+	} else if ( duty > MOTOR_MAX_DUTY ) {
+		PWMDTY7 = MOTOR_MAX_DUTY;
+	} else {
 		PWMDTY7 = duty;
 	}
 }
 
-void optical_init()
+int motor_get_duty()
 {
-	//PAFLG |= 1; // Clear any previous interrupts
-	//PACTL = (PACTL & ~0x61) | (0x51 & 0x61); // Sets rising edge detect, and enable interrupt on PACA
-	TCTL3 |= 0x40; // capture rising edge
-	TIE |= 0x80; // enable interrupt on pin 7
-	TIOS  &= ~0x80; // input capture on pin 7 of port T
-	TSCR2 |= 0x07; // prescale to 128
-	TSCR1 |= 0x90; // set TEN and TFFCA
+	return PWMDTY7;
 }
 
-#pragma interrupt_handler optical_isr
-void optical_isr()
-{
-	static int start = 0;
-	int time = 0;
+// void optical_init()
+// {
+	// //PAFLG |= 1; // Clear any previous interrupts
+	// PACTL = (PACTL & ~0xFF) | (0x50 & 0xFF); // Enable PACA and sets rising edge detect
+	
+	// // TCTL3 |= 0x40; // capture rising edge
+	// // TIE |= 0x80; // enable interrupt on pin 7
+	// // TIOS  &= ~0x80; // input capture on pin 7 of port T
+	// // TSCR2 |= 0x07; // prescale to 128
+	// // TSCR1 |= 0x90; // set TEN and TFFCA
+// }
 
-	if ( start ) {
-		time = TCNT - start;
-		start = 0;
-		printf("%u\n", time);
-	} else {
-		start = TCNT;
+void motor_update_speed(int quarter)
+{
+	switch ( quarter ) {
+		case 1:
+			current_speed = PACA * 4;
+			break;
+		case 2:
+			current_speed = PACA * 2;
+			break;
+		case 3:
+			current_speed = PACA * 4 / 3;
+			break;
+		case 4:
+			current_speed = PACA;
+			PACA = 0;
+		default:
+			break;
 	}
-	
-	TFLG1 = TFLG1;
-	
-	//PAFLG |= 1;
+}
+
+int motor_get_speed()
+{
+	return current_speed;
+}
+
+void motor_set_desired_speed(int speed)
+{
+	desired_speed = speed;
+}
+
+int motor_get_desired_speed()
+{
+	return desired_speed;
 }
