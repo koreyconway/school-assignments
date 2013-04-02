@@ -2,7 +2,7 @@ XH
 H 1 areas 3 global symbols
 M basicLCD.s
 A text size E8 flags 0
-dbfile M:\SYSC20~2\Assignments\ASSIGN~4\lib\basicLCD.s
+dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1\basicLCD.s
 dbfunc 0 ? 0 I
 dbline 18 0
 dbline 19 1

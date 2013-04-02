@@ -10,6 +10,7 @@
 char keyboard_getchar(void);
 void keyboard_init(void);
 void keyboard_isr(void);
+//extern void keyboard_key_pushed_callback(char key);
 
 static char key = 0x00;
 
@@ -72,6 +73,7 @@ void keyboard_isr()
 	
 	if ( col < KEYBOARD_COLUMNS && row < KEYBOARD_ROWS ) {
 		key = char_map[row][col];
+		//keyboard_key_pushed_callback(key);
 	} else {
 		key = 0x00; // Something strange happened if we get here
 	}
@@ -80,7 +82,7 @@ void keyboard_isr()
 	PTP |= 0x0F;  // Turn all rows on again
 	PTM &= ~0x08; // Set U7_EN low (PM3)
 	PIFH = 0xFF;  // Acknowlege the interrupt
-	PIEH  = 0xF0;
+	PIEH = 0xF0;
 }
 
 /*
@@ -92,5 +94,4 @@ char keyboard_getchar()
 	key = 0x00;
 	return temp;
 }
-
 

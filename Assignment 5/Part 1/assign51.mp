@@ -1,48 +1,49 @@
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                            text   4000   08BD =   2237. bytes (rel,con,rom)
+                            text   4000   08C5 =   2245. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
        4000  __start
        4028  _exit
-       402A  __text_start
        402A  _keyboard_init
+       402A  __text_start
        4057  _keyboard_isr
-       412B  _keyboard_getchar
-       413F  _lcd_init
-       4143  _lcd_print
-       4170  _lcd_print_top
-       4186  _lcd_print_bottom
-       419C  _lcd_display_speed
-       41BB  _lcd_display_temperature
-       41DA  _main
-       42CB  _LCD_instruction
-       42D7  _LCD_display
-       42E3  _Lcd2PP_Init
-       43B3  _setbaud
-       43E3  _putchar
-       440B  _strcpy
-       441A  __va_start
-       4438  __HC12Setup
-       443D  _itoa
-       44C5  _islower
-       44DD  __ctype
-       45DE  _toupper
-       45FE  __print
-       4833  _printf
-       4881  _sprintf
-       48BD  __text_end
+       4132  _keyboard_getchar
+       4146  _lcd_init
+       414A  _lcd_print
+       4177  _lcd_print_top
+       418D  _lcd_print_bottom
+       41A3  _lcd_display_speed
+       41C2  _lcd_display_temperature
+       41E1  _main
+       427B  _keyboard_key_pushed_callback
+       42D3  _LCD_instruction
+       42DF  _LCD_display
+       42EB  _Lcd2PP_Init
+       43BB  _setbaud
+       43EB  _putchar
+       4413  _strcpy
+       4422  __va_start
+       4440  __HC12Setup
+       4445  _itoa
+       44CD  _islower
+       44E5  __ctype
+       45E6  _toupper
+       4606  __print
+       483B  _printf
+       4889  _sprintf
+       48C5  __text_end
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------
-                           idata   48BD   0015 =     21. bytes (rel,con,rom)
+                           idata   48C5   0015 =     21. bytes (rel,con,rom)
 
        Addr  Global Symbol
       -----  --------------------------------
-       48BD  __idata_start
-       48D2  __idata_end
+       48C5  __idata_start
+       48DA  __idata_end
 
 Area                               Addr   Size   Decimal Bytes (Attributes)
 --------------------------------   ----   ----   ------- ----- ------------

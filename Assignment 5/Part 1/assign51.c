@@ -7,6 +7,7 @@
 
 int speed = 45;
 int temp  = 31;
+//void keyboard_key_pushed_callback(char key);
 
 int main()
 {
@@ -44,3 +45,8 @@ int main()
 	
 	return 0;
 }
+
+
+// void keyboard_key_pushed_callback(char key)
+// {}
+

@@ -1,1 +1,2 @@
-assign52.o: C:/icc/include/hcs12dp256.h C:/icc/include/hc12def.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1/../lib/motor.c
+assign52.o: C:/icc/include/hcs12dp256.h C:/icc/include/hc12def.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1/../lib/motor.c M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1/../lib/rti.c\
+ M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1/../lib/keyboard.c C:/icc/include/hcs12dp256.h M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1/../lib/lcd.c

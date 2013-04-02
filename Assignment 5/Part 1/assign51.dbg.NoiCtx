@@ -1,16 +1,12 @@
 NoICE Debug Context File verion 1.0
-DEBUGFILE "M:\SYSC 2003\Assignments\Assigment 5\Part 1\assign51.dbg" 1364330493
-SOURCEFILE "keyboard.c" 1364329385
-SOURCEFILE "lcd.c" 1364330290
-SOURCEFILE "assign51.c" 1364330473
+DEBUGFILE "M:\SYSC 2003\Assignments\Assignment 5\Part 1\assign51.dbg" 1364919364
+SOURCEFILE "keyboard.c" 1364919302
+SOURCEFILE "lcd.c" 1364330670
+SOURCEFILE "assign51.c" 1364919356
 SOURCEFILE "basicLCD.s" 1363636768
 SOURCEFILE "DP256reg.s" 1363637994
 SOURCEFILE "serial.c" 0
 SOURCEFILE "vectors_dp256_NoICE.c" 1364307805
 
 
-WATCH "row" 3 0 keyboard_isr 0
-WATCH "col" 3 0 keyboard_isr 0
-WATCH "col_mask" 3 0 keyboard_isr 0
-WATCH "key" 3 2 main 0
 

@@ -1,18 +1,20 @@
 // By Korey Conway and Tanzeel Rana
 
 void motor_init(void);
-int motor_get_speed(void);
-void motor_set_duty(int duty);
-int motor_get_duty(void);
-void motor_update_speed(int quarter);
-int motor_get_desired_speed(void);
-void motor_set_desired_speed(int speed);
+int  motor_get_speed(void);
+void motor_set_speed(int speed);
+void motor_update_speed(void);
+static void motor_set_duty(int duty);
 
-#define	MOTOR_MIN_DUTY	0
-#define MOTOR_MAX_DUTY	50
+#define	MOTOR_MIN_DUTY			0
+#define MOTOR_MAX_DUTY			55
+#define MOTOR_UPDATE_FREQUENCY	4
+#define	MOTOR_DUTY_THRESHOLD	25
+#define MOTOR_MAX_SPEED			30
+#define MOTOR_MIN_SPEED			0 // NOTE: these motors can't seem to go that slow, so the lab document should be fixed... or perhaps if there is a way it should be taught in class
 
 #ifndef PACA
-#define PACA		_LP(0x62)
+#define PACA	_LP(0x62)
 #endif
 
 static int current_speed = 0; // speed in rotations per second
@@ -32,12 +34,13 @@ void motor_init()
 	PWMDTY7 = 0; // Set initial duty to 0
 	PWME |= 0x80; // Enable PWM7
 	PACTL = (PACTL & ~0xFF) | (0x50 & 0xFF); // Enable PACA and sets rising edge detect
+	PACA = 0;
 }
 
 /*
 	Set the motor duty, making sure it stays in a safe range
 */
-void motor_set_duty(int duty)
+static void motor_set_duty(int duty)
 {
 	if ( duty < MOTOR_MIN_DUTY ) {
 		PWMDTY7 = MOTOR_MIN_DUTY;
@@ -48,41 +51,27 @@ void motor_set_duty(int duty)
 	}
 }
 
-int motor_get_duty()
+void motor_update_speed()
 {
-	return PWMDTY7;
-}
-
-// void optical_init()
-// {
-	// //PAFLG |= 1; // Clear any previous interrupts
-	// PACTL = (PACTL & ~0xFF) | (0x50 & 0xFF); // Enable PACA and sets rising edge detect
+	static int count = 0; // Setup count so it rolls over to 0 on first real sample
+	int diff_speed = 0;
 	
-	// // TCTL3 |= 0x40; // capture rising edge
-	// // TIE |= 0x80; // enable interrupt on pin 7
-	// // TIOS  &= ~0x80; // input capture on pin 7 of port T
-	// // TSCR2 |= 0x07; // prescale to 128
-	// // TSCR1 |= 0x90; // set TEN and TFFCA
-// }
-
-void motor_update_speed(int quarter)
-{
-	switch ( quarter ) {
-		case 1:
-			current_speed = PACA * 4;
-			break;
-		case 2:
-			current_speed = PACA * 2;
-			break;
-		case 3:
-			current_speed = PACA * 4 / 3;
-			break;
-		case 4:
-			current_speed = PACA;
-			PACA = 0;
-		default:
-			break;
+	// Estimate the current RPS (estimation improves throughout each second)
+	current_speed = PACA * MOTOR_UPDATE_FREQUENCY / (count + 1);
+	count = (count + 1) % MOTOR_UPDATE_FREQUENCY;
+	if ( count == 0 ) {
+		PACA = 0;
 	}
+	
+	// Update the duty cycle to get to desired speed
+	// Note: this is not the best algorithm, but that isn't what this class is about so I expect it is acceptable
+	diff_speed = desired_speed - current_speed;
+	if ( diff_speed > 0 ) {
+		motor_set_duty(PWMDTY7 + 1); // PWMDTY7 is duty
+	} else if ( diff_speed < 0 ) {
+		motor_set_duty(PWMDTY7 - 1); // PWMDTY7 is duty
+	}
+	
 }
 
 int motor_get_speed()
@@ -90,12 +79,15 @@ int motor_get_speed()
 	return current_speed;
 }
 
-void motor_set_desired_speed(int speed)
+void motor_set_speed(int speed)
 {
-	desired_speed = speed;
+	if ( speed >= MOTOR_MIN_SPEED || speed <= MOTOR_MAX_SPEED ) {
+		desired_speed = speed;
+		
+		if ( current_speed == 0 ) {
+			PWMDTY7 = MOTOR_DUTY_THRESHOLD; // give a boost to start faster
+		}
+	}
+	
 }
 
-int motor_get_desired_speed()
-{
-	return desired_speed;
-}

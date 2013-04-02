@@ -34,7 +34,7 @@
  3FC6 F8CF              .word 63695
  3FC8 F8CF              .word 63695
  3FCA F8CF              .word 63695
- 3FCC F8CF              .word 63695
+ 3FCC 0000              .word _keyboard_isr
  3FCE F8CF              .word 63695
  3FD0 F8CF              .word 63695
  3FD2 F8CF              .word 63695
@@ -44,7 +44,7 @@
  3FDA F8CF              .word 63695
  3FDC F8CF              .word 63695
  3FDE F8CF              .word 63695
- 3FE0 0000              .word _optical_isr
+ 3FE0 F8CF              .word 63695
  3FE2 F8CF              .word 63695
  3FE4 F8CF              .word 63695
  3FE6 F8CF              .word 63695
@@ -52,7 +52,7 @@
  3FEA F8CF              .word 63695
  3FEC F8CF              .word 63695
  3FEE F8CF              .word 63695
- 3FF0 F8CF              .word 63695
+ 3FF0 0000              .word _rti_isr
  3FF2 F8CF              .word 63695
  3FF4 F8C7              .word 63687
  3FF6 F8C3              .word 63683
@@ -60,7 +60,7 @@
  3FFA F805              .word 63493
  3FFC F809              .word 63497
  3FFE 0000              .word __start
- 4000                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\vectors_dp256_NoICE.c
+ 4000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1\vectors_dp256_NoICE.c
  4000                   .dbsym e interrupt_vectors _interrupt_vectors A[116:58]pfV
                         .area data
- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\vectors_dp256_NoICE.c
+ 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1\vectors_dp256_NoICE.c

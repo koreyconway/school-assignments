@@ -7,14 +7,14 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
                         .area idata
 --- 0000 00                .byte 0
                         .area data
---- 0001                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0001                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0001                   .dbsym s key _key c
                         .area text
---- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0000                   .dbfunc e keyboard_init _keyboard_init fV
  402A            _keyboard_init::
  402A                    .dbline -1
- 402A                    .dbline 20
+ 402A                    .dbline 21
  402A            ; // By Korey Conway and Tanzeel Rana
  402A            ; 
  402A            ; #include <hcs12dp256.h>
@@ -24,6 +24,7 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  402A            ; 
  402A            ; int speed = 45;
  402A            ; int temp  = 31;
+ 402A            ; void keyboard_key_pushed_callback(char key);
  402A            ; 
  402A            ; int main()
  402A            ; {
@@ -35,96 +36,96 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  402A            ;       keyboard_init();
  402A            ;       lcd_init();
  402A            ;       INTR_ON();
- 402A                    .dbline 21
+ 402A                    .dbline 22
  402A            ;       
  402A  7900F0            clr 0xf0
- 402D                    .dbline 23
+ 402D                    .dbline 24
  402D            ;       lcd_display_speed(speed);
  402D            ;       lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
  402D  1C025208          bset 0x252,#8
- 4031                    .dbline 25
+ 4031                    .dbline 26
  4031            ;       
  4031            ;       while ( 1 ) {
  4031  1C025A0F          bset 0x25a,#15
- 4035                    .dbline 26
+ 4035                    .dbline 27
  4035            ;               if ( key = keyboard_getchar() ) {
  4035  1C025008          bset 0x250,#8
- 4039                    .dbline 27
+ 4039                    .dbline 28
  4039            ;                       if ( key == '0' ) {
  4039  1C02580F          bset 0x258,#15
- 403D                    .dbline 28
+ 403D                    .dbline 29
  403D            ;                               break;
  403D  1D025008          bclr 0x250,#0x8
- 4041                    .dbline 30
+ 4041                    .dbline 31
  4041            ;                       } else if ( key == 'E' ) {
  4041            ;                               ++speed;
  4041  1D0262F0          bclr 0x262,#0xf0
- 4045                    .dbline 31
+ 4045                    .dbline 32
  4045            ;                               printf("Increasing speed to %d\n", speed);
  4045  1C0265F0          bset 0x265,#240
- 4049                    .dbline 32
+ 4049                    .dbline 33
  4049            ;                               lcd_display_speed(speed);
  4049  C6FF              ldab #255
  404B  7B0267            stab 0x267
- 404E                    .dbline 33
+ 404E                    .dbline 34
  404E            ;                               lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
  404E  790264            clr 0x264
- 4051                    .dbline 34
+ 4051                    .dbline 35
  4051            ;                       } else if ( key == 'D' ) {
  4051  C6F0              ldab #240
  4053  7B0266            stab 0x266
  4056                    .dbline -2
- 4056                    .dbline 35
+ 4056                    .dbline 36
  4056            ;                               --speed;
  4056            L3:
  4056                    .dbline 0 ; func end
  4056  3D                rts
  4057                    .dbend
                         .area data
---- 0001                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0001                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0001           L5:
 --- 0001                   .blkb 2
                         .area idata
 --- 0001 3132              .byte 49,50
                         .area data
---- 0003                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0003                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0003                   .blkb 2
                         .area idata
 --- 0003 3341              .byte 51,'A
                         .area data
---- 0005                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0005                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0005                   .blkb 2
                         .area idata
 --- 0005 3435              .byte 52,53
                         .area data
---- 0007                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0007                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0007                   .blkb 2
                         .area idata
 --- 0007 3642              .byte 54,'B
                         .area data
---- 0009                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0009                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 0009                   .blkb 2
                         .area idata
 --- 0009 3738              .byte 55,56
                         .area data
---- 000B                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 000B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 000B                   .blkb 2
                         .area idata
 --- 000B 3943              .byte 57,'C
                         .area data
---- 000D                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 000D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 000D                   .blkb 2
                         .area idata
 --- 000D 4530              .byte 'E,48
                         .area data
---- 000F                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 000F                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 000F                   .blkb 2
                         .area idata
 --- 000F 4644              .byte 'F,'D
                         .area data
---- 0011                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 0011                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
                         .area text
---- 002D                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/keyboard.c
+--- 002D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/keyboard.c
 --- 002D                   .dbfunc e keyboard_isr _keyboard_isr fV
 --- 002D                   .dbsym s char_map L5 A[16:4:4]c
 --- 002D           ;            row -> -6,x
@@ -135,7 +136,7 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4058  B775              tfr s,x
  405A  1B98              leas -8,sp
  405C                    .dbline -1
- 405C                    .dbline 42
+ 405C                    .dbline 43
  405C            ;                               printf("Decreasing speed to %d\n", speed);
  405C            ;                               lcd_display_speed(speed);
  405C            ;                               lcd_display_temperature(temp); // Need to redisplay bottom line for some reason
@@ -143,27 +144,27 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  405C            ;                               printf("Pushed: %c\n", key);
  405C            ;                       }
  405C            ;               }
- 405C                    .dbline 43
+ 405C                    .dbline 44
  405C            ;       }
  405C  CC0000            ldd #0
  405F  6C1A              std -6,x
- 4061                    .dbline 44
+ 4061                    .dbline 45
  4061            ;       
  4061  CC0000            ldd #0
  4064  6C1E              std -2,x
- 4066                    .dbline 52
+ 4066                    .dbline 53
  4066            ;       return 0;
  4066            ; }
- 4066            ; }
- 4066            ; }
- 4066            ; }
- 4066            ; }
- 4066            ; }
- 4066            ; }
+ 4066            ; 
+ 4066            ; 
+ 4066            ; void keyboard_key_pushed_callback(char key)
+ 4066            ; {}
+ 4066            ; 
+ 4066            ; 
  4066  790266            clr 0x266
- 4069                    .dbline 54
- 4069            ; }
- 4069            ; }
+ 4069                    .dbline 55
+ 4069            ; 
+ 4069            ; 
  4069                    ; vol
  4069  F60267            ldab 0x267
  406C  87                clra
@@ -176,19 +177,19 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4073  47                asra
  4074  56                rorb
  4075  6C1C              std -4,x
- 4077                    .dbline 57
+ 4077                    .dbline 58
  4077  CC0000            ldd #0
  407A  6C1A              std -6,x
  407C            L6:
- 407C                    .dbline 57
- 407C            ; }
- 407C            ; }
- 407C            ; }
  407C                    .dbline 58
- 407C            ; }
+ 407C            ; 
+ 407C            ; 
+ 407C            ; 
+ 407C                    .dbline 59
+ 407C            ; 
  407C  1C025008          bset 0x250,#8
- 4080                    .dbline 59
- 4080            ; }
+ 4080                    .dbline 60
+ 4080            ; 
  4080  CC0001            ldd #1
  4083  ED1A              ldy -6,x
  4085  8D0000            cpy #0
@@ -208,23 +209,23 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  409C  AA18              ora -8,x
  409E  EA19              orb -7,x
  40A0  7B0258            stab 0x258
- 40A3                    .dbline 60
- 40A3            ; }
+ 40A3                    .dbline 61
+ 40A3            ; 
  40A3  1D025008          bclr 0x250,#0x8
- 40A7                    .dbline 62
- 40A7            ; }
- 40A7            ; }
+ 40A7                    .dbline 63
+ 40A7            ; 
+ 40A7            ; 
  40A7  1F0260F02E        brclr 0x260,#240,L10
- 40AC                    .dbline 62
- 40AC                    .dbline 64
+ 40AC                    .dbline 63
+ 40AC                    .dbline 65
  40AC  CC0000            ldd #0
  40AF  6C1E              std -2,x
  40B1            L12:
- 40B1                    .dbline 64
- 40B1            ; }
- 40B1            ; }
  40B1                    .dbline 65
- 40B1            ; }
+ 40B1            ; 
+ 40B1            ; 
+ 40B1                    .dbline 66
+ 40B1            ; 
  40B1  EC1C              ldd -4,x
  40B3  ED1E              ldy -2,x
  40B5  8D0000            cpy #0
@@ -238,52 +239,52 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  40C1  C401              andb #1
  40C3  8C0000            cpd #0
  40C6  2702              beq L16
- 40C8                    .dbline 65
  40C8                    .dbline 66
- 40C8            ; }
+ 40C8                    .dbline 67
+ 40C8            ; 
  40C8  2020              bra L8
  40CA            L16:
- 40CA                    .dbline 68
+ 40CA                    .dbline 69
  40CA            L13:
- 40CA                    .dbline 64
+ 40CA                    .dbline 65
  40CA  EC1E              ldd -2,x
  40CC  C30001            addd #1
  40CF  6C1E              std -2,x
- 40D1                    .dbline 64
+ 40D1                    .dbline 65
  40D1  EC1E              ldd -2,x
  40D3  8C0004            cpd #4
  40D6  2DD9              blt L12
- 40D8                    .dbline 69
- 40D8            ; }
- 40D8            ; }
- 40D8            ; }
+ 40D8                    .dbline 70
+ 40D8            ; 
+ 40D8            ; 
+ 40D8            ; 
  40D8  2010              bra L8
  40DA            L10:
- 40DA                    .dbline 71
+ 40DA                    .dbline 72
  40DA            L7:
- 40DA                    .dbline 57
+ 40DA                    .dbline 58
  40DA  EC1A              ldd -6,x
  40DC  C30001            addd #1
  40DF  6C1A              std -6,x
- 40E1                    .dbline 57
+ 40E1                    .dbline 58
  40E1  EC1A              ldd -6,x
  40E3  8C0004            cpd #4
  40E6  182DFF92          lblt L6
  40EA            L8:
- 40EA                    .dbline 73
- 40EA            ; }
- 40EA            ; }
- 40EA            ; }
- 40EA            ; }
+ 40EA                    .dbline 74
+ 40EA            ; 
+ 40EA            ; 
+ 40EA            ; 
+ 40EA            ; 
  40EA  EC1E              ldd -2,x
  40EC  8C0004            cpd #4
- 40EF  2C1D              bge L18
+ 40EF  2C24              bge L18
  40F1  EC1A              ldd -6,x
  40F3  8C0004            cpd #4
- 40F6  2C16              bge L18
- 40F8                    .dbline 73
+ 40F6  2C1D              bge L18
  40F8                    .dbline 74
- 40F8            ; }
+ 40F8                    .dbline 75
+ 40F8            ; 
  40F8  EC1A              ldd -6,x
  40FA  59                lsld
  40FB  59                lsld
@@ -294,390 +295,408 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  4105  B7C6              xgdy
  4107  E640              ldab 0,y
  4109  7B1000            stab _key
- 410C                    .dbline 75
- 410C  2003              bra L19
- 410E            L18:
- 410E                    .dbline 75
- 410E            ; }
- 410E                    .dbline 76
- 410E            ; }
- 410E  791000            clr _key
- 4111                    .dbline 77
- 4111            ; }
- 4111            L19:
- 4111                    .dbline 79
- 4111            ; }
- 4111            ; }
- 4111  1C025008          bset 0x250,#8
- 4115                    .dbline 80
- 4115            ; }
- 4115  1C02580F          bset 0x258,#15
- 4119                    .dbline 81
- 4119            ; }
- 4119  1D025008          bclr 0x250,#0x8
- 411D                    .dbline 82
- 411D            ; }
- 411D  C6FF              ldab #255
- 411F  7B0267            stab 0x267
- 4122                    .dbline 83
- 4122            ; }
- 4122  C6F0              ldab #240
- 4124  7B0266            stab 0x266
- 4127                    .dbline -2
- 4127                    .dbline 84
- 4127            ; }
- 4127            L4:
- 4127  B757              tfr x,s
- 4129  30                pulx
- 412A                    .dbline 0 ; func end
- 412A  0B                rti
- 412B                    .dbsym l row -6 I
- 412B                    .dbsym l col_mask -4 I
- 412B                    .dbsym l col -2 I
- 412B                    .dbend
- 412B                    .dbfunc e keyboard_getchar _keyboard_getchar fc
- 412B            ;           temp -> -1,x
- 412B            _keyboard_getchar::
- 412B  34                pshx
- 412C  B775              tfr s,x
- 412E  1B9E              leas -2,sp
- 4130                    .dbline -1
- 4130                    .dbline 90
- 4130            ; H¿
- 4130            ; H¿
- 4130            ; H¿
- 4130            ; H¿
- 4130            ; H¿
- 4130            ; H¿
- 4130                    .dbline 91
- 4130            ; H¿
- 4130  18091F1000        movb _key,-1,x
- 4135                    .dbline 92
- 4135            ; H¿
- 4135  791000            clr _key
- 4138                    .dbline 93
- 4138            ; H¿
- 4138  E61F              ldab -1,x
- 413A  87                clra
- 413B                    .dbline -2
- 413B            L20:
- 413B  B757              tfr x,s
- 413D  30                pulx
- 413E                    .dbline 0 ; func end
- 413E  3D                rts
- 413F                    .dbsym l temp -1 c
- 413F                    .dbend
- 413F                    .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/lcd.c
- 413F                    .dbfunc e lcd_init _lcd_init fV
- 413F            _lcd_init::
- 413F                    .dbline -1
- 413F                    .dbline 21
- 413F                    .dbline 22
- 413F  1642E3            jsr _Lcd2PP_Init
+ 410C                    .dbline 76
+ 410C            ; 
+ 410C  F61000            ldab _key
+ 410F  87                clra
+ 4110  16427B            jsr _keyboard_key_pushed_callback
+ 4113                    .dbline 77
+ 4113  2003              bra L19
+ 4115            L18:
+ 4115                    .dbline 77
+ 4115            ; 
+ 4115                    .dbline 78
+ 4115            ; 
+ 4115  791000            clr _key
+ 4118                    .dbline 79
+ 4118            ; 
+ 4118            L19:
+ 4118                    .dbline 81
+ 4118            ; 
+ 4118            ; 
+ 4118  1C025008          bset 0x250,#8
+ 411C                    .dbline 82
+ 411C            ; 
+ 411C  1C02580F          bset 0x258,#15
+ 4120                    .dbline 83
+ 4120            ; 
+ 4120  1D025008          bclr 0x250,#0x8
+ 4124                    .dbline 84
+ 4124            ; 
+ 4124  C6FF              ldab #255
+ 4126  7B0267            stab 0x267
+ 4129                    .dbline 85
+ 4129            ; 
+ 4129  C6F0              ldab #240
+ 412B  7B0266            stab 0x266
+ 412E                    .dbline -2
+ 412E                    .dbline 86
+ 412E            ; 
+ 412E            L4:
+ 412E  B757              tfr x,s
+ 4130  30                pulx
+ 4131                    .dbline 0 ; func end
+ 4131  0B                rti
+ 4132                    .dbsym l row -6 I
+ 4132                    .dbsym l col_mask -4 I
+ 4132                    .dbsym l col -2 I
+ 4132                    .dbend
+ 4132                    .dbfunc e keyboard_getchar _keyboard_getchar fc
+ 4132            ;           temp -> -1,x
+ 4132            _keyboard_getchar::
+ 4132  34                pshx
+ 4133  B775              tfr s,x
+ 4135  1B9E              leas -2,sp
+ 4137                    .dbline -1
+ 4137                    .dbline 92
+ 4137            ; H¿
+ 4137            ; H¿
+ 4137            ; H¿
+ 4137            ; H¿
+ 4137            ; H¿
+ 4137            ; H¿
+ 4137                    .dbline 93
+ 4137            ; H¿
+ 4137  18091F1000        movb _key,-1,x
+ 413C                    .dbline 94
+ 413C            ; H¿
+ 413C  791000            clr _key
+ 413F                    .dbline 95
+ 413F            ; H¿
+ 413F  E61F              ldab -1,x
+ 4141  87                clra
  4142                    .dbline -2
- 4142                    .dbline 23
- 4142            L21:
- 4142                    .dbline 0 ; func end
- 4142  3D                rts
- 4143                    .dbend
- 4143                    .dbfunc e lcd_print _lcd_print fV
- 4143            ;          ?temp -> -2,x
- 4143            ;        address -> 6,x
- 4143            ;         string -> 2,x
- 4143            _lcd_print::
- 4143  3B                pshd
- 4144  34                pshx
- 4145  B775              tfr s,x
- 4147  1B9E              leas -2,sp
- 4149                    .dbline -1
- 4149                    .dbline 29
- 4149                    .dbline 37
- 4149  EC06              ldd 6,x
- 414B  87                clra
- 414C  1642CB            jsr _LCD_instruction
- 414F  2013              bra L24
- 4151            L23:
- 4151                    .dbline 38
- 4151                    .dbline 39
- 4151  1802021E          movw 2,x,-2,x
- 4155  EC1E              ldd -2,x
- 4157  C30001            addd #1
- 415A  6C02              std 2,x
- 415C  ED1E              ldy -2,x
- 415E  E640              ldab 0,y
- 4160  87                clra
- 4161  1642D7            jsr _LCD_display
- 4164                    .dbline 40
- 4164            L24:
- 4164                    .dbline 38
- 4164  ED02              ldy 2,x
- 4166  E740              tst 0,y
- 4168  26E7              bne L23
- 416A                    .dbline -2
- 416A                    .dbline 41
- 416A            L22:
- 416A  B757              tfr x,s
- 416C  30                pulx
- 416D  1B82              leas 2,sp
- 416F                    .dbline 0 ; func end
- 416F  3D                rts
- 4170                    .dbsym l address 6 I
- 4170                    .dbsym l string 2 pc
- 4170                    .dbend
- 4170                    .dbfunc e lcd_print_top _lcd_print_top fV
- 4170            ;         string -> 2,x
- 4170            _lcd_print_top::
- 4170  3B                pshd
- 4171  34                pshx
- 4172  B775              tfr s,x
- 4174  1B9E              leas -2,sp
- 4176                    .dbline -1
- 4176                    .dbline 47
- 4176                    .dbline 48
- 4176  CC0000            ldd #0
- 4179  6C80              std 0,sp
- 417B  EC02              ldd 2,x
- 417D  164143            jsr _lcd_print
- 4180                    .dbline -2
- 4180                    .dbline 49
- 4180            L26:
- 4180  B757              tfr x,s
- 4182  30                pulx
- 4183  1B82              leas 2,sp
- 4185                    .dbline 0 ; func end
- 4185  3D                rts
- 4186                    .dbsym l string 2 pc
- 4186                    .dbend
- 4186                    .dbfunc e lcd_print_bottom _lcd_print_bottom fV
- 4186            ;         string -> 2,x
- 4186            _lcd_print_bottom::
- 4186  3B                pshd
- 4187  34                pshx
- 4188  B775              tfr s,x
- 418A  1B9E              leas -2,sp
- 418C                    .dbline -1
- 418C                    .dbline 55
- 418C                    .dbline 56
- 418C  CC00C0            ldd #192
- 418F  6C80              std 0,sp
- 4191  EC02              ldd 2,x
- 4193  164143            jsr _lcd_print
- 4196                    .dbline -2
- 4196                    .dbline 57
- 4196            L27:
- 4196  B757              tfr x,s
- 4198  30                pulx
- 4199  1B82              leas 2,sp
- 419B                    .dbline 0 ; func end
- 419B  3D                rts
- 419C                    .dbsym l string 2 pc
- 419C                    .dbend
- 419C                    .dbfunc e lcd_display_speed _lcd_display_speed fV
- 419C            ;         string -> -2,x
- 419C            ;          speed -> 2,x
- 419C            _lcd_display_speed::
- 419C  3B                pshd
- 419D  34                pshx
- 419E  B775              tfr s,x
- 41A0  1B9A              leas -6,sp
- 41A2                    .dbline -1
- 41A2                    .dbline 63
- 41A2                    .dbline 65
- 41A2  18020282          movw 2,x,2,sp
- 41A6  CC42C1            ldd #L29
- 41A9  6C80              std 0,sp
- 41AB  EC1E              ldd -2,x
- 41AD  164881            jsr _sprintf
- 41B0                    .dbline 66
- 41B0  EC1E              ldd -2,x
- 41B2  164170            jsr _lcd_print_top
- 41B5                    .dbline -2
- 41B5                    .dbline 67
- 41B5            L28:
- 41B5  B757              tfr x,s
- 41B7  30                pulx
- 41B8  1B82              leas 2,sp
- 41BA                    .dbline 0 ; func end
- 41BA  3D                rts
- 41BB                    .dbsym l string -2 pc
- 41BB                    .dbsym l speed 2 I
- 41BB                    .dbend
- 41BB                    .dbfunc e lcd_display_temperature _lcd_display_temperature fV
- 41BB            ;         string -> -2,x
- 41BB            ;           temp -> 2,x
- 41BB            _lcd_display_temperature::
- 41BB  3B                pshd
- 41BC  34                pshx
- 41BD  B775              tfr s,x
- 41BF  1B9A              leas -6,sp
- 41C1                    .dbline -1
- 41C1                    .dbline 73
- 41C1                    .dbline 75
- 41C1  18020282          movw 2,x,2,sp
- 41C5  CC42B0            ldd #L31
- 41C8  6C80              std 0,sp
- 41CA  EC1E              ldd -2,x
- 41CC  164881            jsr _sprintf
- 41CF                    .dbline 76
- 41CF  EC1E              ldd -2,x
- 41D1  164186            jsr _lcd_print_bottom
- 41D4                    .dbline -2
- 41D4                    .dbline 77
- 41D4            L30:
- 41D4  B757              tfr x,s
- 41D6  30                pulx
- 41D7  1B82              leas 2,sp
- 41D9                    .dbline 0 ; func end
- 41D9  3D                rts
- 41DA                    .dbsym l string -2 pc
- 41DA                    .dbsym l temp 2 I
- 41DA                    .dbend
+ 4142            L20:
+ 4142  B757              tfr x,s
+ 4144  30                pulx
+ 4145                    .dbline 0 ; func end
+ 4145  3D                rts
+ 4146                    .dbsym l temp -1 c
+ 4146                    .dbend
+ 4146                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/lcd.c
+ 4146                    .dbfunc e lcd_init _lcd_init fV
+ 4146            _lcd_init::
+ 4146                    .dbline -1
+ 4146                    .dbline 21
+ 4146                    .dbline 22
+ 4146  1642EB            jsr _Lcd2PP_Init
+ 4149                    .dbline -2
+ 4149                    .dbline 23
+ 4149            L21:
+ 4149                    .dbline 0 ; func end
+ 4149  3D                rts
+ 414A                    .dbend
+ 414A                    .dbfunc e lcd_print _lcd_print fV
+ 414A            ;          ?temp -> -2,x
+ 414A            ;        address -> 6,x
+ 414A            ;         string -> 2,x
+ 414A            _lcd_print::
+ 414A  3B                pshd
+ 414B  34                pshx
+ 414C  B775              tfr s,x
+ 414E  1B9E              leas -2,sp
+ 4150                    .dbline -1
+ 4150                    .dbline 29
+ 4150                    .dbline 30
+ 4150  EC06              ldd 6,x
+ 4152  87                clra
+ 4153  1642D3            jsr _LCD_instruction
+ 4156  2013              bra L24
+ 4158            L23:
+ 4158                    .dbline 31
+ 4158                    .dbline 32
+ 4158  1802021E          movw 2,x,-2,x
+ 415C  EC1E              ldd -2,x
+ 415E  C30001            addd #1
+ 4161  6C02              std 2,x
+ 4163  ED1E              ldy -2,x
+ 4165  E640              ldab 0,y
+ 4167  87                clra
+ 4168  1642DF            jsr _LCD_display
+ 416B                    .dbline 33
+ 416B            L24:
+ 416B                    .dbline 31
+ 416B  ED02              ldy 2,x
+ 416D  E740              tst 0,y
+ 416F  26E7              bne L23
+ 4171                    .dbline -2
+ 4171                    .dbline 34
+ 4171            L22:
+ 4171  B757              tfr x,s
+ 4173  30                pulx
+ 4174  1B82              leas 2,sp
+ 4176                    .dbline 0 ; func end
+ 4176  3D                rts
+ 4177                    .dbsym l address 6 I
+ 4177                    .dbsym l string 2 pc
+ 4177                    .dbend
+ 4177                    .dbfunc e lcd_print_top _lcd_print_top fV
+ 4177            ;         string -> 2,x
+ 4177            _lcd_print_top::
+ 4177  3B                pshd
+ 4178  34                pshx
+ 4179  B775              tfr s,x
+ 417B  1B9E              leas -2,sp
+ 417D                    .dbline -1
+ 417D                    .dbline 40
+ 417D                    .dbline 41
+ 417D  CC0000            ldd #0
+ 4180  6C80              std 0,sp
+ 4182  EC02              ldd 2,x
+ 4184  16414A            jsr _lcd_print
+ 4187                    .dbline -2
+ 4187                    .dbline 42
+ 4187            L26:
+ 4187  B757              tfr x,s
+ 4189  30                pulx
+ 418A  1B82              leas 2,sp
+ 418C                    .dbline 0 ; func end
+ 418C  3D                rts
+ 418D                    .dbsym l string 2 pc
+ 418D                    .dbend
+ 418D                    .dbfunc e lcd_print_bottom _lcd_print_bottom fV
+ 418D            ;         string -> 2,x
+ 418D            _lcd_print_bottom::
+ 418D  3B                pshd
+ 418E  34                pshx
+ 418F  B775              tfr s,x
+ 4191  1B9E              leas -2,sp
+ 4193                    .dbline -1
+ 4193                    .dbline 48
+ 4193                    .dbline 49
+ 4193  CC00C0            ldd #192
+ 4196  6C80              std 0,sp
+ 4198  EC02              ldd 2,x
+ 419A  16414A            jsr _lcd_print
+ 419D                    .dbline -2
+ 419D                    .dbline 50
+ 419D            L27:
+ 419D  B757              tfr x,s
+ 419F  30                pulx
+ 41A0  1B82              leas 2,sp
+ 41A2                    .dbline 0 ; func end
+ 41A2  3D                rts
+ 41A3                    .dbsym l string 2 pc
+ 41A3                    .dbend
+ 41A3                    .dbfunc e lcd_display_speed _lcd_display_speed fV
+ 41A3            ;         string -> -2,x
+ 41A3            ;          speed -> 2,x
+ 41A3            _lcd_display_speed::
+ 41A3  3B                pshd
+ 41A4  34                pshx
+ 41A5  B775              tfr s,x
+ 41A7  1B9A              leas -6,sp
+ 41A9                    .dbline -1
+ 41A9                    .dbline 56
+ 41A9                    .dbline 58
+ 41A9  18020282          movw 2,x,2,sp
+ 41AD  CC42C9            ldd #L29
+ 41B0  6C80              std 0,sp
+ 41B2  EC1E              ldd -2,x
+ 41B4  164889            jsr _sprintf
+ 41B7                    .dbline 59
+ 41B7  EC1E              ldd -2,x
+ 41B9  164177            jsr _lcd_print_top
+ 41BC                    .dbline -2
+ 41BC                    .dbline 60
+ 41BC            L28:
+ 41BC  B757              tfr x,s
+ 41BE  30                pulx
+ 41BF  1B82              leas 2,sp
+ 41C1                    .dbline 0 ; func end
+ 41C1  3D                rts
+ 41C2                    .dbsym l string -2 pc
+ 41C2                    .dbsym l speed 2 I
+ 41C2                    .dbend
+ 41C2                    .dbfunc e lcd_display_temperature _lcd_display_temperature fV
+ 41C2            ;         string -> -2,x
+ 41C2            ;           temp -> 2,x
+ 41C2            _lcd_display_temperature::
+ 41C2  3B                pshd
+ 41C3  34                pshx
+ 41C4  B775              tfr s,x
+ 41C6  1B9A              leas -6,sp
+ 41C8                    .dbline -1
+ 41C8                    .dbline 66
+ 41C8                    .dbline 68
+ 41C8  18020282          movw 2,x,2,sp
+ 41CC  CC42B8            ldd #L31
+ 41CF  6C80              std 0,sp
+ 41D1  EC1E              ldd -2,x
+ 41D3  164889            jsr _sprintf
+ 41D6                    .dbline 69
+ 41D6  EC1E              ldd -2,x
+ 41D8  16418D            jsr _lcd_print_bottom
+ 41DB                    .dbline -2
+ 41DB                    .dbline 70
+ 41DB            L30:
+ 41DB  B757              tfr x,s
+ 41DD  30                pulx
+ 41DE  1B82              leas 2,sp
+ 41E0                    .dbline 0 ; func end
+ 41E0  3D                rts
+ 41E1                    .dbsym l string -2 pc
+ 41E1                    .dbsym l temp 2 I
+ 41E1                    .dbend
                         .area data
---- 0011                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/lcd.c
+--- 0011                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/lcd.c
  1011            _speed::
  1011                    .blkb 2
                         .area idata
 --- 0011 002D              .word 45
                         .area data
---- 0013                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1/../lib/lcd.c
---- 0013                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1\assign51.c
+--- 0013                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1/../lib/lcd.c
+--- 0013                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1\assign51.c
 --- 0013                   .dbsym e speed _speed I
  1013            _temp::
  1013                    .blkb 2
                         .area idata
 --- 0013 001F              .word 31
                         .area data
---- 0015                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1\assign51.c
+--- 0015                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1\assign51.c
 --- 0015                   .dbsym e temp _temp I
                         .area text
---- 01B0                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1\assign51.c
---- 01B0                   .dbfunc e main _main fI
---- 01B0           ;          ?temp -> -2,x
---- 01B0           ;            key -> -1,x
- 41DA            _main::
- 41DA  34                pshx
- 41DB  B775              tfr s,x
- 41DD  1B9C              leas -4,sp
- 41DF                    .dbline -1
- 41DF                    .dbline 12
- 41DF                    .dbline 16
- 41DF  CC001A            ldd #26
- 41E2  1643B3            jsr _setbaud
- 41E5                    .dbline 18
- 41E5  16402A            jsr _keyboard_init
- 41E8                    .dbline 19
- 41E8  16413F            jsr _lcd_init
- 41EB                    .dbline 20
- 41EB  10EF                      cli
- 41ED            
- 41ED                    .dbline 22
- 41ED  FC1011            ldd _speed
- 41F0  16419C            jsr _lcd_display_speed
- 41F3                    .dbline 23
- 41F3  FC1013            ldd _temp
- 41F6  1641BB            jsr _lcd_display_temperature
- 41F9  2070              bra L34
- 41FB            L33:
- 41FB                    .dbline 25
- 41FB                    .dbline 26
- 41FB  16412B            jsr _keyboard_getchar
- 41FE  6B1E              stab -2,x
- 4200  180A1E1F          movb -2,x,-1,x
- 4204  E71E              tst -2,x
- 4206  2763              beq L36
- 4208                    .dbline 26
- 4208                    .dbline 27
- 4208  E61F              ldab -1,x
- 420A  C130              cmpb #48
- 420C  2602              bne L38
- 420E                    .dbline 27
- 420E                    .dbline 28
- 420E  205D              bra L35
- 4210            L38:
- 4210                    .dbline 29
- 4210  E61F              ldab -1,x
- 4212  C145              cmpb #69
- 4214  2622              bne L40
- 4216                    .dbline 29
- 4216                    .dbline 30
- 4216  FC1011            ldd _speed
- 4219  C30001            addd #1
- 421C  7C1011            std _speed
- 421F                    .dbline 31
- 421F  1801801011        movw _speed,0,sp
- 4224  CC4298            ldd #L42
- 4227  164833            jsr _printf
- 422A                    .dbline 32
- 422A  FC1011            ldd _speed
- 422D  16419C            jsr _lcd_display_speed
- 4230                    .dbline 33
- 4230  FC1013            ldd _temp
- 4233  1641BB            jsr _lcd_display_temperature
- 4236                    .dbline 34
- 4236  2033              bra L41
- 4238            L40:
- 4238                    .dbline 34
- 4238  E61F              ldab -1,x
- 423A  C144              cmpb #68
- 423C  2622              bne L43
- 423E                    .dbline 34
- 423E                    .dbline 35
- 423E  FC1011            ldd _speed
- 4241  830001            subd #1
- 4244  7C1011            std _speed
- 4247                    .dbline 36
- 4247  1801801011        movw _speed,0,sp
- 424C  CC4280            ldd #L45
- 424F  164833            jsr _printf
- 4252                    .dbline 37
- 4252  FC1011            ldd _speed
- 4255  16419C            jsr _lcd_display_speed
- 4258                    .dbline 38
- 4258  FC1013            ldd _temp
- 425B  1641BB            jsr _lcd_display_temperature
- 425E                    .dbline 39
- 425E  200B              bra L44
- 4260            L43:
- 4260                    .dbline 39
- 4260                    .dbline 40
- 4260  E61F              ldab -1,x
- 4262  87                clra
- 4263  6C80              std 0,sp
- 4265  CC4274            ldd #L46
- 4268  164833            jsr _printf
- 426B                    .dbline 41
- 426B            L44:
- 426B            L41:
- 426B                    .dbline 42
- 426B            L36:
- 426B                    .dbline 43
- 426B            L34:
- 426B                    .dbline 25
- 426B  208E              bra L33
- 426D            L35:
- 426D                    .dbline 45
- 426D  CC0000            ldd #0
- 4270                    .dbline -2
- 4270            L32:
- 4270  B757              tfr x,s
- 4272  30                pulx
- 4273                    .dbline 0 ; func end
- 4273  3D                rts
- 4274                    .dbsym l key -1 c
- 4274                    .dbend
- 4274            L46:
- 4274  5075736865643A2025630A00  .byte 'P,'u,'s,'h,'e,'d,58,32,37,'c,10,0
- 4280            L45:
- 4280  44656372656173696E67207370656564  .byte 'D,'e,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
- 4290  20746F2025640A00  .byte 32,'t,'o,32,37,'d,10,0
- 4298            L42:
- 4298  496E6372656173696E67207370656564  .byte 'I,'n,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
- 42A8  20746F2025640A00  .byte 32,'t,'o,32,37,'d,10,0
- 42B0            L31:
- 42B0  54656D70657261747572653A20256443  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,32,37,'d,'C
- 42C0  00                .byte 0
- 42C1            L29:
- 42C1  53706565643A20256400      .byte 'S,'p,'e,'e,'d,58,32,37,'d,0
+--- 01B7                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1\assign51.c
+--- 01B7                   .dbfunc e main _main fI
+--- 01B7           ;          ?temp -> -2,x
+--- 01B7           ;            key -> -1,x
+ 41E1            _main::
+ 41E1  34                pshx
+ 41E2  B775              tfr s,x
+ 41E4  1B9C              leas -4,sp
+ 41E6                    .dbline -1
+ 41E6                    .dbline 13
+ 41E6                    .dbline 17
+ 41E6  CC001A            ldd #26
+ 41E9  1643BB            jsr _setbaud
+ 41EC                    .dbline 19
+ 41EC  16402A            jsr _keyboard_init
+ 41EF                    .dbline 20
+ 41EF  164146            jsr _lcd_init
+ 41F2                    .dbline 21
+ 41F2  10EF                      cli
+ 41F4            
+ 41F4                    .dbline 23
+ 41F4  FC1011            ldd _speed
+ 41F7  1641A3            jsr _lcd_display_speed
+ 41FA                    .dbline 24
+ 41FA  FC1013            ldd _temp
+ 41FD  1641C2            jsr _lcd_display_temperature
+ 4200  2070              bra L34
+ 4202            L33:
+ 4202                    .dbline 26
+ 4202                    .dbline 27
+ 4202  164132            jsr _keyboard_getchar
+ 4205  6B1E              stab -2,x
+ 4207  180A1E1F          movb -2,x,-1,x
+ 420B  E71E              tst -2,x
+ 420D  2763              beq L36
+ 420F                    .dbline 27
+ 420F                    .dbline 28
+ 420F  E61F              ldab -1,x
+ 4211  C130              cmpb #48
+ 4213  2602              bne L38
+ 4215                    .dbline 28
+ 4215                    .dbline 29
+ 4215  205D              bra L35
+ 4217            L38:
+ 4217                    .dbline 30
+ 4217  E61F              ldab -1,x
+ 4219  C145              cmpb #69
+ 421B  2622              bne L40
+ 421D                    .dbline 30
+ 421D                    .dbline 31
+ 421D  FC1011            ldd _speed
+ 4220  C30001            addd #1
+ 4223  7C1011            std _speed
+ 4226                    .dbline 32
+ 4226  1801801011        movw _speed,0,sp
+ 422B  CC42A0            ldd #L42
+ 422E  16483B            jsr _printf
+ 4231                    .dbline 33
+ 4231  FC1011            ldd _speed
+ 4234  1641A3            jsr _lcd_display_speed
+ 4237                    .dbline 34
+ 4237  FC1013            ldd _temp
+ 423A  1641C2            jsr _lcd_display_temperature
+ 423D                    .dbline 35
+ 423D  2033              bra L41
+ 423F            L40:
+ 423F                    .dbline 35
+ 423F  E61F              ldab -1,x
+ 4241  C144              cmpb #68
+ 4243  2622              bne L43
+ 4245                    .dbline 35
+ 4245                    .dbline 36
+ 4245  FC1011            ldd _speed
+ 4248  830001            subd #1
+ 424B  7C1011            std _speed
+ 424E                    .dbline 37
+ 424E  1801801011        movw _speed,0,sp
+ 4253  CC4288            ldd #L45
+ 4256  16483B            jsr _printf
+ 4259                    .dbline 38
+ 4259  FC1011            ldd _speed
+ 425C  1641A3            jsr _lcd_display_speed
+ 425F                    .dbline 39
+ 425F  FC1013            ldd _temp
+ 4262  1641C2            jsr _lcd_display_temperature
+ 4265                    .dbline 40
+ 4265  200B              bra L44
+ 4267            L43:
+ 4267                    .dbline 40
+ 4267                    .dbline 41
+ 4267  E61F              ldab -1,x
+ 4269  87                clra
+ 426A  6C80              std 0,sp
+ 426C  CC427C            ldd #L46
+ 426F  16483B            jsr _printf
+ 4272                    .dbline 42
+ 4272            L44:
+ 4272            L41:
+ 4272                    .dbline 43
+ 4272            L36:
+ 4272                    .dbline 44
+ 4272            L34:
+ 4272                    .dbline 26
+ 4272  208E              bra L33
+ 4274            L35:
+ 4274                    .dbline 46
+ 4274  CC0000            ldd #0
+ 4277                    .dbline -2
+ 4277            L32:
+ 4277  B757              tfr x,s
+ 4279  30                pulx
+ 427A                    .dbline 0 ; func end
+ 427A  3D                rts
+ 427B                    .dbsym l key -1 c
+ 427B                    .dbend
+ 427B                    .dbfunc e keyboard_key_pushed_callback _keyboard_key_pushed_callback fV
+ 427B            ;            key -> 3,x
+ 427B            _keyboard_key_pushed_callback::
+ 427B                    .dbline -1
+ 427B                    .dbline 51
+ 427B                    .dbline -2
+ 427B                    .dbline 51
+ 427B            L47:
+ 427B                    .dbline 0 ; func end
+ 427B  3D                rts
+ 427C                    .dbsym l key 2 I
+ 427C                    .dbsym l key 3 c
+ 427C                    .dbend
+ 427C            L46:
+ 427C  5075736865643A2025630A00  .byte 'P,'u,'s,'h,'e,'d,58,32,37,'c,10,0
+ 4288            L45:
+ 4288  44656372656173696E67207370656564  .byte 'D,'e,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
+ 4298  20746F2025640A00  .byte 32,'t,'o,32,37,'d,10,0
+ 42A0            L42:
+ 42A0  496E6372656173696E67207370656564  .byte 'I,'n,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
+ 42B0  20746F2025640A00  .byte 32,'t,'o,32,37,'d,10,0
+ 42B8            L31:
+ 42B8  54656D70657261747572653A20256443  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,32,37,'d,'C
+ 42C8  00                .byte 0
+ 42C9            L29:
+ 42C9  53706565643A20256400      .byte 'S,'p,'e,'e,'d,58,32,37,'d,0
                         .module vectors_dp256_NoICE.c
                         .area memory(abs)
                         .org 0x3f8c
@@ -740,10 +759,10 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  3FFA  F805              .word 63493
  3FFC  F809              .word 63497
  3FFE  4000              .word __start
- 4000                    .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1\vectors_dp256_NoICE.c
+ 4000                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1\vectors_dp256_NoICE.c
  4000                    .dbsym e interrupt_vectors _interrupt_vectors A[116:58]pfV
                         .area data
---- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART1~1\vectors_dp256_NoICE.c
+--- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART1~1\vectors_dp256_NoICE.c
  0000            REGBS = $0000 ; DP256 register bank base address
  0000            PORTA = REGBS+0 ;port A = Address lines A8 A15
  0001            PORTB = REGBS+1 ;port B = Address lines A0 A7
@@ -1245,178 +1264,178 @@ THIS WILL BE REMEDIED IN A LATER RELEASE.
  0008           LCD_EN = $08          ; LCD EN select	(PT3)
  0080           U21_EN = $80
 --- 0000           
- 42CB            _LCD_instruction::
- 42CB  3B                 pshd
- 42CC  34                 pshx
- 42CD  35                 pshy
- 42CE  180F               tba
- 42D0  164345             jsr LD2PP_Instruction
- 42D3  31                 puly
- 42D4  30                 pulx
- 42D5  3A                 puld
- 42D6  3D                 rts
- 42D7            _LCD_display::
- 42D7  3B                 pshd
- 42D8  34                 pshx
- 42D9  35                 pshy
- 42DA  180F               tba
- 42DC  16433D             jsr LCD2PP_Data
- 42DF  31                 puly
- 42E0  30                 pulx
- 42E1  3A                 puld
- 42E2  3D                 rts
- 42E3                     
- 42E3            ;-----------
- 42E3            _Lcd2PP_Init::
- 42E3  3B                 pshd
- 42E4  34                 pshx
- 42E5  35                 pshy
- 42E6  1642ED             jsr Lcd2PP_Init
- 42E9  31                 puly
- 42EA  30                 pulx
- 42EB  3A                 puld
- 42EC  3D                 rts    
- 42ED                      
- 42ED            Lcd2PP_Init:	; Note : Use 4-bit init sequence (not 8-bit)  Page 3 LCD_spec.pdf
- 42ED            		; Bottom table contains sequence of instructions
- 42ED            		; Each row in the table represents one WRITE to the LCD instruction register (via Port P)
- 42ED            		;	First instruction involves only a 4-bit instruction (one WRITE)
- 42ED            		;	Following instructions involve 8 bit instruction, therefore
- 42ED            		;		2 * 4-bit writes
- 42ED            
- 42ED            	; "System init"
- 42ED            	; Setup Port T for output
- 42ED  180B0F0242           movb #$0F,DDRT        ; setup port T
- 42F2  180B000240           movb #$00,PTT         ; all low
- 42F7                    ; Disable SPI AND setup SPI1 as four output bits
- 42F7  1C025A0F                bset  DDRP,#$0F           ; set P0-3 as outputs
- 42FB  1D00F040            bclr  SPI1CR1,#$40    ; Disable SP by turning SPI1 off
- 42FF            
- 42FF  180BFE0252           movb #$FE,DDRM        ; set PM1-7 as outputs
- 4304  180B000250           movb #$00,PTM         ; D.P.(PM2) = Off, U7_EN(PM3)= low,
- 4309                                            ; SS0*(PM4), SS1*(PM5), SS2*(PM6) = Low
- 4309                                            ; Heat(PM7) = Off
- 4309            
- 4309  1D02400E            bclr    PTT,LCD_RW+LCD_RS+LCD_EN  ; select lcd commands Cs=0 En=0
- 430D            
- 430D  16438B              jsr      DELAY50M
- 4310  8602                ldaa     #$02         ; Set to 4-bit operation (0010)
- 4312  164351              jsr      LCD2PP_4     ; This first instruction is only 4 bits long!!!  Rest are 8 bits.  
- 4315  16438B              jsr      DELAY50M
- 4318            
- 4318                    ;  ldaa     #$2c                ; Function Set = 001(D/L)NF** where D/L = 0(4-bit) N=1(2-lines) F=0(font=5x7 dots)
- 4318  8628                ldaa     #$28         ; Function Set = 001(D/L)NF** where D/L = 0(4-bit) N=1(2-lines) F=0(font=5x7 dots)
- 431A  164345              jsr      LD2PP_Instruction         
- 431D  164399              jsr      DELAY10M         
+ 42D3            _LCD_instruction::
+ 42D3  3B                 pshd
+ 42D4  34                 pshx
+ 42D5  35                 pshy
+ 42D6  180F               tba
+ 42D8  16434D             jsr LD2PP_Instruction
+ 42DB  31                 puly
+ 42DC  30                 pulx
+ 42DD  3A                 puld
+ 42DE  3D                 rts
+ 42DF            _LCD_display::
+ 42DF  3B                 pshd
+ 42E0  34                 pshx
+ 42E1  35                 pshy
+ 42E2  180F               tba
+ 42E4  164345             jsr LCD2PP_Data
+ 42E7  31                 puly
+ 42E8  30                 pulx
+ 42E9  3A                 puld
+ 42EA  3D                 rts
+ 42EB                     
+ 42EB            ;-----------
+ 42EB            _Lcd2PP_Init::
+ 42EB  3B                 pshd
+ 42EC  34                 pshx
+ 42ED  35                 pshy
+ 42EE  1642F5             jsr Lcd2PP_Init
+ 42F1  31                 puly
+ 42F2  30                 pulx
+ 42F3  3A                 puld
+ 42F4  3D                 rts    
+ 42F5                      
+ 42F5            Lcd2PP_Init:	; Note : Use 4-bit init sequence (not 8-bit)  Page 3 LCD_spec.pdf
+ 42F5            		; Bottom table contains sequence of instructions
+ 42F5            		; Each row in the table represents one WRITE to the LCD instruction register (via Port P)
+ 42F5            		;	First instruction involves only a 4-bit instruction (one WRITE)
+ 42F5            		;	Following instructions involve 8 bit instruction, therefore
+ 42F5            		;		2 * 4-bit writes
+ 42F5            
+ 42F5            	; "System init"
+ 42F5            	; Setup Port T for output
+ 42F5  180B0F0242           movb #$0F,DDRT        ; setup port T
+ 42FA  180B000240           movb #$00,PTT         ; all low
+ 42FF                    ; Disable SPI AND setup SPI1 as four output bits
+ 42FF  1C025A0F                bset  DDRP,#$0F           ; set P0-3 as outputs
+ 4303  1D00F040            bclr  SPI1CR1,#$40    ; Disable SP by turning SPI1 off
+ 4307            
+ 4307  180BFE0252           movb #$FE,DDRM        ; set PM1-7 as outputs
+ 430C  180B000250           movb #$00,PTM         ; D.P.(PM2) = Off, U7_EN(PM3)= low,
+ 4311                                            ; SS0*(PM4), SS1*(PM5), SS2*(PM6) = Low
+ 4311                                            ; Heat(PM7) = Off
+ 4311            
+ 4311  1D02400E            bclr    PTT,LCD_RW+LCD_RS+LCD_EN  ; select lcd commands Cs=0 En=0
+ 4315            
+ 4315  164393              jsr      DELAY50M
+ 4318  8602                ldaa     #$02         ; Set to 4-bit operation (0010)
+ 431A  164359              jsr      LCD2PP_4     ; This first instruction is only 4 bits long!!!  Rest are 8 bits.  
+ 431D  164393              jsr      DELAY50M
  4320            
- 4320  860E                ldaa      #$0e        ; Display On/off Control = 00001DCB where D=1(display on) C=1(cursor on) B=0 (blink off)
- 4322  164345              jsr      LD2PP_Instruction          
- 4325  164399              jsr      DELAY10M          
- 4328                            
- 4328  8601                ldaa     #$01         ; Clear display = 00000001
- 432A  164345              jsr      LD2PP_Instruction           
- 432D  164394              jsr      DELAY20M          
- 4330  8680                ldaa     #$80         ; DDRAM Address Set = 01xxxxxx where xxxxxx = address
- 4332  164345              jsr      LD2PP_Instruction
- 4335  164399              jsr      DELAY10M        
- 4338            
- 4338            ; Reset Lcd states to rest
- 4338  1D02400E           bclr    PTT,LCD_RS+LCD_RW+LCD_EN ; turn all signals off on lcd
- 433C  3D                  rts
- 433D            ;
- 433D            ;-----------------------------------------------
- 433D            ; Lcd Routines
- 433D            ;
- 433D            ; Write a byte to the LCD Data Register
- 433D            LCD2PP_Data:
- 433D  1C024004        bset  PTT,LCD_RS     ; select lcd data buffer RS=1
- 4341  16437E          jsr   LCD_W_8        ; write byte
- 4344  3D              rts
- 4345            
- 4345            ; Write a byte to the LCD Instruction Register (leaves LCD in Data mode)
- 4345            LD2PP_Instruction:
- 4345  1D024004          bclr   PTT,LCD_RS        ; select lcd command buffer
- 4349  16437E            jsr    LCD_W_8           ; wait
- 434C  1C024004          bset   PTT,LCD_RS        ; select data buffer
- 4350  3D                rts
- 4351            
- 4351            LCD2PP_4:			; Destroys a and b
- 4351  1C024880           bset   PTS,#U21_EN     ; set U21_EN high so that latch becomes transparent
- 4355  1643A2             jsr      DELAY1MS      ; delay     
- 4358  F60258             ldab     PTP              ; Port P
- 435B  C4F0               andb     #$f0             ; get only bits 4 - 7
- 435D  840F               anda     #$0f             ; get data
- 435F  1806               aba
- 4361  7A0258             staa     PTP              ; save data 
- 4364                    ; For LCD's write cycle, Enable must pulse high and then low (for specified time)
- 4364  1D024008           bclr     PTT,LCD_EN       ; enable low
- 4368  1643A2             jsr      DELAY1MS         ; delay for LCD
- 436B  1C024008           bset     PTT,LCD_EN       ; latch data
- 436F  1643A2             jsr      DELAY1MS         ; delay for LCD 
- 4372  1D024008           bclr     PTT,LCD_EN           ; enable low
- 4376  1643A2             jsr      DELAY1MS
- 4379  1D024880           bclr  PTS,#U21_EN    ; set U21_EN low to isolate LCD from parallel control (outputs are latched)
- 437D  3D                 rts
- 437E            ;
- 437E            ;
- 437E            ; Lcd Write 8 bit Data , lower 4 bits first in acc A   (Destroys A)
- 437E            LCD_W_8:					
- 437E  36                 psha                     ; save a 
- 437F  44                 lsra                     ; shift upper 4 bits to lower
- 4380  44                 lsra
- 4381  44                 lsra
- 4382  44                 lsra
- 4383  164351             jsr      LCD2PP_4        ; write upper 4 bits to lcd
- 4386  32                 pula
- 4387  164351             jsr      LCD2PP_4         ; write lower 4 bits to lcd
- 438A  3D                 rts
- 438B                                                    
- 438B            
- 438B            ;
- 438B            ; Delay routines
- 438B            ;
- 438B            ;
- 438B            ; Generate a 50 ms delay
- 438B            DELAY50M:
- 438B  34                  pshx
- 438C  CEC34E              ldx  #49998      ; delay 50,000 usecs,
- 438F  1643AB              jsr  DELML01     ; call usec delay
- 4392  30                  pulx
- 4393  3D                  rts
- 4394            ;
- 4394            ;
- 4394            ; Generate a 20 ms delay
- 4394            DELAY20M:
- 4394  0703                bsr  DELAY10M
- 4396  0701                bsr  DELAY10M 
- 4398  3D                  rts
- 4399            ;
- 4399            ; Generate a 10 ms delay
- 4399            DELAY10M:                            ; jsr=4cyles
- 4399  34                  pshx             ; 2 cycles ,save x
- 439A  CE270E              ldx  #9998       ; 2 cycles,delay 9998 usec + 2 for this routine
- 439D  1643AB              jsr  DELML01     ; call usec delay, this delay offset in sub
- 43A0  30                  pulx             ; 3 cycles restore x
- 43A1  3D                  rts              ; 5 cycles
- 43A2            ;
- 43A2            ;
- 43A2            ; Generate a 1 ms delay
- 43A2            DELAY1MS:
- 43A2                                       ; jsr=4cyles
- 43A2  34                  pshx             ; 2 cycles ,save x
- 43A3  CE03E6              ldx  #998       ; 2 cycles,delay 9998 usec + 2 for this routine
- 43A6  1643AB              jsr  DELML01     ; call usec delay, this delay offset in sub
- 43A9  30                  pulx             ; 3 cycles restore x
- 43AA  3D                  rts              ; 5 cycles
- 43AB            
- 43AB            
- 43AB            ;
- 43AB            ; 8 cycles = 1 usec e = 8mhz
- 43AB            DELML01:
- 43AB  A7                  nop              ; 1 cycle
- 43AC  A7                  nop              ; 1 cycle
- 43AD  A7                  nop              ; 1 cycle
- 43AE  A7                  nop              ; 1 cycle
- 43AF  09                  dex              ; 1 cycle 
- 43B0  26F9                bne   DELML01    ; 3 cycles
+ 4320                    ;  ldaa     #$2c                ; Function Set = 001(D/L)NF** where D/L = 0(4-bit) N=1(2-lines) F=0(font=5x7 dots)
+ 4320  8628                ldaa     #$28         ; Function Set = 001(D/L)NF** where D/L = 0(4-bit) N=1(2-lines) F=0(font=5x7 dots)
+ 4322  16434D              jsr      LD2PP_Instruction         
+ 4325  1643A1              jsr      DELAY10M         
+ 4328            
+ 4328  860E                ldaa      #$0e        ; Display On/off Control = 00001DCB where D=1(display on) C=1(cursor on) B=0 (blink off)
+ 432A  16434D              jsr      LD2PP_Instruction          
+ 432D  1643A1              jsr      DELAY10M          
+ 4330                            
+ 4330  8601                ldaa     #$01         ; Clear display = 00000001
+ 4332  16434D              jsr      LD2PP_Instruction           
+ 4335  16439C              jsr      DELAY20M          
+ 4338  8680                ldaa     #$80         ; DDRAM Address Set = 01xxxxxx where xxxxxx = address
+ 433A  16434D              jsr      LD2PP_Instruction
+ 433D  1643A1              jsr      DELAY10M        
+ 4340            
+ 4340            ; Reset Lcd states to rest
+ 4340  1D02400E           bclr    PTT,LCD_RS+LCD_RW+LCD_EN ; turn all signals off on lcd
+ 4344  3D                  rts
+ 4345            ;
+ 4345            ;-----------------------------------------------
+ 4345            ; Lcd Routines
+ 4345            ;
+ 4345            ; Write a byte to the LCD Data Register
+ 4345            LCD2PP_Data:
+ 4345  1C024004        bset  PTT,LCD_RS     ; select lcd data buffer RS=1
+ 4349  164386          jsr   LCD_W_8        ; write byte
+ 434C  3D              rts
+ 434D            
+ 434D            ; Write a byte to the LCD Instruction Register (leaves LCD in Data mode)
+ 434D            LD2PP_Instruction:
+ 434D  1D024004          bclr   PTT,LCD_RS        ; select lcd command buffer
+ 4351  164386            jsr    LCD_W_8           ; wait
+ 4354  1C024004          bset   PTT,LCD_RS        ; select data buffer
+ 4358  3D                rts
+ 4359            
+ 4359            LCD2PP_4:			; Destroys a and b
+ 4359  1C024880           bset   PTS,#U21_EN     ; set U21_EN high so that latch becomes transparent
+ 435D  1643AA             jsr      DELAY1MS      ; delay     
+ 4360  F60258             ldab     PTP              ; Port P
+ 4363  C4F0               andb     #$f0             ; get only bits 4 - 7
+ 4365  840F               anda     #$0f             ; get data
+ 4367  1806               aba
+ 4369  7A0258             staa     PTP              ; save data 
+ 436C                    ; For LCD's write cycle, Enable must pulse high and then low (for specified time)
+ 436C  1D024008           bclr     PTT,LCD_EN       ; enable low
+ 4370  1643AA             jsr      DELAY1MS         ; delay for LCD
+ 4373  1C024008           bset     PTT,LCD_EN       ; latch data
+ 4377  1643AA             jsr      DELAY1MS         ; delay for LCD 
+ 437A  1D024008           bclr     PTT,LCD_EN           ; enable low
+ 437E  1643AA             jsr      DELAY1MS
+ 4381  1D024880           bclr  PTS,#U21_EN    ; set U21_EN low to isolate LCD from parallel control (outputs are latched)
+ 4385  3D                 rts
+ 4386            ;
+ 4386            ;
+ 4386            ; Lcd Write 8 bit Data , lower 4 bits first in acc A   (Destroys A)
+ 4386            LCD_W_8:					
+ 4386  36                 psha                     ; save a 
+ 4387  44                 lsra                     ; shift upper 4 bits to lower
+ 4388  44                 lsra
+ 4389  44                 lsra
+ 438A  44                 lsra
+ 438B  164359             jsr      LCD2PP_4        ; write upper 4 bits to lcd
+ 438E  32                 pula
+ 438F  164359             jsr      LCD2PP_4         ; write lower 4 bits to lcd
+ 4392  3D                 rts
+ 4393                                                    
+ 4393            
+ 4393            ;
+ 4393            ; Delay routines
+ 4393            ;
+ 4393            ;
+ 4393            ; Generate a 50 ms delay
+ 4393            DELAY50M:
+ 4393  34                  pshx
+ 4394  CEC34E              ldx  #49998      ; delay 50,000 usecs,
+ 4397  1643B3              jsr  DELML01     ; call usec delay
+ 439A  30                  pulx
+ 439B  3D                  rts
+ 439C            ;
+ 439C            ;
+ 439C            ; Generate a 20 ms delay
+ 439C            DELAY20M:
+ 439C  0703                bsr  DELAY10M
+ 439E  0701                bsr  DELAY10M 
+ 43A0  3D                  rts
+ 43A1            ;
+ 43A1            ; Generate a 10 ms delay
+ 43A1            DELAY10M:                            ; jsr=4cyles
+ 43A1  34                  pshx             ; 2 cycles ,save x
+ 43A2  CE270E              ldx  #9998       ; 2 cycles,delay 9998 usec + 2 for this routine
+ 43A5  1643B3              jsr  DELML01     ; call usec delay, this delay offset in sub
+ 43A8  30                  pulx             ; 3 cycles restore x
+ 43A9  3D                  rts              ; 5 cycles
+ 43AA            ;
+ 43AA            ;
+ 43AA            ; Generate a 1 ms delay
+ 43AA            DELAY1MS:
+ 43AA                                       ; jsr=4cyles
+ 43AA  34                  pshx             ; 2 cycles ,save x
+ 43AB  CE03E6              ldx  #998       ; 2 cycles,delay 9998 usec + 2 for this routine
+ 43AE  1643B3              jsr  DELML01     ; call usec delay, this delay offset in sub
+ 43B1  30                  pulx             ; 3 cycles restore x
  43B2  3D                  rts              ; 5 cycles
+ 43B3            
+ 43B3            
+ 43B3            ;
+ 43B3            ; 8 cycles = 1 usec e = 8mhz
+ 43B3            DELML01:
+ 43B3  A7                  nop              ; 1 cycle
+ 43B4  A7                  nop              ; 1 cycle
+ 43B5  A7                  nop              ; 1 cycle
+ 43B6  A7                  nop              ; 1 cycle
+ 43B7  09                  dex              ; 1 cycle 
+ 43B8  26F9                bne   DELML01    ; 3 cycles
+ 43BA  3D                  rts              ; 5 cycles

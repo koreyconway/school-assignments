@@ -34,6 +34,7 @@ _interrupt_vectors::
 	.word 63695
 	.word 63695
 	.word 63695
+	.word _keyboard_isr
 	.word 63695
 	.word 63695
 	.word 63695
@@ -44,7 +45,6 @@ _interrupt_vectors::
 	.word 63695
 	.word 63695
 	.word 63695
-	.word _optical_isr
 	.word 63695
 	.word 63695
 	.word 63695
@@ -52,7 +52,7 @@ _interrupt_vectors::
 	.word 63695
 	.word 63695
 	.word 63695
-	.word 63695
+	.word _rti_isr
 	.word 63695
 	.word 63687
 	.word 63683
@@ -60,7 +60,7 @@ _interrupt_vectors::
 	.word 63493
 	.word 63497
 	.word __start
-	.dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\vectors_dp256_NoICE.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1\vectors_dp256_NoICE.c
 	.dbsym e interrupt_vectors _interrupt_vectors A[116:58]pfV
 	.area data
-	.dbfile M:\SYSC20~2\Assignments\ASSIGM~1\PART2~1\vectors_dp256_NoICE.c
+	.dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART2~1\vectors_dp256_NoICE.c

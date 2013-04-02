@@ -1,1 +1,1 @@
-assign52.o vectors_dp256_NoICE.o 
+assign52.o vectors_dp256_NoICE.o basicLCD.o 
