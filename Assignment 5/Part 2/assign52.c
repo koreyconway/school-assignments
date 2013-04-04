@@ -39,22 +39,22 @@ int main()
 			if ( key == '0' ) {
 				break;
 			} else if ( key == 'E' ) {
-				++speed;
-				if ( speed <= MOTOR_MAX_SPEED ) {
+				if ( speed < MOTOR_MAX_SPEED ) {
+					++speed;
 					motor_set_speed(speed);
 					printf("Increasing speed to %d\n", speed);
 				} else {
-					printf("Speed is maxed at %d, cannot increase.", speed);
+					printf("Speed is maxed at %d, cannot increase.\n", speed);
 				}
 				lcd_display_speed(speed);
 				lcd_display_temperature(temperature); // Need to redisplay bottom line for some reason
 			} else if ( key == 'D' ) {
-				--speed;
-				if ( speed >= MOTOR_MIN_SPEED ) {
+				if ( speed > MOTOR_MIN_SPEED ) {
+					--speed;
 					motor_set_speed(speed);
 					printf("Decreasing speed to %d\n", speed);
 				} else {
-					printf("Speed is at minimum, at %d, cannot decrease.", speed);
+					printf("Speed is at minimum, at %d, cannot decrease.\n", speed);
 				}
 				lcd_display_speed(speed);
 				lcd_display_temperature(temperature); // Need to redisplay bottom line for some reason

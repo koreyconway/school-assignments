@@ -1,0 +1,24 @@
+                        .module assign55.c
+                        .area text
+ 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART5~1\assign55.c
+ 0000                   .dbfunc e main _main fI
+ 0000           _main::
+ 0000                   .dbline -1
+ 0000                   .dbline 9
+ 0000           ; // By Korey Conway and Tanzeel Rana
+ 0000           ; 
+ 0000           ; // This has not been done yet. We might try submitting something to the Prof directly
+ 0000           ; 
+ 0000           ; #include <hcs12dp256.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; 
+ 0000           ; int main()
+ 0000           ; {
+ 0000                   .dbline 10
+ 0000           ;       return 0;
+ 0000 CC0000            ldd #0
+ 0003                   .dbline -2
+ 0003           L3:
+ 0003                   .dbline 0 ; func end
+ 0003 3D                rts
+ 0004                   .dbend

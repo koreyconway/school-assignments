@@ -22,7 +22,7 @@ _keyboard_init::
 ; 
 ; int speed = 45;
 ; int temp  = 31;
-; void keyboard_key_pushed_callback(char key);
+; //void keyboard_key_pushed_callback(char key);
 ; 
 ; int main()
 ; {
@@ -155,8 +155,8 @@ _keyboard_isr::
 ; }
 ; 
 ; 
-; void keyboard_key_pushed_callback(char key)
-; {}
+; // void keyboard_key_pushed_callback(char key)
+; // {}
 ; 
 ; 
 	clr 0x266
@@ -293,15 +293,11 @@ L8:
 	xgdy
 	ldab 0,y
 	stab _key
-	.dbline 76
-; 
-	ldab _key
-	clra
-	jsr _keyboard_key_pushed_callback
 	.dbline 77
 	bra L19
 L18:
 	.dbline 77
+; 
 ; 
 	.dbline 78
 ; 
@@ -669,19 +665,6 @@ L32:
 	rts
 	.dbsym l key -1 c
 	.dbend
-	.dbfunc e keyboard_key_pushed_callback _keyboard_key_pushed_callback fV
-;            key -> 3,x
-_keyboard_key_pushed_callback::
-	.dbline -1
-	.dbline 51
-	.dbline -2
-	.dbline 51
-L47:
-	.dbline 0 ; func end
-	rts
-	.dbsym l key 2 I
-	.dbsym l key 3 c
-	.dbend
 L46:
 	.byte 'P,'u,'s,'h,'e,'d,58,32,37,'c,10,0
 L45:
@@ -691,7 +674,6 @@ L42:
 	.byte 'I,'n,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
 	.byte 32,'t,'o,32,37,'d,10,0
 L31:
-	.byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,32,37,'d,'C
-	.byte 0
+	.byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,37,'d,'F,0
 L29:
 	.byte 'S,'p,'e,'e,'d,58,32,37,'d,0

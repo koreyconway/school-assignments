@@ -1,0 +1,18 @@
+XH
+H 1 areas 1 global symbols
+M assign55.c
+A text size 4 flags 0
+dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART5~1\assign55.c
+dbfunc e main 0 fI
+dbline FFFFFFFF 0
+dbline 9 0
+dbline A 0
+dbline FFFFFFFE 3
+dbline 0 3
+dbfile assign55.s
+dbfunc 0 ? 0 I
+dbline 13 0
+dbline 17 3
+S _main Def0000
+T 00 00 CC 00 00 3D
+R 00 00 00 00

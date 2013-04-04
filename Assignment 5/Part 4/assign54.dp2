@@ -1,0 +1,4 @@
+assign54.o: C:/icc/include/hcs12dp256.h C:/icc/include/hc12def.h C:/icc/include/stdio.h C:/icc/include/stdarg.h C:/icc/include/_const.h M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c\
+ M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c C:/icc/include/hcs12dp256.h M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/lcd.c M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/temperature.c C:/icc/include/hcs12dp256.h\
+ M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/stepper.c C:/icc/include/hcs12dp256.h M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/buzzer.c C:/icc/include/hcs12dp256.h M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/led.c\
+ C:/icc/include/hcs12dp256.h

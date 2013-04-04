@@ -65,6 +65,6 @@ void lcd_display_speed(int speed)
 void lcd_display_temperature(int temp)
 {
 	char *string;
-	sprintf(string, "Temperature: %dC", temp);
+	sprintf(string, "Temperature:%dF", temp);
 	lcd_print_bottom(string);
 }

@@ -21,6 +21,7 @@
 extern void _start(void);	/* entry point in crt??.s */
 extern void rti_isr(void);
 extern void keyboard_isr(void);
+extern void motor_paca_isr(void);
 
 #define NOICE_DUMMY_ENTRY (void (*)(void))0xF8CF
 #define NOICE_XIRQ	(void (*)(void))0xF8C7
@@ -84,7 +85,7 @@ void (*interrupt_vectors[])(void) =
 	NOICE_DUMMY_ENTRY, /*SCI1*/
 	NOICE_DUMMY_ENTRY, /*SCI0*/
 	NOICE_DUMMY_ENTRY, /*SPI0*/
-	NOICE_DUMMY_ENTRY, /*Pulse Accumulator A Input Edge*/
+	motor_paca_isr, /*Pulse Accumulator A Input Edge*/
 	NOICE_DUMMY_ENTRY, /*Pulse Accumulator A Overflow*/
 	NOICE_DUMMY_ENTRY, /*Timer Overflow*/
 	NOICE_DUMMY_ENTRY, /*Timer Channel 7*/

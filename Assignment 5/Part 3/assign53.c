@@ -2,35 +2,43 @@
 
 #include <hcs12dp256.h>
 #include <stdio.h>
-#include "../lib/motor.c"
+#include "../lib/temperature.c"
+
+#define DESIRED_TEMPERATURE	100
 
 int main()
 {
-	char key;
-	int duty;
-	unsigned int i;
+	int temperature = 0;
+	int prevtemp = 0;
 	
 	// Setup terminal
 	setbaud(BAUD19K);
 	
-	motor_init();
-	optical_init();
-	
 	INTR_ON();
-	
-	motor_set_duty(50);
+	temperature_init();
+	temperature_start_sample();
 	
 	while ( 1 ) {
-		// for ( duty = 25; duty <= 50; duty++ ) {
-			// motor_set_duty(duty);
-			// for ( i = 0; i < -1; i++ ) {}
-		// }
-	
-		// for ( duty = 50; duty >= 25; duty-- ) {
-			// motor_set_duty(duty);		
-			// for ( i = 0; i < -1; i++ ) {}
-		// }
+		if ( temperature_is_ready() ) {
+			temperature = temperature_get();
+			
+			// Turn the heater on/off to get the desired temperature
+			if ( temperature < DESIRED_TEMPERATURE ) {
+				temperature_heater_on();
+			} else {
+				temperature_heater_off();
+			}
+			
+			// Print on the terminal if the temperature changed
+			if ( temperature != prevtemp ) {
+				prevtemp = temperature;
+				printf("Temperature is %d F\n", temperature);
+			}
+			
+			// Start a new sample
+			temperature_start_sample();
+		}
 	}
-	
+		
 	return 0;
 }

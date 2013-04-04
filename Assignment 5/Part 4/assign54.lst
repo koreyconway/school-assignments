@@ -1,0 +1,2854 @@
+WARNING: EXTCODE CODE AREA DO NOT CONTAIN RELOCATED ADDRESSES.
+THIS WILL BE REMEDIED IN A LATER RELEASE.
+                        .module assign54.c
+                        .area data
+--- 0000           _current_speed:
+--- 0000                   .blkb 2
+                        .area idata
+--- 0000 0000              .word 0
+                        .area data
+--- 0002                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 0002                   .dbsym s current_speed _current_speed I
+--- 0002           _desired_speed:
+--- 0002                   .blkb 2
+                        .area idata
+--- 0002 0000              .word 0
+                        .area data
+--- 0004                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 0004                   .dbsym s desired_speed _desired_speed I
+--- 0004           _motor_enabled:
+--- 0004                   .blkb 2
+                        .area idata
+--- 0004 0000              .word 0
+                        .area data
+--- 0006                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 0006                   .dbsym s motor_enabled _motor_enabled I
+ 1006            _motor_paca_count::
+ 1006                    .blkb 2
+                        .area idata
+--- 0006 0000              .word 0
+                        .area data
+--- 0008                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 0008                   .dbsym e motor_paca_count _motor_paca_count I
+                        .area text
+--- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 0000                   .dbfunc e motor_init _motor_init fV
+ 402A            _motor_init::
+ 402A                    .dbline -1
+ 402A                    .dbline 29
+ 402A            ; // By Korey Conway and Tanzeel Rana
+ 402A            ; 
+ 402A            ; #include <hcs12dp256.h>
+ 402A            ; #include <stdio.h>
+ 402A            ; #include "../lib/motor.c"
+ 402A            ; #include "../lib/rti.c"
+ 402A            ; #include "../lib/keyboard.c"
+ 402A            ; #include "../lib/lcd.c"
+ 402A            ; #include "../lib/temperature.c"
+ 402A            ; #include "../lib/stepper.c"
+ 402A            ; #include "../lib/buzzer.c"
+ 402A            ; #include "../lib/led.c"
+ 402A            ; 
+ 402A            ; #define DESIRED_TEMPERATURE   100
+ 402A            ; #define DIRECTION_NORTH       0
+ 402A            ; #define DIRECTION_EAST        1
+ 402A            ; #define DIRECTION_SOUTH       2
+ 402A            ; #define DIRECTION_WEST        3
+ 402A            ; 
+ 402A            ; void rti_each_second(void);
+ 402A            ; void rti_each_half(void);
+ 402A            ; void rti_each_quarter(void);
+ 402A            ; 
+ 402A            ; void trigger_collision(void);
+ 402A            ; void collision_avoidance(void);
+ 402A            ; 
+ 402A            ; // Global variables
+ 402A            ; int collision_detected = 0;
+ 402A            ; int speed = 30;
+ 402A                    .dbline 30
+ 402A            ; int temperature = 0;
+ 402A  CC0001            ldd #1
+ 402D  7C1004            std _motor_enabled
+ 4030                    .dbline 33
+ 4030            ; int direction = DIRECTION_NORTH;
+ 4030            ; 
+ 4030            ; int main()
+ 4030  1C00A180          bset 0xa1,#128
+ 4034                    .dbline 34
+ 4034            ; {
+ 4034  1D00A480          bclr 0xa4,#0x80
+ 4038                    .dbline 35
+ 4038            ;       int previous_temperature = 0;
+ 4038  1D00A580          bclr 0xa5,#0x80
+ 403C                    .dbline 36
+ 403C            ;       char key;
+ 403C  C6FF              ldab #255
+ 403E  7B00A9            stab 0xa9
+ 4041                    .dbline 37
+ 4041            ;       
+ 4041  C6FF              ldab #255
+ 4043  7B00BB            stab 0xbb
+ 4046                    .dbline 38
+ 4046            ;       // Setup terminal
+ 4046  1D00A370          bclr 0xa3,#0x70
+ 404A                    .dbline 39
+ 404A            ;       setbaud(BAUD19K);
+ 404A  1C025A40          bset 0x25a,#64
+ 404E                    .dbline 40
+ 404E            ;       
+ 404E  1C025840          bset 0x258,#64
+ 4052                    .dbline 41
+ 4052            ;       keyboard_init();
+ 4052  7900C3            clr 0xc3
+ 4055                    .dbline 42
+ 4055            ;       lcd_init();
+ 4055  1C00A080          bset 0xa0,#128
+ 4059                    .dbline 43
+ 4059            ;       motor_init();
+ 4059  CC0000            ldd #0
+ 405C  7C0062            std 0x62
+ 405F                    .dbline 44
+ 405F            ;       rti_init();
+ 405F  1C006101          bset 0x61,#1
+ 4063                    .dbline 45
+ 4063            ;       motor_set_speed(speed);
+ 4063  C651              ldab #81
+ 4065  7B0060            stab 0x60
+ 4068                    .dbline -2
+ 4068                    .dbline 46
+ 4068            ;       temperature_init();
+ 4068            L3:
+ 4068                    .dbline 0 ; func end
+ 4068  3D                rts
+ 4069                    .dbend
+ 4069                    .dbfunc s motor_set_duty _motor_set_duty fV
+ 4069            ;           duty -> 2,x
+ 4069            _motor_set_duty:
+ 4069  3B                pshd
+ 406A  34                pshx
+ 406B  B775              tfr s,x
+ 406D                    .dbline -1
+ 406D                    .dbline 52
+ 406D            ;       stepper_init();
+ 406D            ;       buzzer_init();
+ 406D            ;       led_init();
+ 406D            ;       INTR_ON();
+ 406D            ;       
+ 406D            ;       temperature_start_sample();
+ 406D                    .dbline 53
+ 406D            ;               
+ 406D  FC1004            ldd _motor_enabled
+ 4070  2602              bne L5
+ 4072                    .dbline 53
+ 4072                    .dbline 54
+ 4072            ;       lcd_display_speed(speed);
+ 4072  2026              bra L4
+ 4074            L5:
+ 4074                    .dbline 57
+ 4074            ;       lcd_display_temperature(temperature);
+ 4074            ; 
+ 4074            ;       // Note: the assigment says to have nothing in the main after initilization, but this doesn't make sense.
+ 4074  EC02              ldd 2,x
+ 4076  8C0073            cpd #115
+ 4079  2C0C              bge L7
+ 407B  FC1002            ldd _desired_speed
+ 407E  2F07              ble L7
+ 4080                    .dbline 57
+ 4080                    .dbline 58
+ 4080            ;       //      It is not proper to have terminal (eg. printf) and lcd outputs inside of the ISRs since those need to run quickly to avoid problems
+ 4080  C673              ldab #115
+ 4082  7B00C3            stab 0xc3
+ 4085                    .dbline 59
+ 4085  2013              bra L8
+ 4087            L7:
+ 4087                    .dbline 59
+ 4087            ;       while ( 1 ) { 
+ 4087  EC02              ldd 2,x
+ 4089  8C00C8            cpd #200
+ 408C  2F07              ble L9
+ 408E                    .dbline 59
+ 408E                    .dbline 60
+ 408E            ;               if ( key = keyboard_getchar() ) {
+ 408E  C6C8              ldab #200
+ 4090  7B00C3            stab 0xc3
+ 4093                    .dbline 61
+ 4093  2005              bra L10
+ 4095            L9:
+ 4095                    .dbline 61
+ 4095            ;                       if ( key == '0' ) {
+ 4095                    .dbline 62
+ 4095            ;                               break;
+ 4095  EC02              ldd 2,x
+ 4097  7B00C3            stab 0xc3
+ 409A                    .dbline 63
+ 409A            ;                       } else if ( key == 'E' ) {
+ 409A            L10:
+ 409A            L8:
+ 409A                    .dbline -2
+ 409A                    .dbline 64
+ 409A            ;                               if ( speed < MOTOR_MAX_SPEED ) {
+ 409A            L4:
+ 409A  B757              tfr x,s
+ 409C  30                pulx
+ 409D  1B82              leas 2,sp
+ 409F                    .dbline 0 ; func end
+ 409F  3D                rts
+ 40A0                    .dbsym l duty 2 I
+ 40A0                    .dbend
+ 40A0                    .dbfunc e motor_disable _motor_disable fV
+ 40A0            _motor_disable::
+ 40A0                    .dbline -1
+ 40A0                    .dbline 67
+ 40A0            ;                                       ++speed;
+ 40A0            ;                                       motor_set_speed(speed);
+ 40A0            ;                                       printf("Increasing speed to %d\n", speed);
+ 40A0                    .dbline 68
+ 40A0            ;                               } else {
+ 40A0  1D00A080          bclr 0xa0,#0x80
+ 40A4                    .dbline 69
+ 40A4            ;                                       printf("Speed is maxed at %d, cannot increase.\n", speed);
+ 40A4  CC0000            ldd #0
+ 40A7  7C1004            std _motor_enabled
+ 40AA                    .dbline -2
+ 40AA                    .dbline 70
+ 40AA            ;                               }
+ 40AA            L11:
+ 40AA                    .dbline 0 ; func end
+ 40AA  3D                rts
+ 40AB                    .dbend
+ 40AB                    .dbfunc e motor_enable _motor_enable fV
+ 40AB            _motor_enable::
+ 40AB                    .dbline -1
+ 40AB                    .dbline 73
+ 40AB            ;                               lcd_display_speed(speed);
+ 40AB            ;                               lcd_display_temperature(temperature);
+ 40AB            ;                       } else if ( key == 'D' ) {
+ 40AB                    .dbline 74
+ 40AB            ;                               if ( speed > MOTOR_MIN_SPEED ) {
+ 40AB  1C00A080          bset 0xa0,#128
+ 40AF                    .dbline 75
+ 40AF            ;                                       --speed;
+ 40AF  CC0001            ldd #1
+ 40B2  7C1004            std _motor_enabled
+ 40B5                    .dbline -2
+ 40B5                    .dbline 76
+ 40B5            ;                                       motor_set_speed(speed);
+ 40B5            L12:
+ 40B5                    .dbline 0 ; func end
+ 40B5  3D                rts
+ 40B6                    .dbend
+                        .area data
+--- 0008                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 0008           L14:
+--- 0008                   .blkb 2
+                        .area idata
+--- 0008 0000              .word 0
+                        .area data
+--- 000A                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+                        .area text
+--- 008C                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/motor.c
+--- 008C                   .dbfunc e motor_update_speed _motor_update_speed fV
+--- 008C                   .dbsym s count L14 I
+--- 008C           ;     diff_speed -> -2,x
+ 40B6            _motor_update_speed::
+ 40B6  34                pshx
+ 40B7  B775              tfr s,x
+ 40B9  1B9E              leas -2,sp
+ 40BB                    .dbline -1
+ 40BB                    .dbline 79
+ 40BB            ;                                       printf("Decreasing speed to %d\n", speed);
+ 40BB            ;                               } else {
+ 40BB            ;                                       printf("Speed is at minimum, at %d, cannot decrease.\n", speed);
+ 40BB                    .dbline 81
+ 40BB            ;                               }
+ 40BB            ;                               lcd_display_speed(speed);
+ 40BB  CC0000            ldd #0
+ 40BE  6C1E              std -2,x
+ 40C0                    .dbline 84
+ 40C0            ;                               lcd_display_temperature(temperature);
+ 40C0            ;                       } else if ( key == '5' ) {
+ 40C0            ;                               trigger_collision();
+ 40C0  FC1006            ldd _motor_paca_count
+ 40C3  59                lsld
+ 40C4  59                lsld
+ 40C5  FD1008            ldy L14
+ 40C8  1941              leay 1,y
+ 40CA  B7D6              exg x,y
+ 40CC  1815              idivs
+ 40CE  B7D6              exg x,y
+ 40D0  7D1000            sty _current_speed
+ 40D3                    .dbline 85
+ 40D3            ;                       } else {
+ 40D3  FC1008            ldd L14
+ 40D6  C30001            addd #1
+ 40D9  CD0004            ldy #4
+ 40DC  B7D6              exg x,y
+ 40DE  1815              idivs
+ 40E0  B7D6              exg x,y
+ 40E2  7C1008            std L14
+ 40E5                    .dbline 89
+ 40E5            ;                               printf("Pushed: %c\n", key);
+ 40E5            ;                       }
+ 40E5            ;               }
+ 40E5            ;               
+ 40E5  FC1008            ldd L14
+ 40E8  2606              bne L15
+ 40EA                    .dbline 89
+ 40EA                    .dbline 91
+ 40EA            ;               if ( temperature_is_ready() ) {
+ 40EA            ;                       temperature = temperature_get();
+ 40EA  CC0000            ldd #0
+ 40ED  7C1006            std _motor_paca_count
+ 40F0                    .dbline 92
+ 40F0            ;                       
+ 40F0            L15:
+ 40F0                    .dbline 96
+ 40F0            ;                       // Turn the heater on/off to get the desired temperature
+ 40F0            ;                       if ( temperature < DESIRED_TEMPERATURE ) {
+ 40F0            ;                               temperature_heater_on();
+ 40F0            ;                       } else {
+ 40F0  FC1002            ldd _desired_speed
+ 40F3  B31000            subd _current_speed
+ 40F6  6C1E              std -2,x
+ 40F8                    .dbline 97
+ 40F8            ;                               temperature_heater_off();
+ 40F8  EC1E              ldd -2,x
+ 40FA  2714              beq L17
+ 40FC  FC1000            ldd _current_speed
+ 40FF  260F              bne L17
+ 4101                    ; vol
+ 4101  F600C3            ldab 0xc3
+ 4104  C182              cmpb #130
+ 4106  2408              bhs L17
+ 4108                    .dbline 97
+ 4108                    .dbline 98
+ 4108            ;                       }
+ 4108  CC0082            ldd #130
+ 410B  164069            jsr _motor_set_duty
+ 410E                    .dbline 99
+ 410E  201E              bra L18
+ 4110            L17:
+ 4110                    .dbline 99
+ 4110            ;                       
+ 4110  EC1E              ldd -2,x
+ 4112  2F0C              ble L19
+ 4114                    .dbline 99
+ 4114                    .dbline 100
+ 4114            ;                       // Update LCD if the temperature has changed
+ 4114                    ; vol
+ 4114  F600C3            ldab 0xc3
+ 4117  87                clra
+ 4118  C30001            addd #1
+ 411B  164069            jsr _motor_set_duty
+ 411E                    .dbline 101
+ 411E  200E              bra L20
+ 4120            L19:
+ 4120                    .dbline 101
+ 4120            ;                       if ( temperature != previous_temperature ) {
+ 4120  EC1E              ldd -2,x
+ 4122  2C0A              bge L21
+ 4124                    .dbline 101
+ 4124                    .dbline 102
+ 4124            ;                               previous_temperature = temperature;
+ 4124                    ; vol
+ 4124  F600C3            ldab 0xc3
+ 4127  87                clra
+ 4128  830001            subd #1
+ 412B  164069            jsr _motor_set_duty
+ 412E                    .dbline 103
+ 412E            ;                               printf("Temperature is %d F\n", temperature);
+ 412E            L21:
+ 412E            L20:
+ 412E            L18:
+ 412E                    .dbline -2
+ 412E                    .dbline 105
+ 412E            ;                               lcd_display_speed(speed);
+ 412E            ;                               lcd_display_temperature(temperature);
+ 412E            L13:
+ 412E  B757              tfr x,s
+ 4130  30                pulx
+ 4131                    .dbline 0 ; func end
+ 4131  3D                rts
+ 4132                    .dbsym l diff_speed -2 I
+ 4132                    .dbend
+ 4132                    .dbfunc e motor_get_speed _motor_get_speed fI
+ 4132            _motor_get_speed::
+ 4132                    .dbline -1
+ 4132                    .dbline 108
+ 4132            ;                       }                       
+ 4132            ;               }               
+ 4132            ;       }
+ 4132                    .dbline 109
+ 4132            ;       
+ 4132  FC1000            ldd _current_speed
+ 4135                    .dbline -2
+ 4135            L23:
+ 4135                    .dbline 0 ; func end
+ 4135  3D                rts
+ 4136                    .dbend
+ 4136                    .dbfunc e motor_set_speed _motor_set_speed fV
+ 4136            ;          speed -> 2,x
+ 4136            _motor_set_speed::
+ 4136  3B                pshd
+ 4137  34                pshx
+ 4138  B775              tfr s,x
+ 413A                    .dbline -1
+ 413A                    .dbline 113
+ 413A            ;       return 0;
+ 413A            ; }
+ 413A            ; 
+ 413A            ; void rti_each()
+ 413A                    .dbline 114
+ 413A  EC02              ldd 2,x
+ 413C  2C07              bge L27
+ 413E  EC02              ldd 2,x
+ 4140  8C001E            cpd #30
+ 4143  2E05              bgt L25
+ 4145            L27:
+ 4145                    .dbline 114
+ 4145                    .dbline 115
+ 4145  1805021002        movw 2,x,_desired_speed
+ 414A                    .dbline 116
+ 414A            L25:
+ 414A                    .dbline -2
+ 414A                    .dbline 117
+ 414A            ; {}
+ 414A            ; 
+ 414A            ; void rti_each_quarter()
+ 414A            ; {
+ 414A            L24:
+ 414A  B757              tfr x,s
+ 414C  30                pulx
+ 414D  1B82              leas 2,sp
+ 414F                    .dbline 0 ; func end
+ 414F  3D                rts
+ 4150                    .dbsym l speed 2 I
+ 4150                    .dbend
+ 4150                    .dbfunc e motor_paca_isr _motor_paca_isr fV
+ 4150            _motor_paca_isr::
+ 4150                    .dbline -1
+ 4150                    .dbline 121
+ 4150            ;       motor_update_speed();
+ 4150            ; }
+ 4150            ; 
+ 4150            ; void rti_each_half()
+ 4150                    .dbline 122
+ 4150            ; {}
+ 4150  FC1006            ldd _motor_paca_count
+ 4153  C30001            addd #1
+ 4156  7C1006            std _motor_paca_count
+ 4159                    .dbline 123
+ 4159            ; 
+ 4159  1C006101          bset 0x61,#1
+ 415D                    .dbline -2
+ 415D                    .dbline 124
+ 415D            ; void rti_each_second()
+ 415D            L28:
+ 415D                    .dbline 0 ; func end
+ 415D  0B                rti
+ 415E                    .dbend
+ 415E                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c
+ 415E                    .dbfunc e rti_init _rti_init fV
+ 415E            _rti_init::
+ 415E                    .dbline -1
+ 415E                    .dbline 20
+ 415E                    .dbline 21
+ 415E  1C003880          bset 0x38,#128
+ 4162                    .dbline 22
+ 4162  C677              ldab #119
+ 4164  7B003B            stab 0x3b
+ 4167                    .dbline -2
+ 4167                    .dbline 23
+ 4167            L29:
+ 4167                    .dbline 0 ; func end
+ 4167  3D                rts
+ 4168                    .dbend
+                        .area data
+--- 000A                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c
+--- 000A           L31:
+--- 000A                   .blkb 2
+                        .area idata
+--- 000A 0000              .word 0
+                        .area data
+--- 000C                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c
+                        .area text
+--- 013E                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c
+--- 013E                   .dbfunc e rti_isr _rti_isr fV
+--- 013E                   .dbsym s count L31 I
+ 4168            _rti_isr::
+ 4168                    .dbline -1
+ 4168                    .dbline 30
+ 4168                    .dbline 32
+ 4168  FC100A            ldd L31
+ 416B  C30001            addd #1
+ 416E  CD0008            ldy #8
+ 4171  B7D6              exg x,y
+ 4173  1815              idivs
+ 4175  B7D6              exg x,y
+ 4177  7C100A            std L31
+ 417A                    .dbline 34
+ 417A  164607            jsr _rti_each
+ 417D                    .dbline 39
+ 417D  FC100A            ldd L31
+ 4180  CD0002            ldy #2
+ 4183  B7D6              exg x,y
+ 4185  1815              idivs
+ 4187  B7D6              exg x,y
+ 4189  8C0000            cpd #0
+ 418C  2603              bne L32
+ 418E                    .dbline 39
+ 418E                    .dbline 40
+ 418E  164608            jsr _rti_each_quarter
+ 4191                    .dbline 41
+ 4191            L32:
+ 4191                    .dbline 44
+ 4191  FC100A            ldd L31
+ 4194  CD0004            ldy #4
+ 4197  B7D6              exg x,y
+ 4199  1815              idivs
+ 419B  B7D6              exg x,y
+ 419D  8C0000            cpd #0
+ 41A0  2603              bne L34
+ 41A2                    .dbline 44
+ 41A2                    .dbline 45
+ 41A2  16460C            jsr _rti_each_half
+ 41A5                    .dbline 46
+ 41A5            L34:
+ 41A5                    .dbline 48
+ 41A5  FC100A            ldd L31
+ 41A8  2603              bne L36
+ 41AA                    .dbline 48
+ 41AA                    .dbline 49
+ 41AA  16460D            jsr _rti_each_second
+ 41AD                    .dbline 50
+ 41AD            L36:
+ 41AD                    .dbline 53
+ 41AD  1C003780          bset 0x37,#128
+ 41B1                    .dbline -2
+ 41B1                    .dbline 54
+ 41B1            L30:
+ 41B1                    .dbline 0 ; func end
+ 41B1  0B                rti
+ 41B2                    .dbend
+                        .area data
+--- 000C                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c
+--- 000C           _key:
+--- 000C                   .blkb 1
+                        .area idata
+--- 000C 00                .byte 0
+                        .area data
+--- 000D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/rti.c
+--- 000D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 000D                   .dbsym s key _key c
+                        .area text
+--- 0188                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 0188                   .dbfunc e keyboard_init _keyboard_init fV
+ 41B2            _keyboard_init::
+ 41B2                    .dbline -1
+ 41B2                    .dbline 21
+ 41B2                    .dbline 22
+ 41B2  7900F0            clr 0xf0
+ 41B5                    .dbline 24
+ 41B5  1C025208          bset 0x252,#8
+ 41B9                    .dbline 26
+ 41B9  1C025A0F          bset 0x25a,#15
+ 41BD                    .dbline 27
+ 41BD  1C025008          bset 0x250,#8
+ 41C1                    .dbline 28
+ 41C1  1C02580F          bset 0x258,#15
+ 41C5                    .dbline 29
+ 41C5  1D025008          bclr 0x250,#0x8
+ 41C9                    .dbline 31
+ 41C9  1D0262F0          bclr 0x262,#0xf0
+ 41CD                    .dbline 32
+ 41CD  1C0265F0          bset 0x265,#240
+ 41D1                    .dbline 33
+ 41D1  C6FF              ldab #255
+ 41D3  7B0267            stab 0x267
+ 41D6                    .dbline 34
+ 41D6  790264            clr 0x264
+ 41D9                    .dbline 35
+ 41D9  C6F0              ldab #240
+ 41DB  7B0266            stab 0x266
+ 41DE                    .dbline -2
+ 41DE                    .dbline 36
+ 41DE            L38:
+ 41DE                    .dbline 0 ; func end
+ 41DE  3D                rts
+ 41DF                    .dbend
+                        .area data
+--- 000D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 000D           L40:
+--- 000D                   .blkb 2
+                        .area idata
+--- 000D 3132              .byte 49,50
+                        .area data
+--- 000F                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 000F                   .blkb 2
+                        .area idata
+--- 000F 3341              .byte 51,'A
+                        .area data
+--- 0011                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 0011                   .blkb 2
+                        .area idata
+--- 0011 3435              .byte 52,53
+                        .area data
+--- 0013                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 0013                   .blkb 2
+                        .area idata
+--- 0013 3642              .byte 54,'B
+                        .area data
+--- 0015                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 0015                   .blkb 2
+                        .area idata
+--- 0015 3738              .byte 55,56
+                        .area data
+--- 0017                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 0017                   .blkb 2
+                        .area idata
+--- 0017 3943              .byte 57,'C
+                        .area data
+--- 0019                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 0019                   .blkb 2
+                        .area idata
+--- 0019 4530              .byte 'E,48
+                        .area data
+--- 001B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 001B                   .blkb 2
+                        .area idata
+--- 001B 4644              .byte 'F,'D
+                        .area data
+--- 001D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+                        .area text
+--- 01B5                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/keyboard.c
+--- 01B5                   .dbfunc e keyboard_isr _keyboard_isr fV
+--- 01B5                   .dbsym s char_map L40 A[16:4:4]c
+--- 01B5           ;            row -> -6,x
+--- 01B5           ;       col_mask -> -4,x
+--- 01B5           ;            col -> -2,x
+ 41DF            _keyboard_isr::
+ 41DF  34                pshx
+ 41E0  B775              tfr s,x
+ 41E2  1B98              leas -8,sp
+ 41E4                    .dbline -1
+ 41E4                    .dbline 43
+ 41E4                    .dbline 44
+ 41E4  CC0000            ldd #0
+ 41E7  6C1A              std -6,x
+ 41E9                    .dbline 45
+ 41E9  CC0000            ldd #0
+ 41EC  6C1E              std -2,x
+ 41EE                    .dbline 53
+ 41EE  790266            clr 0x266
+ 41F1                    .dbline 55
+ 41F1                    ; vol
+ 41F1  F60267            ldab 0x267
+ 41F4  87                clra
+ 41F5  47                asra
+ 41F6  56                rorb
+ 41F7  47                asra
+ 41F8  56                rorb
+ 41F9  47                asra
+ 41FA  56                rorb
+ 41FB  47                asra
+ 41FC  56                rorb
+ 41FD  6C1C              std -4,x
+ 41FF                    .dbline 58
+ 41FF  CC0000            ldd #0
+ 4202  6C1A              std -6,x
+ 4204            L41:
+ 4204                    .dbline 58
+ 4204                    .dbline 59
+ 4204  1C025008          bset 0x250,#8
+ 4208                    .dbline 60
+ 4208  CC0001            ldd #1
+ 420B  ED1A              ldy -6,x
+ 420D  8D0000            cpy #0
+ 4210  2704              beq X0
+ 4212            X1:
+ 4212  59                lsld
+ 4213  0436FC            dbne y,X1
+ 4216            X0:
+ 4216  8400              anda #0
+ 4218  C40F              andb #15
+ 421A  6C18              std -8,x
+ 421C                    ; vol
+ 421C  F60258            ldab 0x258
+ 421F  87                clra
+ 4220  84FF              anda #255
+ 4222  C4F0              andb #240
+ 4224  AA18              ora -8,x
+ 4226  EA19              orb -7,x
+ 4228  7B0258            stab 0x258
+ 422B                    .dbline 61
+ 422B  1D025008          bclr 0x250,#0x8
+ 422F                    .dbline 63
+ 422F  1F0260F02E        brclr 0x260,#240,L45
+ 4234                    .dbline 63
+ 4234                    .dbline 65
+ 4234  CC0000            ldd #0
+ 4237  6C1E              std -2,x
+ 4239            L47:
+ 4239                    .dbline 65
+ 4239                    .dbline 66
+ 4239  EC1C              ldd -4,x
+ 423B  ED1E              ldy -2,x
+ 423D  8D0000            cpy #0
+ 4240  2705              beq X2
+ 4242            X3:
+ 4242  47                asra
+ 4243  56                rorb
+ 4244  0436FB            dbne y,X3
+ 4247            X2:
+ 4247  8400              anda #0
+ 4249  C401              andb #1
+ 424B  8C0000            cpd #0
+ 424E  2702              beq L51
+ 4250                    .dbline 66
+ 4250                    .dbline 67
+ 4250  2020              bra L43
+ 4252            L51:
+ 4252                    .dbline 69
+ 4252            L48:
+ 4252                    .dbline 65
+ 4252  EC1E              ldd -2,x
+ 4254  C30001            addd #1
+ 4257  6C1E              std -2,x
+ 4259                    .dbline 65
+ 4259  EC1E              ldd -2,x
+ 425B  8C0004            cpd #4
+ 425E  2DD9              blt L47
+ 4260                    .dbline 70
+ 4260  2010              bra L43
+ 4262            L45:
+ 4262                    .dbline 72
+ 4262            L42:
+ 4262                    .dbline 58
+ 4262  EC1A              ldd -6,x
+ 4264  C30001            addd #1
+ 4267  6C1A              std -6,x
+ 4269                    .dbline 58
+ 4269  EC1A              ldd -6,x
+ 426B  8C0004            cpd #4
+ 426E  182DFF92          lblt L41
+ 4272            L43:
+ 4272                    .dbline 74
+ 4272  EC1E              ldd -2,x
+ 4274  8C0004            cpd #4
+ 4277  2C1D              bge L53
+ 4279  EC1A              ldd -6,x
+ 427B  8C0004            cpd #4
+ 427E  2C16              bge L53
+ 4280                    .dbline 74
+ 4280                    .dbline 75
+ 4280  EC1A              ldd -6,x
+ 4282  59                lsld
+ 4283  59                lsld
+ 4284  C3100D            addd #L40
+ 4287  6C18              std -8,x
+ 4289  EC1E              ldd -2,x
+ 428B  E318              addd -8,x
+ 428D  B7C6              xgdy
+ 428F  E640              ldab 0,y
+ 4291  7B100C            stab _key
+ 4294                    .dbline 77
+ 4294  2003              bra L54
+ 4296            L53:
+ 4296                    .dbline 77
+ 4296                    .dbline 78
+ 4296  79100C            clr _key
+ 4299                    .dbline 79
+ 4299            L54:
+ 4299                    .dbline 81
+ 4299  1C025008          bset 0x250,#8
+ 429D                    .dbline 82
+ 429D  1C02580F          bset 0x258,#15
+ 42A1                    .dbline 83
+ 42A1  1D025008          bclr 0x250,#0x8
+ 42A5                    .dbline 84
+ 42A5  C6FF              ldab #255
+ 42A7  7B0267            stab 0x267
+ 42AA                    .dbline 85
+ 42AA  C6F0              ldab #240
+ 42AC  7B0266            stab 0x266
+ 42AF                    .dbline -2
+ 42AF                    .dbline 86
+ 42AF            L39:
+ 42AF  B757              tfr x,s
+ 42B1  30                pulx
+ 42B2                    .dbline 0 ; func end
+ 42B2  0B                rti
+ 42B3                    .dbsym l row -6 I
+ 42B3                    .dbsym l col_mask -4 I
+ 42B3                    .dbsym l col -2 I
+ 42B3                    .dbend
+ 42B3                    .dbfunc e keyboard_getchar _keyboard_getchar fc
+ 42B3            ;           temp -> -1,x
+ 42B3            _keyboard_getchar::
+ 42B3  34                pshx
+ 42B4  B775              tfr s,x
+ 42B6  1B9E              leas -2,sp
+ 42B8                    .dbline -1
+ 42B8                    .dbline 92
+ 42B8                    .dbline 93
+ 42B8  18091F100C        movb _key,-1,x
+ 42BD                    .dbline 94
+ 42BD  79100C            clr _key
+ 42C0                    .dbline 95
+ 42C0  E61F              ldab -1,x
+ 42C2  87                clra
+ 42C3                    .dbline -2
+ 42C3            L55:
+ 42C3  B757              tfr x,s
+ 42C5  30                pulx
+ 42C6                    .dbline 0 ; func end
+ 42C6  3D                rts
+ 42C7                    .dbsym l temp -1 c
+ 42C7                    .dbend
+ 42C7                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/lcd.c
+ 42C7                    .dbfunc e lcd_init _lcd_init fV
+ 42C7            _lcd_init::
+ 42C7                    .dbline -1
+ 42C7                    .dbline 21
+ 42C7                    .dbline 22
+ 42C7  1648D2            jsr _Lcd2PP_Init
+ 42CA                    .dbline -2
+ 42CA                    .dbline 23
+ 42CA            L56:
+ 42CA                    .dbline 0 ; func end
+ 42CA  3D                rts
+ 42CB                    .dbend
+ 42CB                    .dbfunc e lcd_print _lcd_print fV
+ 42CB            ;          ?temp -> -2,x
+ 42CB            ;        address -> 6,x
+ 42CB            ;         string -> 2,x
+ 42CB            _lcd_print::
+ 42CB  3B                pshd
+ 42CC  34                pshx
+ 42CD  B775              tfr s,x
+ 42CF  1B9E              leas -2,sp
+ 42D1                    .dbline -1
+ 42D1                    .dbline 29
+ 42D1                    .dbline 30
+ 42D1  EC06              ldd 6,x
+ 42D3  87                clra
+ 42D4  1648BA            jsr _LCD_instruction
+ 42D7  2013              bra L59
+ 42D9            L58:
+ 42D9                    .dbline 31
+ 42D9                    .dbline 32
+ 42D9  1802021E          movw 2,x,-2,x
+ 42DD  EC1E              ldd -2,x
+ 42DF  C30001            addd #1
+ 42E2  6C02              std 2,x
+ 42E4  ED1E              ldy -2,x
+ 42E6  E640              ldab 0,y
+ 42E8  87                clra
+ 42E9  1648C6            jsr _LCD_display
+ 42EC                    .dbline 33
+ 42EC            L59:
+ 42EC                    .dbline 31
+ 42EC  ED02              ldy 2,x
+ 42EE  E740              tst 0,y
+ 42F0  26E7              bne L58
+ 42F2                    .dbline -2
+ 42F2                    .dbline 34
+ 42F2            L57:
+ 42F2  B757              tfr x,s
+ 42F4  30                pulx
+ 42F5  1B82              leas 2,sp
+ 42F7                    .dbline 0 ; func end
+ 42F7  3D                rts
+ 42F8                    .dbsym l address 6 I
+ 42F8                    .dbsym l string 2 pc
+ 42F8                    .dbend
+ 42F8                    .dbfunc e lcd_print_top _lcd_print_top fV
+ 42F8            ;         string -> 2,x
+ 42F8            _lcd_print_top::
+ 42F8  3B                pshd
+ 42F9  34                pshx
+ 42FA  B775              tfr s,x
+ 42FC  1B9E              leas -2,sp
+ 42FE                    .dbline -1
+ 42FE                    .dbline 40
+ 42FE                    .dbline 41
+ 42FE  CC0000            ldd #0
+ 4301  6C80              std 0,sp
+ 4303  EC02              ldd 2,x
+ 4305  1642CB            jsr _lcd_print
+ 4308                    .dbline -2
+ 4308                    .dbline 42
+ 4308            L61:
+ 4308  B757              tfr x,s
+ 430A  30                pulx
+ 430B  1B82              leas 2,sp
+ 430D                    .dbline 0 ; func end
+ 430D  3D                rts
+ 430E                    .dbsym l string 2 pc
+ 430E                    .dbend
+ 430E                    .dbfunc e lcd_print_bottom _lcd_print_bottom fV
+ 430E            ;         string -> 2,x
+ 430E            _lcd_print_bottom::
+ 430E  3B                pshd
+ 430F  34                pshx
+ 4310  B775              tfr s,x
+ 4312  1B9E              leas -2,sp
+ 4314                    .dbline -1
+ 4314                    .dbline 48
+ 4314                    .dbline 49
+ 4314  CC00C0            ldd #192
+ 4317  6C80              std 0,sp
+ 4319  EC02              ldd 2,x
+ 431B  1642CB            jsr _lcd_print
+ 431E                    .dbline -2
+ 431E                    .dbline 50
+ 431E            L62:
+ 431E  B757              tfr x,s
+ 4320  30                pulx
+ 4321  1B82              leas 2,sp
+ 4323                    .dbline 0 ; func end
+ 4323  3D                rts
+ 4324                    .dbsym l string 2 pc
+ 4324                    .dbend
+ 4324                    .dbfunc e lcd_display_speed _lcd_display_speed fV
+ 4324            ;         string -> -2,x
+ 4324            ;          speed -> 2,x
+ 4324            _lcd_display_speed::
+ 4324  3B                pshd
+ 4325  34                pshx
+ 4326  B775              tfr s,x
+ 4328  1B9A              leas -6,sp
+ 432A                    .dbline -1
+ 432A                    .dbline 56
+ 432A                    .dbline 58
+ 432A  18020282          movw 2,x,2,sp
+ 432E  CC48B0            ldd #L64
+ 4331  6C80              std 0,sp
+ 4333  EC1E              ldd -2,x
+ 4335  164E70            jsr _sprintf
+ 4338                    .dbline 59
+ 4338  EC1E              ldd -2,x
+ 433A  1642F8            jsr _lcd_print_top
+ 433D                    .dbline -2
+ 433D                    .dbline 60
+ 433D            L63:
+ 433D  B757              tfr x,s
+ 433F  30                pulx
+ 4340  1B82              leas 2,sp
+ 4342                    .dbline 0 ; func end
+ 4342  3D                rts
+ 4343                    .dbsym l string -2 pc
+ 4343                    .dbsym l speed 2 I
+ 4343                    .dbend
+ 4343                    .dbfunc e lcd_display_temperature _lcd_display_temperature fV
+ 4343            ;         string -> -2,x
+ 4343            ;           temp -> 2,x
+ 4343            _lcd_display_temperature::
+ 4343  3B                pshd
+ 4344  34                pshx
+ 4345  B775              tfr s,x
+ 4347  1B9A              leas -6,sp
+ 4349                    .dbline -1
+ 4349                    .dbline 66
+ 4349                    .dbline 68
+ 4349  18020282          movw 2,x,2,sp
+ 434D  CC48A0            ldd #L66
+ 4350  6C80              std 0,sp
+ 4352  EC1E              ldd -2,x
+ 4354  164E70            jsr _sprintf
+ 4357                    .dbline 69
+ 4357  EC1E              ldd -2,x
+ 4359  16430E            jsr _lcd_print_bottom
+ 435C                    .dbline -2
+ 435C                    .dbline 70
+ 435C            L65:
+ 435C  B757              tfr x,s
+ 435E  30                pulx
+ 435F  1B82              leas 2,sp
+ 4361                    .dbline 0 ; func end
+ 4361  3D                rts
+ 4362                    .dbsym l string -2 pc
+ 4362                    .dbsym l temp 2 I
+ 4362                    .dbend
+                        .area data
+--- 001D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/lcd.c
+--- 001D           _temperature_value:
+--- 001D                   .blkb 2
+                        .area idata
+--- 001D 0000              .word 0
+                        .area data
+--- 001F                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/lcd.c
+--- 001F                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/temperature.c
+--- 001F                   .dbsym s temperature_value _temperature_value I
+--- 001F           _temperature_ready:
+--- 001F                   .blkb 2
+                        .area idata
+--- 001F 0000              .word 0
+                        .area data
+--- 0021                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/temperature.c
+--- 0021                   .dbsym s temperature_ready _temperature_ready I
+                        .area text
+--- 0338                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/temperature.c
+--- 0338                   .dbfunc e temperature_init _temperature_init fV
+ 4362            _temperature_init::
+ 4362                    .dbline -1
+ 4362                    .dbline 20
+ 4362                    .dbline 21
+ 4362  CC0000            ldd #0
+ 4365  7C101F            std _temperature_ready
+ 4368                    .dbline 26
+ 4368  C6FA              ldab #250
+ 436A  7B0082            stab 0x82
+ 436D                    .dbline 29
+ 436D  790083            clr 0x83
+ 4370                    .dbline 33
+ 4370  C660              ldab #96
+ 4372  7B0084            stab 0x84
+ 4375                    .dbline 36
+ 4375  1C025280          bset 0x252,#128
+ 4379                    .dbline -2
+ 4379                    .dbline 37
+ 4379            L67:
+ 4379                    .dbline 0 ; func end
+ 4379  3D                rts
+ 437A                    .dbend
+ 437A                    .dbfunc e temperature_start_sample _temperature_start_sample fV
+ 437A            _temperature_start_sample::
+ 437A                    .dbline -1
+ 437A                    .dbline 43
+ 437A                    .dbline 46
+ 437A  CC0000            ldd #0
+ 437D  7C101F            std _temperature_ready
+ 4380                    .dbline 47
+ 4380  C686              ldab #134
+ 4382  7B0085            stab 0x85
+ 4385                    .dbline -2
+ 4385                    .dbline 48
+ 4385            L68:
+ 4385                    .dbline 0 ; func end
+ 4385  3D                rts
+ 4386                    .dbend
+ 4386                    .dbfunc e temperature_is_ready _temperature_is_ready fI
+ 4386            ;          ?temp -> -2,x
+ 4386            _temperature_is_ready::
+ 4386  34                pshx
+ 4387  B775              tfr s,x
+ 4389  1B9E              leas -2,sp
+ 438B                    .dbline -1
+ 438B                    .dbline 54
+ 438B                    .dbline 55
+ 438B  FC101F            ldd _temperature_ready
+ 438E  2707              beq L71
+ 4390  CC0001            ldd #1
+ 4393  6C1E              std -2,x
+ 4395  2005              bra L72
+ 4397            L71:
+ 4397  CC0000            ldd #0
+ 439A  6C1E              std -2,x
+ 439C            L72:
+ 439C  EC1E              ldd -2,x
+ 439E                    .dbline -2
+ 439E            L69:
+ 439E  B757              tfr x,s
+ 43A0  30                pulx
+ 43A1                    .dbline 0 ; func end
+ 43A1  3D                rts
+ 43A2                    .dbend
+ 43A2                    .dbfunc e temperature_get _temperature_get fI
+ 43A2            _temperature_get::
+ 43A2                    .dbline -1
+ 43A2                    .dbline 62
+ 43A2                    .dbline 63
+ 43A2  CC0000            ldd #0
+ 43A5  7C101F            std _temperature_ready
+ 43A8                    .dbline 64
+ 43A8  FC101D            ldd _temperature_value
+ 43AB                    .dbline -2
+ 43AB            L73:
+ 43AB                    .dbline 0 ; func end
+ 43AB  3D                rts
+ 43AC                    .dbend
+ 43AC                    .dbfunc e temperature_heater_on _temperature_heater_on fV
+ 43AC            _temperature_heater_on::
+ 43AC                    .dbline -1
+ 43AC                    .dbline 71
+ 43AC                    .dbline 72
+ 43AC  1C025080          bset 0x250,#128
+ 43B0                    .dbline -2
+ 43B0                    .dbline 73
+ 43B0            L74:
+ 43B0                    .dbline 0 ; func end
+ 43B0  3D                rts
+ 43B1                    .dbend
+ 43B1                    .dbfunc e temperature_heater_off _temperature_heater_off fV
+ 43B1            _temperature_heater_off::
+ 43B1                    .dbline -1
+ 43B1                    .dbline 79
+ 43B1                    .dbline 80
+ 43B1  1D025080          bclr 0x250,#0x80
+ 43B5                    .dbline -2
+ 43B5                    .dbline 81
+ 43B5            L75:
+ 43B5                    .dbline 0 ; func end
+ 43B5  3D                rts
+ 43B6                    .dbend
+ 43B6                    .dbfunc e temperature_isr _temperature_isr fV
+ 43B6            _temperature_isr::
+ 43B6                    .dbline -1
+ 43B6                    .dbline 88
+ 43B6                    .dbline 89
+ 43B6                    ; vol
+ 43B6  FC009C            ldd 0x9c
+ 43B9  8403              anda #3
+ 43BB  C4FF              andb #255
+ 43BD  49                lsrd
+ 43BE  49                lsrd
+ 43BF  49                lsrd
+ 43C0  830005            subd #5
+ 43C3  7C101D            std _temperature_value
+ 43C6                    .dbline 90
+ 43C6  CC0001            ldd #1
+ 43C9  7C101F            std _temperature_ready
+ 43CC                    .dbline -2
+ 43CC                    .dbline 91
+ 43CC            L76:
+ 43CC                    .dbline 0 ; func end
+ 43CC  0B                rti
+ 43CD                    .dbend
+ 43CD                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/stepper.c
+ 43CD                    .dbfunc e stepper_turn_cw _stepper_turn_cw fV
+ 43CD            ;          steps -> 2,x
+ 43CD            _stepper_turn_cw::
+ 43CD  3B                pshd
+ 43CE  34                pshx
+ 43CF  B775              tfr s,x
+ 43D1  1B9E              leas -2,sp
+ 43D3                    .dbline -1
+ 43D3                    .dbline 19
+ 43D3                    .dbline 20
+ 43D3  164475            jsr _stepper_init
+ 43D6                    .dbline 21
+ 43D6  201C              bra L81
+ 43D8            L78:
+ 43D8                    .dbline 21
+ 43D8                    .dbline 22
+ 43D8  EC02              ldd 2,x
+ 43DA  CD0004            ldy #4
+ 43DD  B7D6              exg x,y
+ 43DF  1815              idivs
+ 43E1  B7D6              exg x,y
+ 43E3  6C1E              std -2,x
+ 43E5  CC0003            ldd #3
+ 43E8  A31E              subd -2,x
+ 43EA  164426            jsr _stepper_set_step
+ 43ED                    .dbline 23
+ 43ED            L79:
+ 43ED                    .dbline 21
+ 43ED  EC02              ldd 2,x
+ 43EF  830001            subd #1
+ 43F2  6C02              std 2,x
+ 43F4            L81:
+ 43F4                    .dbline 21
+ 43F4  EC02              ldd 2,x
+ 43F6  2EE0              bgt L78
+ 43F8                    .dbline -2
+ 43F8                    .dbline 24
+ 43F8            L77:
+ 43F8  B757              tfr x,s
+ 43FA  30                pulx
+ 43FB  1B82              leas 2,sp
+ 43FD                    .dbline 0 ; func end
+ 43FD  3D                rts
+ 43FE                    .dbsym l steps 2 I
+ 43FE                    .dbend
+ 43FE                    .dbfunc e stepper_turn_ccw _stepper_turn_ccw fV
+ 43FE            ;          steps -> 2,x
+ 43FE            _stepper_turn_ccw::
+ 43FE  3B                pshd
+ 43FF  34                pshx
+ 4400  B775              tfr s,x
+ 4402                    .dbline -1
+ 4402                    .dbline 30
+ 4402                    .dbline 31
+ 4402  164475            jsr _stepper_init
+ 4405                    .dbline 32
+ 4405  2015              bra L86
+ 4407            L83:
+ 4407                    .dbline 32
+ 4407                    .dbline 33
+ 4407  EC02              ldd 2,x
+ 4409  CD0004            ldy #4
+ 440C  B7D6              exg x,y
+ 440E  1815              idivs
+ 4410  B7D6              exg x,y
+ 4412  164426            jsr _stepper_set_step
+ 4415                    .dbline 34
+ 4415            L84:
+ 4415                    .dbline 32
+ 4415  EC02              ldd 2,x
+ 4417  830001            subd #1
+ 441A  6C02              std 2,x
+ 441C            L86:
+ 441C                    .dbline 32
+ 441C  EC02              ldd 2,x
+ 441E  2EE7              bgt L83
+ 4420                    .dbline -2
+ 4420                    .dbline 35
+ 4420            L82:
+ 4420  B757              tfr x,s
+ 4422  30                pulx
+ 4423  1B82              leas 2,sp
+ 4425                    .dbline 0 ; func end
+ 4425  3D                rts
+ 4426                    .dbsym l steps 2 I
+ 4426                    .dbend
+ 4426                    .dbfunc s stepper_set_step _stepper_set_step fV
+ 4426            ;     coded_step -> -2,x
+ 4426            ;           step -> 2,x
+ 4426            _stepper_set_step:
+ 4426  3B                pshd
+ 4427  34                pshx
+ 4428  B775              tfr s,x
+ 442A  1B9C              leas -4,sp
+ 442C                    .dbline -1
+ 442C                    .dbline 41
+ 442C                    .dbline 42
+ 442C  CC0000            ldd #0
+ 442F  6C1E              std -2,x
+ 4431                    .dbline 45
+ 4431  EC02              ldd 2,x
+ 4433  8C0002            cpd #2
+ 4436  2607              bne L88
+ 4438                    .dbline 45
+ 4438                    .dbline 46
+ 4438  CC0003            ldd #3
+ 443B  6C1E              std -2,x
+ 443D                    .dbline 47
+ 443D  2012              bra L89
+ 443F            L88:
+ 443F                    .dbline 47
+ 443F  EC02              ldd 2,x
+ 4441  8C0003            cpd #3
+ 4444  2607              bne L90
+ 4446                    .dbline 47
+ 4446                    .dbline 48
+ 4446  CC0002            ldd #2
+ 4449  6C1E              std -2,x
+ 444B                    .dbline 49
+ 444B  2004              bra L91
+ 444D            L90:
+ 444D                    .dbline 49
+ 444D                    .dbline 50
+ 444D  1802021E          movw 2,x,-2,x
+ 4451                    .dbline 51
+ 4451            L91:
+ 4451            L89:
+ 4451                    .dbline 54
+ 4451  EC1E              ldd -2,x
+ 4453  59                lsld
+ 4454  59                lsld
+ 4455  59                lsld
+ 4456  59                lsld
+ 4457  59                lsld
+ 4458  6C1C              std -4,x
+ 445A                    ; vol
+ 445A  F60240            ldab 0x240
+ 445D  87                clra
+ 445E  84FF              anda #255
+ 4460  C49F              andb #159
+ 4462  AA1C              ora -4,x
+ 4464  EA1D              orb -3,x
+ 4466  7B0240            stab 0x240
+ 4469                    .dbline 59
+ 4469  CCF000            ldd #0xf000
+ 446C  164482            jsr _stepper_delay
+ 446F                    .dbline -2
+ 446F                    .dbline 60
+ 446F            L87:
+ 446F  B757              tfr x,s
+ 4471  30                pulx
+ 4472  1B82              leas 2,sp
+ 4474                    .dbline 0 ; func end
+ 4474  3D                rts
+ 4475                    .dbsym l coded_step -2 I
+ 4475                    .dbsym l step 2 I
+ 4475                    .dbend
+ 4475                    .dbfunc s stepper_init _stepper_init fV
+ 4475            _stepper_init:
+ 4475                    .dbline -1
+ 4475                    .dbline 66
+ 4475                    .dbline 67
+ 4475  1C025A20          bset 0x25a,#32
+ 4479                    .dbline 68
+ 4479  1C024260          bset 0x242,#96
+ 447D                    .dbline 69
+ 447D  1C025820          bset 0x258,#32
+ 4481                    .dbline -2
+ 4481                    .dbline 70
+ 4481            L92:
+ 4481                    .dbline 0 ; func end
+ 4481  3D                rts
+ 4482                    .dbend
+ 4482                    .dbfunc s stepper_delay _stepper_delay fV
+ 4482            ;          delay -> 2,x
+ 4482            _stepper_delay:
+ 4482  3B                pshd
+ 4483  34                pshx
+ 4484  B775              tfr s,x
+ 4486                    .dbline -1
+ 4486                    .dbline 76
+ 4486                    .dbline 77
+ 4486  2007              bra L97
+ 4488            L94:
+ 4488                    .dbline 77
+ 4488                    .dbline 77
+ 4488            L95:
+ 4488                    .dbline 77
+ 4488  EC02              ldd 2,x
+ 448A  830001            subd #1
+ 448D  6C02              std 2,x
+ 448F            L97:
+ 448F                    .dbline 77
+ 448F  EC02              ldd 2,x
+ 4491  26F5              bne L94
+ 4493                    .dbline -2
+ 4493                    .dbline 78
+ 4493            L93:
+ 4493  B757              tfr x,s
+ 4495  30                pulx
+ 4496  1B82              leas 2,sp
+ 4498                    .dbline 0 ; func end
+ 4498  3D                rts
+ 4499                    .dbsym l delay 2 i
+ 4499                    .dbend
+ 4499                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/buzzer.c
+ 4499                    .dbfunc e buzzer_init _buzzer_init fV
+ 4499            _buzzer_init::
+ 4499                    .dbline -1
+ 4499                    .dbline 10
+ 4499                    .dbline 11
+ 4499  1C003320          bset 0x33,#32
+ 449D                    .dbline -2
+ 449D                    .dbline 12
+ 449D            L98:
+ 449D                    .dbline 0 ; func end
+ 449D  3D                rts
+ 449E                    .dbend
+ 449E                    .dbfunc e buzzer_on _buzzer_on fV
+ 449E            _buzzer_on::
+ 449E                    .dbline -1
+ 449E                    .dbline 15
+ 449E                    .dbline 16
+ 449E  1C003220          bset 0x32,#32
+ 44A2                    .dbline -2
+ 44A2                    .dbline 17
+ 44A2            L99:
+ 44A2                    .dbline 0 ; func end
+ 44A2  3D                rts
+ 44A3                    .dbend
+ 44A3                    .dbfunc e buzzer_off _buzzer_off fV
+ 44A3            _buzzer_off::
+ 44A3                    .dbline -1
+ 44A3                    .dbline 20
+ 44A3                    .dbline 21
+ 44A3  1D003220          bclr 0x32,#0x20
+ 44A7                    .dbline -2
+ 44A7                    .dbline 22
+ 44A7            L100:
+ 44A7                    .dbline 0 ; func end
+ 44A7  3D                rts
+ 44A8                    .dbend
+ 44A8                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/led.c
+ 44A8                    .dbfunc e led_init _led_init fV
+ 44A8            _led_init::
+ 44A8                    .dbline -1
+ 44A8                    .dbline 13
+ 44A8                    .dbline 14
+ 44A8  1C00330F          bset 0x33,#15
+ 44AC                    .dbline -2
+ 44AC                    .dbline 15
+ 44AC            L101:
+ 44AC                    .dbline 0 ; func end
+ 44AC  3D                rts
+ 44AD                    .dbend
+ 44AD                    .dbfunc e led_all_off _led_all_off fV
+ 44AD            _led_all_off::
+ 44AD                    .dbline -1
+ 44AD                    .dbline 18
+ 44AD                    .dbline 19
+ 44AD  1D00320F          bclr 0x32,#0xf
+ 44B1                    .dbline -2
+ 44B1                    .dbline 20
+ 44B1            L102:
+ 44B1                    .dbline 0 ; func end
+ 44B1  3D                rts
+ 44B2                    .dbend
+ 44B2                    .dbfunc e led_red_on _led_red_on fV
+ 44B2            _led_red_on::
+ 44B2                    .dbline -1
+ 44B2                    .dbline 23
+ 44B2                    .dbline 24
+ 44B2  1C003201          bset 0x32,#1
+ 44B6                    .dbline -2
+ 44B6                    .dbline 25
+ 44B6            L103:
+ 44B6                    .dbline 0 ; func end
+ 44B6  3D                rts
+ 44B7                    .dbend
+ 44B7                    .dbfunc e led_yellow_on _led_yellow_on fV
+ 44B7            _led_yellow_on::
+ 44B7                    .dbline -1
+ 44B7                    .dbline 28
+ 44B7                    .dbline 29
+ 44B7  1C003202          bset 0x32,#2
+ 44BB                    .dbline -2
+ 44BB                    .dbline 30
+ 44BB            L104:
+ 44BB                    .dbline 0 ; func end
+ 44BB  3D                rts
+ 44BC                    .dbend
+ 44BC                    .dbfunc e led_orange_on _led_orange_on fV
+ 44BC            _led_orange_on::
+ 44BC                    .dbline -1
+ 44BC                    .dbline 33
+ 44BC                    .dbline 34
+ 44BC  1C003204          bset 0x32,#4
+ 44C0                    .dbline -2
+ 44C0                    .dbline 35
+ 44C0            L105:
+ 44C0                    .dbline 0 ; func end
+ 44C0  3D                rts
+ 44C1                    .dbend
+ 44C1                    .dbfunc e led_green_on _led_green_on fV
+ 44C1            _led_green_on::
+ 44C1                    .dbline -1
+ 44C1                    .dbline 38
+ 44C1                    .dbline 39
+ 44C1  1C003208          bset 0x32,#8
+ 44C5                    .dbline -2
+ 44C5                    .dbline 40
+ 44C5            L106:
+ 44C5                    .dbline 0 ; func end
+ 44C5  3D                rts
+ 44C6                    .dbend
+                        .area data
+--- 0021                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/led.c
+ 1021            _collision_detected::
+ 1021                    .blkb 2
+                        .area idata
+--- 0021 0000              .word 0
+                        .area data
+--- 0023                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1/../lib/led.c
+--- 0023                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 0023                   .dbsym e collision_detected _collision_detected I
+ 1023            _speed::
+ 1023                    .blkb 2
+                        .area idata
+--- 0023 001E              .word 30
+                        .area data
+--- 0025                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 0025                   .dbsym e speed _speed I
+ 1025            _temperature::
+ 1025                    .blkb 2
+                        .area idata
+--- 0025 0000              .word 0
+                        .area data
+--- 0027                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 0027                   .dbsym e temperature _temperature I
+ 1027            _direction::
+ 1027                    .blkb 2
+                        .area idata
+--- 0027 0000              .word 0
+                        .area data
+--- 0029                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 0029                   .dbsym e direction _direction I
+                        .area text
+--- 049C                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 049C                   .dbfunc e main _main fI
+--- 049C           ;          ?temp -> -4,x
+--- 049C           ; previous_temperature -> -3,x
+--- 049C           ;            key -> -1,x
+ 44C6            _main::
+ 44C6  34                pshx
+ 44C7  B775              tfr s,x
+ 44C9  1B9A              leas -6,sp
+ 44CB                    .dbline -1
+ 44CB                    .dbline 34
+ 44CB                    .dbline 35
+ 44CB  CC0000            ldd #0
+ 44CE  6C1D              std -3,x
+ 44D0                    .dbline 39
+ 44D0  CC001A            ldd #26
+ 44D3  1649A2            jsr _setbaud
+ 44D6                    .dbline 41
+ 44D6  1641B2            jsr _keyboard_init
+ 44D9                    .dbline 42
+ 44D9  1642C7            jsr _lcd_init
+ 44DC                    .dbline 43
+ 44DC  16402A            jsr _motor_init
+ 44DF                    .dbline 44
+ 44DF  16415E            jsr _rti_init
+ 44E2                    .dbline 45
+ 44E2  FC1023            ldd _speed
+ 44E5  164136            jsr _motor_set_speed
+ 44E8                    .dbline 46
+ 44E8  164362            jsr _temperature_init
+ 44EB                    .dbline 47
+ 44EB  164475            jsr _stepper_init
+ 44EE                    .dbline 48
+ 44EE  164499            jsr _buzzer_init
+ 44F1                    .dbline 49
+ 44F1  1644A8            jsr _led_init
+ 44F4                    .dbline 50
+ 44F4  10EF                      cli
+ 44F6            
+ 44F6                    .dbline 52
+ 44F6  16437A            jsr _temperature_start_sample
+ 44F9                    .dbline 54
+ 44F9  FC1023            ldd _speed
+ 44FC  164324            jsr _lcd_display_speed
+ 44FF                    .dbline 55
+ 44FF  FC1025            ldd _temperature
+ 4502  164343            jsr _lcd_display_temperature
+ 4505  182000F3          lbra L109
+ 4509            L108:
+ 4509                    .dbline 59
+ 4509                    .dbline 60
+ 4509  1642B3            jsr _keyboard_getchar
+ 450C  6B1C              stab -4,x
+ 450E  180A1C1F          movb -4,x,-1,x
+ 4512  E71C              tst -4,x
+ 4514  182700A3          lbeq L111
+ 4518                    .dbline 60
+ 4518                    .dbline 61
+ 4518  E61F              ldab -1,x
+ 451A  C130              cmpb #48
+ 451C  2604              bne L113
+ 451E                    .dbline 61
+ 451E                    .dbline 62
+ 451E  182000DE          lbra L110
+ 4522            L113:
+ 4522                    .dbline 63
+ 4522  E61F              ldab -1,x
+ 4524  C145              cmpb #69
+ 4526  263D              bne L115
+ 4528                    .dbline 63
+ 4528                    .dbline 64
+ 4528  FC1023            ldd _speed
+ 452B  8C001E            cpd #30
+ 452E  2C1C              bge L117
+ 4530                    .dbline 64
+ 4530                    .dbline 65
+ 4530  FC1023            ldd _speed
+ 4533  C30001            addd #1
+ 4536  7C1023            std _speed
+ 4539                    .dbline 66
+ 4539  FC1023            ldd _speed
+ 453C  164136            jsr _motor_set_speed
+ 453F                    .dbline 67
+ 453F  1801801023        movw _speed,0,sp
+ 4544  CC4888            ldd #L119
+ 4547  164E22            jsr _printf
+ 454A                    .dbline 68
+ 454A  200B              bra L118
+ 454C            L117:
+ 454C                    .dbline 68
+ 454C                    .dbline 69
+ 454C  1801801023        movw _speed,0,sp
+ 4551  CC4860            ldd #L120
+ 4554  164E22            jsr _printf
+ 4557                    .dbline 70
+ 4557            L118:
+ 4557                    .dbline 71
+ 4557  FC1023            ldd _speed
+ 455A  164324            jsr _lcd_display_speed
+ 455D                    .dbline 72
+ 455D  FC1025            ldd _temperature
+ 4560  164343            jsr _lcd_display_temperature
+ 4563                    .dbline 73
+ 4563  2056              bra L116
+ 4565            L115:
+ 4565                    .dbline 73
+ 4565  E61F              ldab -1,x
+ 4567  C144              cmpb #68
+ 4569  263A              bne L121
+ 456B                    .dbline 73
+ 456B                    .dbline 74
+ 456B  FC1023            ldd _speed
+ 456E  2F1C              ble L123
+ 4570                    .dbline 74
+ 4570                    .dbline 75
+ 4570  FC1023            ldd _speed
+ 4573  830001            subd #1
+ 4576  7C1023            std _speed
+ 4579                    .dbline 76
+ 4579  FC1023            ldd _speed
+ 457C  164136            jsr _motor_set_speed
+ 457F                    .dbline 77
+ 457F  1801801023        movw _speed,0,sp
+ 4584  CC4848            ldd #L125
+ 4587  164E22            jsr _printf
+ 458A                    .dbline 78
+ 458A  200B              bra L124
+ 458C            L123:
+ 458C                    .dbline 78
+ 458C                    .dbline 79
+ 458C  1801801023        movw _speed,0,sp
+ 4591  CC481A            ldd #L126
+ 4594  164E22            jsr _printf
+ 4597                    .dbline 80
+ 4597            L124:
+ 4597                    .dbline 81
+ 4597  FC1023            ldd _speed
+ 459A  164324            jsr _lcd_display_speed
+ 459D                    .dbline 82
+ 459D  FC1025            ldd _temperature
+ 45A0  164343            jsr _lcd_display_temperature
+ 45A3                    .dbline 83
+ 45A3  2016              bra L122
+ 45A5            L121:
+ 45A5                    .dbline 83
+ 45A5  E61F              ldab -1,x
+ 45A7  C135              cmpb #53
+ 45A9  2605              bne L127
+ 45AB                    .dbline 83
+ 45AB                    .dbline 84
+ 45AB  16465F            jsr _trigger_collision
+ 45AE                    .dbline 85
+ 45AE  200B              bra L128
+ 45B0            L127:
+ 45B0                    .dbline 85
+ 45B0                    .dbline 86
+ 45B0  E61F              ldab -1,x
+ 45B2  87                clra
+ 45B3  6C80              std 0,sp
+ 45B5  CC480E            ldd #L129
+ 45B8  164E22            jsr _printf
+ 45BB                    .dbline 87
+ 45BB            L128:
+ 45BB            L122:
+ 45BB            L116:
+ 45BB                    .dbline 88
+ 45BB            L111:
+ 45BB                    .dbline 90
+ 45BB  164386            jsr _temperature_is_ready
+ 45BE  8C0000            cpd #0
+ 45C1  2739              beq L130
+ 45C3                    .dbline 90
+ 45C3                    .dbline 91
+ 45C3  1643A2            jsr _temperature_get
+ 45C6  7C1025            std _temperature
+ 45C9                    .dbline 94
+ 45C9  FC1025            ldd _temperature
+ 45CC  8C0064            cpd #100
+ 45CF  2C05              bge L132
+ 45D1                    .dbline 94
+ 45D1                    .dbline 95
+ 45D1  1643AC            jsr _temperature_heater_on
+ 45D4                    .dbline 96
+ 45D4  2003              bra L133
+ 45D6            L132:
+ 45D6                    .dbline 96
+ 45D6                    .dbline 97
+ 45D6  1643B1            jsr _temperature_heater_off
+ 45D9                    .dbline 98
+ 45D9            L133:
+ 45D9                    .dbline 101
+ 45D9  FC1025            ldd _temperature
+ 45DC  AC1D              cpd -3,x
+ 45DE  271C              beq L134
+ 45E0                    .dbline 101
+ 45E0                    .dbline 102
+ 45E0  18011D1025        movw _temperature,-3,x
+ 45E5                    .dbline 103
+ 45E5  1801801025        movw _temperature,0,sp
+ 45EA  CC47F9            ldd #L136
+ 45ED  164E22            jsr _printf
+ 45F0                    .dbline 104
+ 45F0  FC1023            ldd _speed
+ 45F3  164324            jsr _lcd_display_speed
+ 45F6                    .dbline 105
+ 45F6  FC1025            ldd _temperature
+ 45F9  164343            jsr _lcd_display_temperature
+ 45FC                    .dbline 106
+ 45FC            L134:
+ 45FC                    .dbline 107
+ 45FC            L130:
+ 45FC                    .dbline 108
+ 45FC            L109:
+ 45FC                    .dbline 59
+ 45FC  1820FF09          lbra L108
+ 4600            L110:
+ 4600                    .dbline 110
+ 4600  CC0000            ldd #0
+ 4603                    .dbline -2
+ 4603            L107:
+ 4603  B757              tfr x,s
+ 4605  30                pulx
+ 4606                    .dbline 0 ; func end
+ 4606  3D                rts
+ 4607                    .dbsym l previous_temperature -3 I
+ 4607                    .dbsym l key -1 c
+ 4607                    .dbend
+ 4607                    .dbfunc e rti_each _rti_each fV
+ 4607            _rti_each::
+ 4607                    .dbline -1
+ 4607                    .dbline 114
+ 4607                    .dbline -2
+ 4607                    .dbline 114
+ 4607            L137:
+ 4607                    .dbline 0 ; func end
+ 4607  3D                rts
+ 4608                    .dbend
+ 4608                    .dbfunc e rti_each_quarter _rti_each_quarter fV
+ 4608            _rti_each_quarter::
+ 4608                    .dbline -1
+ 4608                    .dbline 117
+ 4608                    .dbline 118
+ 4608  1640B6            jsr _motor_update_speed
+ 460B                    .dbline -2
+ 460B                    .dbline 119
+ 460B            L138:
+ 460B                    .dbline 0 ; func end
+ 460B  3D                rts
+ 460C                    .dbend
+ 460C                    .dbfunc e rti_each_half _rti_each_half fV
+ 460C            _rti_each_half::
+ 460C                    .dbline -1
+ 460C                    .dbline 122
+ 460C                    .dbline -2
+ 460C                    .dbline 122
+ 460C            L139:
+ 460C                    .dbline 0 ; func end
+ 460C  3D                rts
+ 460D                    .dbend
+                        .area data
+--- 0029                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 0029           L141:
+--- 0029                   .blkb 2
+                        .area idata
+--- 0029 0000              .word 0
+                        .area data
+--- 002B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+                        .area text
+--- 05E3                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 05E3                   .dbfunc e rti_each_second _rti_each_second fV
+--- 05E3                   .dbsym s count L141 I
+ 460D            _rti_each_second::
+ 460D                    .dbline -1
+ 460D                    .dbline 125
+ 460D            ; {
+ 460D                    .dbline 127
+ 460D            ;       static int count = 0;
+ 460D            ;       count = (count + 1) % 8;
+ 460D  FC1029            ldd L141
+ 4610  C30001            addd #1
+ 4613  CD0008            ldy #8
+ 4616  B7D6              exg x,y
+ 4618  1815              idivs
+ 461A  B7D6              exg x,y
+ 461C  7C1029            std L141
+ 461F                    .dbline 129
+ 461F            ;       
+ 461F            ;       collision_avoidance();
+ 461F  164666            jsr _collision_avoidance
+ 4622                    .dbline 131
+ 4622            ;       
+ 4622            ;       if ( count == 0 ) {
+ 4622  FC1029            ldd L141
+ 4625  2603              bne L142
+ 4627                    .dbline 131
+ 4627                    .dbline 132
+ 4627            ;               temperature_start_sample(); // Start a new sample
+ 4627  16437A            jsr _temperature_start_sample
+ 462A                    .dbline 133
+ 462A            ;       }
+ 462A            L142:
+ 462A                    .dbline 135
+ 462A            ;       
+ 462A            ;       led_all_off();
+ 462A  1644AD            jsr _led_all_off
+ 462D                    .dbline 136
+ 462D  FC1027            ldd _direction
+ 4630  271A              beq L146
+ 4632  FC1027            ldd _direction
+ 4635  8C0001            cpd #1
+ 4638  2717              beq L147
+ 463A  FC1027            ldd _direction
+ 463D  8C0002            cpd #2
+ 4640  2714              beq L148
+ 4642  FC1027            ldd _direction
+ 4645  8C0003            cpd #3
+ 4648  2711              beq L149
+ 464A  2012              bra L144
+ 464C            X4:
+ 464C                    .dbline 136
+ 464C            ;       switch (direction) {
+ 464C            L146:
+ 464C                    .dbline 138
+ 464C            ;               case DIRECTION_NORTH:
+ 464C            ;                       led_red_on();
+ 464C  1644B2            jsr _led_red_on
+ 464F                    .dbline 139
+ 464F            ;                       break;
+ 464F  200D              bra L145
+ 4651            L147:
+ 4651                    .dbline 141
+ 4651            ;               case DIRECTION_EAST:
+ 4651            ;                       led_yellow_on();
+ 4651  1644B7            jsr _led_yellow_on
+ 4654                    .dbline 142
+ 4654            ;                       break;
+ 4654  2008              bra L145
+ 4656            L148:
+ 4656                    .dbline 144
+ 4656            ;               case DIRECTION_SOUTH:
+ 4656            ;                       led_green_on();
+ 4656  1644C1            jsr _led_green_on
+ 4659                    .dbline 145
+ 4659            ;                       break;
+ 4659  2003              bra L145
+ 465B            L149:
+ 465B                    .dbline 147
+ 465B            ;               case DIRECTION_WEST:
+ 465B            ;                       led_orange_on();
+ 465B  1644BC            jsr _led_orange_on
+ 465E                    .dbline 148
+ 465E            ;                       break;
+ 465E            L144:
+ 465E            L145:
+ 465E                    .dbline -2
+ 465E                    .dbline 151
+ 465E            ;       }
+ 465E            ;       
+ 465E            ; }
+ 465E            L140:
+ 465E                    .dbline 0 ; func end
+ 465E  3D                rts
+ 465F                    .dbend
+ 465F                    .dbfunc e trigger_collision _trigger_collision fV
+ 465F            _trigger_collision::
+ 465F                    .dbline -1
+ 465F                    .dbline 157
+ 465F            ; 
+ 465F            ; /*
+ 465F            ;       Simulate a collision warning
+ 465F            ; */
+ 465F            ; void trigger_collision()
+ 465F            ; {
+ 465F                    .dbline 158
+ 465F            ;       collision_detected = 1;
+ 465F  CC0001            ldd #1
+ 4662  7C1021            std _collision_detected
+ 4665                    .dbline -2
+ 4665                    .dbline 159
+ 4665            ; }
+ 4665            L150:
+ 4665                    .dbline 0 ; func end
+ 4665  3D                rts
+ 4666                    .dbend
+                        .area data
+--- 002B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 002B           L152:
+--- 002B                   .blkb 2
+                        .area idata
+--- 002B 0000              .word 0
+                        .area data
+--- 002D                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 002D           L153:
+--- 002D                   .blkb 2
+                        .area idata
+--- 002D 0000              .word 0
+                        .area data
+--- 002F                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+                        .area text
+--- 063C                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\assign54.c
+--- 063C                   .dbfunc e collision_avoidance _collision_avoidance fV
+--- 063C                   .dbsym s state L153 I
+--- 063C                   .dbsym s seconds L152 I
+--- 063C           ;          ?temp -> -4,x
+--- 063C           ;          ?temp -> -2,x
+ 4666            _collision_avoidance::
+ 4666  34                pshx
+ 4667  B775              tfr s,x
+ 4669  1B9C              leas -4,sp
+ 466B                    .dbline -1
+ 466B                    .dbline 166
+ 466B            ; 
+ 466B            ; 
+ 466B            ; /*
+ 466B            ;       This is executes the algorithm provided in the labs to avoid a collision
+ 466B            ; */
+ 466B            ; void collision_avoidance()
+ 466B            ; {
+ 466B                    .dbline 175
+ 466B            ;       #define COLLISION_AVOID_STATE_INITIAL   0
+ 466B            ;       #define COLLISION_AVOID_STATE_WAIT              1
+ 466B            ;       #define COLLISION_AVOID_STATE_ROTATE90  2
+ 466B            ;       #define COLLISION_AVOID_STATE_CONTINUE  3
+ 466B            ; 
+ 466B            ;       static int seconds = 0;
+ 466B            ;       static int state = 0;
+ 466B            ;       
+ 466B            ;       if ( collision_detected ) {
+ 466B  FC1021            ldd _collision_detected
+ 466E  182700D0          lbeq L154
+ 4672                    .dbline 175
+ 4672                    .dbline 176
+ 4672  FC102D            ldd L153
+ 4675  2714              beq L158
+ 4677  FC102D            ldd L153
+ 467A  8C0001            cpd #1
+ 467D  2728              beq L160
+ 467F  FC102D            ldd L153
+ 4682  8C0002            cpd #2
+ 4685  274D              beq L164
+ 4687  1820009F          lbra L156
+ 468B            X5:
+ 468B                    .dbline 176
+ 468B            ;               switch ( state ) {
+ 468B            L158:
+ 468B                    .dbline 178
+ 468B            ;                       case COLLISION_AVOID_STATE_INITIAL:
+ 468B            ;                               buzzer_on();
+ 468B  16449E            jsr _buzzer_on
+ 468E                    .dbline 179
+ 468E            ;                               motor_disable(); // we would stop the forward motors here
+ 468E  1640A0            jsr _motor_disable
+ 4691                    .dbline 180
+ 4691            ;                               printf("\n\nCollision warning!!\nStopping motors.\n");
+ 4691  CC47D1            ldd #L159
+ 4694  164E22            jsr _printf
+ 4697                    .dbline 181
+ 4697            ;                               seconds = 0;
+ 4697  CC0000            ldd #0
+ 469A  7C102B            std L152
+ 469D                    .dbline 182
+ 469D            ;                               state = COLLISION_AVOID_STATE_WAIT;
+ 469D  CC0001            ldd #1
+ 46A0  7C102D            std L153
+ 46A3                    .dbline 183
+ 46A3            ;                               break;
+ 46A3  1820009B          lbra L155
+ 46A7            L160:
+ 46A7                    .dbline 186
+ 46A7            ;                       case COLLISION_AVOID_STATE_WAIT:
+ 46A7            ;                               // wait 2 seconds before changing to next state (total time will be 3 second wait)
+ 46A7            ;                               buzzer_off();
+ 46A7  1644A3            jsr _buzzer_off
+ 46AA                    .dbline 187
+ 46AA            ;                               printf("Waiting for motors to be stopped\n");
+ 46AA  CC47AF            ldd #L161
+ 46AD  164E22            jsr _printf
+ 46B0                    .dbline 188
+ 46B0            ;                               if ( ++seconds >= 2 ) {
+ 46B0  FC102B            ldd L152
+ 46B3  C30001            addd #1
+ 46B6  6C1E              std -2,x
+ 46B8  18051E102B        movw -2,x,L152
+ 46BD  EC1E              ldd -2,x
+ 46BF  8C0002            cpd #2
+ 46C2  182D007C          lblt L155
+ 46C6                    .dbline 188
+ 46C6                    .dbline 189
+ 46C6            ;                                       seconds = 0;
+ 46C6  CC0000            ldd #0
+ 46C9  7C102B            std L152
+ 46CC                    .dbline 190
+ 46CC            ;                                       state = COLLISION_AVOID_STATE_ROTATE90;
+ 46CC  CC0002            ldd #2
+ 46CF  7C102D            std L153
+ 46D2                    .dbline 191
+ 46D2            ;                               }
+ 46D2                    .dbline 192
+ 46D2            ;                               break;
+ 46D2  206E              bra L155
+ 46D4            L164:
+ 46D4                    .dbline 194
+ 46D4            ;                       case COLLISION_AVOID_STATE_ROTATE90:
+ 46D4            ;                               if ( seconds == 0 ) {
+ 46D4  FC102B            ldd L152
+ 46D7  260E              bne L165
+ 46D9                    .dbline 194
+ 46D9                    .dbline 195
+ 46D9            ;                                       printf("Rotating 90 degrees to the right.\n");
+ 46D9  CC478C            ldd #L167
+ 46DC  164E22            jsr _printf
+ 46DF                    .dbline 196
+ 46DF            ;                                       stepper_turn_cw(STEPPER_STEPS_PER_QUARTER);
+ 46DF  CC0005            ldd #5
+ 46E2  1643CD            jsr _stepper_turn_cw
+ 46E5                    .dbline 197
+ 46E5  2006              bra L166
+ 46E7            L165:
+ 46E7                    .dbline 197
+ 46E7            ;                               } else {
+ 46E7                    .dbline 198
+ 46E7            ;                                       printf("Waiting another second.\n");
+ 46E7  CC4773            ldd #L168
+ 46EA  164E22            jsr _printf
+ 46ED                    .dbline 199
+ 46ED            ;                               }
+ 46ED            L166:
+ 46ED                    .dbline 201
+ 46ED            ;                               
+ 46ED            ;                               if ( ++seconds >= 2 ) {
+ 46ED  FC102B            ldd L152
+ 46F0  C30001            addd #1
+ 46F3  6C1C              std -4,x
+ 46F5  18051C102B        movw -4,x,L152
+ 46FA  EC1C              ldd -4,x
+ 46FC  8C0002            cpd #2
+ 46FF  2D41              blt L155
+ 4701                    .dbline 201
+ 4701                    .dbline 203
+ 4701            ;                                       // Go back into initial state and reset collision detection
+ 4701            ;                                       seconds = 0;
+ 4701  CC0000            ldd #0
+ 4704  7C102B            std L152
+ 4707                    .dbline 204
+ 4707            ;                                       state = COLLISION_AVOID_STATE_INITIAL;
+ 4707  CC0000            ldd #0
+ 470A  7C102D            std L153
+ 470D                    .dbline 205
+ 470D            ;                                       collision_detected = 0;
+ 470D  CC0000            ldd #0
+ 4710  7C1021            std _collision_detected
+ 4713                    .dbline 206
+ 4713            ;                                       direction = (direction + 1) % 4; // update the direction
+ 4713  FC1027            ldd _direction
+ 4716  C30001            addd #1
+ 4719  CD0004            ldy #4
+ 471C  B7D6              exg x,y
+ 471E  1815              idivs
+ 4720  B7D6              exg x,y
+ 4722  7C1027            std _direction
+ 4725                    .dbline 207
+ 4725            ;                                       motor_enable(); // We would start the forward motors here
+ 4725  1640AB            jsr _motor_enable
+ 4728                    .dbline 208
+ 4728            ;                               }
+ 4728                    .dbline 209
+ 4728            ;                               break;
+ 4728  2018              bra L155
+ 472A            L156:
+ 472A                    .dbline 211
+ 472A            ;                       default:
+ 472A            ;                               printf("Unknown collision state, return to initial.\n");
+ 472A  CC4746            ldd #L171
+ 472D  164E22            jsr _printf
+ 4730                    .dbline 212
+ 4730            ;                               seconds = 0;
+ 4730  CC0000            ldd #0
+ 4733  7C102B            std L152
+ 4736                    .dbline 213
+ 4736            ;                               state = COLLISION_AVOID_STATE_INITIAL;
+ 4736  CC0000            ldd #0
+ 4739  7C102D            std L153
+ 473C                    .dbline 214
+ 473C            ;                               collision_detected = 0;
+ 473C  CC0000            ldd #0
+ 473F  7C1021            std _collision_detected
+ 4742                    .dbline 215
+ 4742            ;               }
+ 4742                    .dbline 216
+ 4742            L154:
+ 4742                    .dbline 216
+ 4742                    .dbline 218
+ 4742            L155:
+ 4742                    .dbline -2
+ 4742                    .dbline 219
+ 4742            ;       } else {
+ 4742            ;               //printf("No collisions detected\n");
+ 4742            ;       }
+ 4742            ; }
+ 4742            L151:
+ 4742  B757              tfr x,s
+ 4744  30                pulx
+ 4745                    .dbline 0 ; func end
+ 4745  3D                rts
+ 4746                    .dbend
+ 4746            L171:
+ 4746  556E6B6E6F776E20636F6C6C6973696F  .byte 'U,'n,'k,'n,'o,'w,'n,32,'c,'o,'l,'l,'i,'s,'i,'o
+ 4756  6E2073746174652C2072657475726E20  .byte 'n,32,'s,'t,'a,'t,'e,44,32,'r,'e,'t,'u,'r,'n,32
+ 4766  746F20696E697469616C2E0A00        .byte 't,'o,32,'i,'n,'i,'t,'i,'a,'l,46,10,0
+ 4773            L168:
+ 4773  57616974696E6720616E6F7468657220  .byte 'W,'a,'i,'t,'i,'n,'g,32,'a,'n,'o,'t,'h,'e,'r,32
+ 4783  7365636F6E642E0A00        .byte 's,'e,'c,'o,'n,'d,46,10,0
+ 478C            L167:
+ 478C  526F746174696E672039302064656772  .byte 'R,'o,'t,'a,'t,'i,'n,'g,32,57,48,32,'d,'e,'g,'r
+ 479C  65657320746F20746865207269676874  .byte 'e,'e,'s,32,'t,'o,32,'t,'h,'e,32,'r,'i,'g,'h,'t
+ 47AC  2E0A00            .byte 46,10,0
+ 47AF            L161:
+ 47AF  57616974696E6720666F72206D6F746F  .byte 'W,'a,'i,'t,'i,'n,'g,32,'f,'o,'r,32,'m,'o,'t,'o
+ 47BF  727320746F2062652073746F70706564  .byte 'r,'s,32,'t,'o,32,'b,'e,32,'s,'t,'o,'p,'p,'e,'d
+ 47CF  0A00              .byte 10,0
+ 47D1            L159:
+ 47D1  0A0A436F6C6C6973696F6E207761726E  .byte 10,10,'C,'o,'l,'l,'i,'s,'i,'o,'n,32,'w,'a,'r,'n
+ 47E1  696E6721210A53746F7070696E67206D  .byte 'i,'n,'g,33,33,10,'S,'t,'o,'p,'p,'i,'n,'g,32,'m
+ 47F1  6F746F72732E0A00  .byte 'o,'t,'o,'r,'s,46,10,0
+ 47F9            L136:
+ 47F9  54656D70657261747572652069732025  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,32,'i,'s,32,37
+ 4809  6420460A00        .byte 'd,32,'F,10,0
+ 480E            L129:
+ 480E  5075736865643A2025630A00  .byte 'P,'u,'s,'h,'e,'d,58,32,37,'c,10,0
+ 481A            L126:
+ 481A  5370656564206973206174206D696E69  .byte 'S,'p,'e,'e,'d,32,'i,'s,32,'a,'t,32,'m,'i,'n,'i
+ 482A  6D756D2C2061742025642C2063616E6E  .byte 'm,'u,'m,44,32,'a,'t,32,37,'d,44,32,'c,'a,'n,'n
+ 483A  6F742064656372656173652E0A00      .byte 'o,'t,32,'d,'e,'c,'r,'e,'a,'s,'e,46,10,0
+ 4848            L125:
+ 4848  44656372656173696E67207370656564  .byte 'D,'e,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
+ 4858  20746F2025640A00  .byte 32,'t,'o,32,37,'d,10,0
+ 4860            L120:
+ 4860  5370656564206973206D617865642061  .byte 'S,'p,'e,'e,'d,32,'i,'s,32,'m,'a,'x,'e,'d,32,'a
+ 4870  742025642C2063616E6E6F7420696E63  .byte 't,32,37,'d,44,32,'c,'a,'n,'n,'o,'t,32,'i,'n,'c
+ 4880  72656173652E0A00  .byte 'r,'e,'a,'s,'e,46,10,0
+ 4888            L119:
+ 4888  496E6372656173696E67207370656564  .byte 'I,'n,'c,'r,'e,'a,'s,'i,'n,'g,32,'s,'p,'e,'e,'d
+ 4898  20746F2025640A00  .byte 32,'t,'o,32,37,'d,10,0
+ 48A0            L66:
+ 48A0  54656D70657261747572653A25644600  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,58,37,'d,'F,0
+ 48B0            L64:
+ 48B0  53706565643A20256400      .byte 'S,'p,'e,'e,'d,58,32,37,'d,0
+                        .module vectors_dp256_NoICE.c
+                        .area memory(abs)
+                        .org 0x3f8c
+ 3F8C            _interrupt_vectors::
+ 3F8C  F8CF              .word 63695
+ 3F8E  F8CF              .word 63695
+ 3F90  F8CF              .word 63695
+ 3F92  F8CF              .word 63695
+ 3F94  F8CF              .word 63695
+ 3F96  F8CF              .word 63695
+ 3F98  F8CF              .word 63695
+ 3F9A  F8CF              .word 63695
+ 3F9C  F8CF              .word 63695
+ 3F9E  F8CF              .word 63695
+ 3FA0  F8CF              .word 63695
+ 3FA2  F8CF              .word 63695
+ 3FA4  F8CF              .word 63695
+ 3FA6  F8CF              .word 63695
+ 3FA8  F8CF              .word 63695
+ 3FAA  F8CF              .word 63695
+ 3FAC  F8CF              .word 63695
+ 3FAE  F8CF              .word 63695
+ 3FB0  F8CF              .word 63695
+ 3FB2  F8CF              .word 63695
+ 3FB4  F8CF              .word 63695
+ 3FB6  F8CF              .word 63695
+ 3FB8  F8CF              .word 63695
+ 3FBA  F8CF              .word 63695
+ 3FBC  F8CF              .word 63695
+ 3FBE  F8CF              .word 63695
+ 3FC0  F8CF              .word 63695
+ 3FC2  F8CF              .word 63695
+ 3FC4  F8CF              .word 63695
+ 3FC6  F8CF              .word 63695
+ 3FC8  F8CF              .word 63695
+ 3FCA  F8CF              .word 63695
+ 3FCC  41DF              .word _keyboard_isr
+ 3FCE  F8CF              .word 63695
+ 3FD0  F8CF              .word 63695
+ 3FD2  43B6              .word _temperature_isr
+ 3FD4  F8CF              .word 63695
+ 3FD6  F8CF              .word 63695
+ 3FD8  F8CF              .word 63695
+ 3FDA  4150              .word _motor_paca_isr
+ 3FDC  F8CF              .word 63695
+ 3FDE  F8CF              .word 63695
+ 3FE0  F8CF              .word 63695
+ 3FE2  F8CF              .word 63695
+ 3FE4  F8CF              .word 63695
+ 3FE6  F8CF              .word 63695
+ 3FE8  F8CF              .word 63695
+ 3FEA  F8CF              .word 63695
+ 3FEC  F8CF              .word 63695
+ 3FEE  F8CF              .word 63695
+ 3FF0  4168              .word _rti_isr
+ 3FF2  F8CF              .word 63695
+ 3FF4  F8C7              .word 63687
+ 3FF6  F8C3              .word 63683
+ 3FF8  F8CB              .word 63691
+ 3FFA  F805              .word 63493
+ 3FFC  F809              .word 63497
+ 3FFE  4000              .word __start
+ 4000                    .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\vectors_dp256_NoICE.c
+ 4000                    .dbsym e interrupt_vectors _interrupt_vectors A[116:58]pfV
+                        .area data
+--- 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART4~1\vectors_dp256_NoICE.c
+ 0000            REGBS = $0000 ; DP256 register bank base address
+ 0000            PORTA = REGBS+0 ;port A = Address lines A8 A15
+ 0001            PORTB = REGBS+1 ;port B = Address lines A0 A7
+ 0002            DDRA = REGBS+2 ;port A direction register
+ 0003            DDRB = REGBS+3 ;port A direction register
+ 0008            PORTE = REGBS+8 ;port E = mode,IRQandcontrolsignals
+ 0009            DDRE = REGBS+9 ;port E direction register
+ 000A            PEAR = REGBS+$A ;port E assignments
+ 000B            MODE = REGBS+$B ;Mode register
+ 000C            PUCR = REGBS+$C ;port pull-up control register
+ 000D            RDRIV = REGBS+$D ;port reduced drive control register
+ 000E            EBICTL = REGBS+$E ;E stretch control
+--- 0000           
+ 0010            INITRM = REGBS+$10 ;Ram location register
+ 0011            INITRG = REGBS+$11 ;Register location register
+ 0012            INITEE = REGBS+$12 ;EEprom location register
+ 0013            MISC = REGBS+$13 ;MiscellaneoMapping control
+ 0014            MTST0 = REGBS+$14 ; RESERVED
+ 0015            ITCR = REGBS+$15 ;Interrupt test control register
+ 0016            ITEST = REGBS+$16 ;Interrupt test register
+ 0017            MTST1 = REGBS+$17 ; Reserved
+--- 0000           
+ 001A            PARTIDH = REGBS+$1A ;Part ID high
+ 001B            PARTIDL = REGBS+$1B ;Part ID low
+ 001C            MEMSIZ0 = REGBS+$1C ;memory size
+ 001D            MEMSIZ1 = REGBS+$1D ;memory size
+ 001E            INTCR = REGBS+$1E ;interrupt control register
+ 001F            HPRIO = REGBS+$1F ;high priority reg
+--- 0000           
+ 0028            BKPCT0 = REGBS+$28 ;Break control register
+ 0029            BKPCT1 = REGBS+$29 ;Break control register
+ 002A            BKP0X = REGBS+$2A ; Break 0 index register
+ 002B            BKP0H = REGBS+$2B ; Break 0 pointer high
+ 002C            BRP0L = REGBS+$2C ; Break 0 pointer low
+ 002D            BKP1X = REGBS+$2D ; Break 1 index register
+ 002E            BKP1H = REGBS+$2E ; Break 1 pointer high
+ 002F            BRP1L = REGBS+$2F ; Break 1 pointer low
+ 0030            PPAGE = REGBS+$30 ;Program Page register
+--- 0000           
+ 0032            PORTK = REGBS+$32 ;Port K data
+ 0033            DDRK = REGBS+$33 ;Port K direction
+ 0034            SYNR = REGBS+$34 ; Synthesizer / multiplier register
+ 0035            REFDV = REGBS+$35 ; Reference divider register
+ 0036            CTFLG = REGBS+$36 ; RESERVED
+ 0037            CRGFLG = REGBS+$37 ; PLL flags register
+ 0038            CRGINT = REGBS+$38 ; PLL interrupt register
+ 0039            CLKSEL = REGBS+$39 ; Clock select register
+ 003A            PLLCTL = REGBS+$3A ; PLL control register
+ 003B            RTICTL = REGBS+$3B ;Real time interrupt control
+ 003C            COPCTL = REGBS+$3C ;Watchdog control
+ 003D            FORBYP = REGBS+$3D ;
+ 003E            CTCTL = REGBS+$3E ;
+ 003F            ARMCOP = REGBS+$3F ;COP reset register
+--- 0000           
+ 0040            TIOS = REGBS+$40 ;timer input/output select
+ 0041            CFORC = REGBS+$41 ;timer compare force
+ 0042            OC7M = REGBS+$42 ;timer output compare 7 mask
+ 0043            OC7D = REGBS+$43 ;timer output compare 7 data
+ 0044            TCNT = REGBS+$44 ;timer counter register hi
+ 0045            *TCNT = REGBS+$45 ;timer counter register lo
+ 0046            TSCR = REGBS+$46 ;timer system control register
+ 0047            TTOV = REGBS+$47 ;reserved
+ 0048            TCTL1 = REGBS+$48 ;timer control register 1
+ 0049            TCTL2 = REGBS+$49 ;timer control register 2
+ 004A            TCTL3 = REGBS+$4A ;timer control register 3
+ 004B            TCTL4 = REGBS+$4B ;timer control register 4
+ 004C            TMSK1 = REGBS+$4C ;timer interrupt mask 1
+ 004D            TMSK2 = REGBS+$4D ;timer interrupt mask 2
+ 004E            TFLG1 = REGBS+$4E ;timer flags 1
+ 004F            TFLG2 = REGBS+$4F ;timer flags 2
+ 0050            TC0 = REGBS+$50 ;timer capture/comparregister 0
+ 0051            *TC0 = REGBS+$51 ;
+ 0052            TC1 = REGBS+$52 ;timer capture/comparregister 1
+ 0053            *TC1 = REGBS+$53 ;
+ 0054            TC2 = REGBS+$54 ;timer capture/comparregister 2
+ 0055            *TC2 = REGBS+$55 ;
+ 0056            TC3 = REGBS+$56 ;timer capture/comparregister 3
+ 0057            *TC3 = REGBS+$57 ;
+ 0058            TC4 = REGBS+$58 ;timer capture/comparregister 4
+ 0059            *TC4 = REGBS+$59 ;
+ 005A            TC5 = REGBS+$5A ;timer capture/comparregister 5
+ 005B            *TC5 = REGBS+$5B ;
+ 005C            TC6 = REGBS+$5C ;timer capture/comparregister 6
+ 005D            *TC6 = REGBS+$5D ;
+ 005E            TC7 = REGBS+$5E ;timer capture/comparregister 7
+ 005F            *TC7 = REGBS+$5F ;
+ 0060            PACTL = REGBS+$60 ;pulse accumulator controls
+ 0061            PAFLG = REGBS+$61 ;pulse accumulator flags
+ 0062            PACN3 = REGBS+$62 ;pulse accumulator counter 3
+ 0063            PACN2 = REGBS+$63 ;pulse accumulator counter 2
+ 0064            PACN1 = REGBS+$64 ;pulse accumulator counter 1
+ 0065            PACN0 = REGBS+$65 ;pulse accumulator counter 0
+ 0066            MCCTL = REGBS+$66 ;Modulus down conunter control
+ 0067            MCFLG = REGBS+$67 ;down counter flags
+ 0068            ICPAR = REGBS+$68 ;Input pulse accumulatocontrol
+ 0069            DLYCT = REGBS+$69 ;Delay count to down counter
+ 006A            ICOVW = REGBS+$6A ;Input control overwrite register
+ 006B            ICSYS = REGBS+$6B ;Input control system control
+--- 0000           
+ 006D            TIMTST = REGBS+$6D ;timer test register
+--- 0000           
+ 0070            PBCTL = REGBS+$70 ; Pulse accumulatoB control
+ 0071            PBFLG = REGBS+$71 ; Pulse accumulatoB flags
+ 0072            PA3H = REGBS+$72 ; Pulse Accumulatoholding regist3
+ 0073            PA2H = REGBS+$73 ; Pulse Accumulatoholding regist2
+ 0074            PA1H = REGBS+$74 ; Pulse Accumulatoholding regist1
+ 0075            PA0H = REGBS+$75 ; Pulse Accumulatoholding regist0
+ 0076            MCCNT = REGBS+$76 ; Modulus down counter register
+ 0077            *MCCNTL = REGBS+$77 ; low byte
+ 0078            TCOH = REGBS+$78 ; Capture 0 holding register
+ 007A            TC1H = REGBS+$7A ; Capture 1 holding register
+ 007C            TC2H = REGBS+$7C ; Capture 2 holding register
+ 007E            TC3H = REGBS+$7E ; Capture 3 holding register
+--- 0000           
+ 0080            ATD0CTL0 = REGBS+$80 ;ADC control 0 (reserved)
+ 0081            ATD0CTL1 = REGBS+$81 ;ADC control 1 (reserved)
+ 0082            ATD0CTL2 = REGBS+$82 ;ADC control 2
+ 0083            ATD0CTL3 = REGBS+$83 ;ADC control 3
+ 0084            ATD0CTL4 = REGBS+$84 ;ADC control 4
+ 0085            ATD0CTL5 = REGBS+$85 ;ADC control 5
+ 0086            ATD0STAT = REGBS+$86 ;ADC status register hi
+ 0087            *ATD0STAT = REGBS+$87 ;ADC status register lo
+ 0088            ATD0TEST = REGBS+$88 ;ADC test (reserved)
+ 0089            *ATD0TEST = REGBS+$89 ;
+--- 0000           
+ 008D            ATD0DIEN = REGBS+$8D ;
+--- 0000           
+ 008F            PORTAD = REGBS+$8F ;port ADC = input only
+ 0090            ADR00H = REGBS+$90 ;ADC result 0 register
+ 0092            ADR01H = REGBS+$92 ;ADC result 1 register
+ 0094            ADR02H = REGBS+$94 ;ADC result 2 register
+ 0096            ADR03H = REGBS+$96 ;ADC result 3 register
+ 0098            ADR04H = REGBS+$98 ;ADC result 4 register
+ 009A            ADR05H = REGBS+$9A ;ADC result 5 register
+ 009C            ADR06H = REGBS+$9C ;ADC result 6 register
+ 009E            ADR07H = REGBS+$9E ;ADC result 7 register
+--- 0000           
+ 00A0            PWME = REGBS+$A0 ;PWM enable
+ 00A1            PWMPOL = REGBS+$A1 ;PWM polarity
+ 00A2            PWMCLK = REGBS+$A2 ;PWM clock select register
+ 00A3            PWMPRCLK = REGBS+$A3 ;PWM Prescale clock select register
+ 00A4            PWMCAE = REGBS+$A4 ;PWM center align select register
+ 00A5            PWMCTL = REGBS+$A5 ;PWM control register
+ 00A6            PWMTST = REGBS+$A6 ;reserved
+ 00A7            PWMPRSC = REGBS+$A7 ;reserved
+ 00A8            PWMSCLA = REGBS+$A8 ;PWM Scale A
+ 00A9            PWMSCLB = REGBS+$A9 ;PWM scale B
+ 00AA            PWMSCNTA = REGBS+$AA ;reserved
+ 00AB            PWMSCNTB = REGBS+$AB ;reserved
+ 00AC            PWMCNT0 = REGBS+$AC ;PWM channel 0 counter
+ 00AD            PWMCNT1 = REGBS+$AD ;PWM channel 1 counter
+ 00AE            PWMCNT2 = REGBS+$AE ;PWM channel 2 counter
+ 00AF            PWMCNT3 = REGBS+$AF ;PWM channel 3 counter
+ 00B0            PWMCNT4 = REGBS+$B0 ;PWM channel 4 counter
+ 00B1            PWMCNT5 = REGBS+$B1 ;PWM channel 5 counter
+ 00B2            PWMCNT6 = REGBS+$B2 ;PWM channel 6 counter
+ 00B3            PWMCNT7 = REGBS+$B3 ;PWM channel 7 counter
+ 00B4            PWMPER0 = REGBS+$B4 ;PWM channel 0 period
+ 00B5            PWMPER1 = REGBS+$B5 ;PWM channel 1 period
+ 00B6            PWMPER2 = REGBS+$B6 ;PWM channel 2 period
+ 00B7            PWMPER3 = REGBS+$B7 ;PWM channel 3 period
+ 00B8            PWMPER4 = REGBS+$B8 ;PWM channel 4 period
+ 00B9            PWMPER5 = REGBS+$B9 ;PWM channel 5 period
+ 00BA            PWMPER6 = REGBS+$BA ;PWM channel 6 period
+ 00BB            PWMPER7 = REGBS+$BB ;PWM channel 7 period
+ 00BC            PWMDTY0 = REGBS+$BC ;PWM channel 0 duty cycle
+ 00BD            PWMDTY1 = REGBS+$BD ;PWM channel 1 duty cycle
+ 00BE            PWMDTY2 = REGBS+$BE ;PWM channel 2 duty cycle
+ 00BF            PWMDTY3 = REGBS+$BF ;PWM channel 3 duty cycle
+ 00C0            PWMDTY4 = REGBS+$C0 ;PWM channel 0 duty cycle
+ 00C1            PWMDTY5 = REGBS+$C1 ;PWM channel 1 duty cycle
+ 00C2            PWMDTY6 = REGBS+$C2 ;PWM channel 2 duty cycle
+ 00C3            PWMDTY7 = REGBS+$C3 ;PWM channel 3 duty cycle
+ 00C4            PWMSDN = REGBS+$C4 ;PWM shutdown register
+--- 0000           
+ 00C8            SC0BDH = REGBS+$C8 ;sci 0 baud reg hi byte
+ 00C9            SC0BDL = REGBS+$C9 ;sci 0 baud reg lo byte
+ 00CA            SC0CR1 = REGBS+$CA ;sci 0 control1 reg
+ 00CB            SC0CR2 = REGBS+$CB ;sci 0 control2 reg
+ 00CC            SC0SR1 = REGBS+$CC ;sci 0 status reg 1
+ 00CD            SC0SR2 = REGBS+$CD ;sci 0 status reg 2
+ 00CE            SC0DRH = REGBS+$CE ;sci 0 data reg hi
+ 00CF            SC0DRL = REGBS+$CF ;sci 0 data reg lo
+ 00D0            SC1BDH = REGBS+$D0 ;sci 1 baud reg hi byte
+ 00D1            SC1BDL = REGBS+$D1 ;sci 1 baud reg lo byte
+ 00D2            SC1CR1 = REGBS+$D2 ;sci 1 control1 reg
+ 00D3            SC1CR2 = REGBS+$D3 ;sci 1 control2 reg
+ 00D4            SC1SR1 = REGBS+$D4 ;sci 1 status reg 1
+ 00D5            SC1SR2 = REGBS+$D5 ;sci 1 status reg 2
+ 00D6            SC1DRH = REGBS+$D6 ;sci 1 data reg hi
+ 00D7            SC1DRL = REGBS+$D7 ;sci 1 data reg lo
+ 00D8            SPI0CR1 = REGBS+$D8 ;spi 0 control1 reg
+ 00D9            SPI0CR2 = REGBS+$D9 ;spi 0 control2 reg
+ 00DA            SPI0BR = REGBS+$DA ;spi 0 baud reg
+ 00DB            SPI0SR = REGBS+$DB ;spi 0 status reg hi
+--- 0000           
+ 00DD            SP0DR = REGBS+$DD ;spi 0 data reg
+--- 0000           
+ 00E0            IBAD = REGBS+$E0 ;I2C Bus address register
+ 00E1            IBFD = REGBS+$E1 ;I2C Bus fr=ency divider
+ 00E2            IBCR = REGBS+$E2 ;I2C Bus control register
+ 00E3            IBSR = REGBS+$E3 ;I2C Bus status register
+ 00E4            IBDR = REGBS+$E4 ;I2C Bus message data register
+--- 0000           
+ 00E8            DLCBCR1 = REGBS+$E8 ;BDLC Control regsiter 1
+ 00E9            DLCBSVR = REGBS+$E9 ;BDLC State vector register
+ 00EA            DLCBCR2 = REGBS+$EA ;BDLC Control register 2
+ 00EB            DLCBDR = REGBS+$EB ;BDLC Data register
+ 00EC            DLCBARD = REGBS+$EC ;BDLC Analog delay register
+ 00ED            DLCBRSR = REGBS+$ED ;BDLC Rate select register
+ 00EE            DLCSCR = REGBS+$EE ;BDLC Control register
+ 00EF            DLCBSTAT = REGBS+$EF ;BDLC Status register
+ 00F0            SPI1CR1 = REGBS+$F0 ;spi 1 control1 reg
+ 00F1            SPI1CR2 = REGBS+$F1 ;spi 1 control2 reg
+ 00F2            SPI1BR = REGBS+$F2 ;spi 1 baud reg
+ 00F3            SPI1SR = REGBS+$F3 ;spi 1 status reg hi
+--- 0000           
+ 00F5            SP1DR = REGBS+$F5 ;spi 1 data reg
+--- 0000           
+ 00F8            SPI2CR1 = REGBS+$F8 ;spi 2 control1 reg
+ 00F9            SPI2CR2 = REGBS+$F9 ;spi 2 control2 reg
+ 00FA            SPI2BR = REGBS+$FA ;spi 2 baud reg
+ 00FB            SPI2SR = REGBS+$FB ;spi 2 status reg hi
+--- 0000           
+ 00FD            SP2DR = REGBS+$FD ;spi 2 data reg
+--- 0000           
+ 0100            FCLKDIV = REGBS+$100 ;FLASH clock divider
+ 0101            FSEC = REGBS+$101 ;FLASH security register
+--- 0000           
+ 0103            FCNFG = REGBS+$103 ;FLASH configuration register
+ 0104            FPROT = REGBS+$104 ;FLASH protection register
+ 0105            FSTAT = REGBS+$105 ;FLASH status register
+ 0106            FCMD = REGBS+$106 ;FLASH command register
+--- 0000           
+ 0110            ECLKDIV = REGBS+$110 ;EEPROM clock divider
+--- 0000           
+ 0113            ECNFG = REGBS+$113 ;EEPROM configuration register
+ 0114            EPROT = REGBS+$114 ;EEPROM protection register
+ 0115            ESTAT = REGBS+$115 ;EEPROM status register
+ 0116            ECMD = REGBS+$116 ;EEPROM command register
+--- 0000           
+ 0120            ATD1CTL0 = REGBS+$120 ;ADC1 control 0 (reserved)
+ 0121            ATD1CTL1 = REGBS+$121 ;ADC1 control 1 (reserved)
+ 0122            ATD1CTL2 = REGBS+$122 ;ADC1 control 2
+ 0123            ATD1CTL3 = REGBS+$123 ;ADC1 control 3
+ 0124            ATD1CTL4 = REGBS+$124 ;ADC1 control 4
+ 0125            ATD1CTL5 = REGBS+$125 ;ADC1 control 5
+ 0126            ATD1STAT = REGBS+$126 ;ADC1 status register hi
+ 0127            *ATD1STAT = REGBS+$127 ;ADC1 status register lo
+ 0128            ATD1TEST = REGBS+$128 ;ADC1 test (reserved)
+ 0129            *ATD1TEST = REGBS+$129 ;
+--- 0000           
+ 012D            ATDDIEN = REGBS+$12D ;ADC1 INPUT ENABLE REGISTER
+--- 0000           
+ 012F            PORTAD1 = REGBS+$12F ;port ADC1 = input only
+ 0130            ADR10H = REGBS+$130 ;ADC1 result 0 register
+ 0132            ADR11H = REGBS+$132 ;ADC1 result 1 register
+ 0134            ADR12H = REGBS+$134 ;ADC1 result 2 register
+ 0136            ADR13H = REGBS+$136 ;ADC1 result 3 register
+ 0138            ADR14H = REGBS+$138 ;ADC1 result 4 register
+ 013A            ADR15H = REGBS+$13A ;ADC1 result 5 register
+ 013C            ADR16H = REGBS+$13C ;ADC1 result 6 register
+ 013E            ADR17H = REGBS+$13E ;ADC1 result 7 register
+ 0140            CAN0CTL0 = REGBS+$140 ;CAN0 control register 0
+ 0141            CAN0CTL1 = REGBS+$141 ;CAN0 control register 1
+ 0142            CAN0BTR0 = REGBS+$142 ;CAN0 bus timing register 0
+ 0143            CAN0BTR1 = REGBS+$143 ;CAN0 bus timing register 1
+ 0144            CAN0RFLG = REGBS+$144 ;CAN0 receiver flags
+ 0145            CAN0RIER = REGBS+$145 ;CAN0 receiver interrupt enables
+ 0146            CAN0TFLG = REGBS+$146 ;CAN0 transmit flags
+ 0147            CAN0TIER = REGBS+$147 ;CAN0 transmit interrupt enables
+ 0148            CAN0TARQ = REGBS+$148 ;CAN0 transmit message abort control
+ 0149            CAN0TAAK = REGBS+$149 ;CAN0 transmit message abort status
+ 014A            CAN0TBEL = REGBS+$14A ;CAN0 transmit buffer select
+ 014B            CAN0IDAC = REGBS+$14B ;CAN0 identfier acceptancecontrol
+--- 0000           
+ 014E            CAN0RERR = REGBS+$14E ;CAN0 Receive error counter
+ 014F            CAN0TERR = REGBS+$14F ;CAN0 Transmit error counter
+ 0150            CAN0IDA0 = REGBS+$150 ;CAN0 Identifier acceptanceregister 0
+ 0151            CAN0IDA1 = REGBS+$151 ;CAN0 Identifier acceptanceregister 1
+ 0152            CAN0IDA2 = REGBS+$152 ;CAN0 Identifier acceptanceregister 2
+ 0153            CAN0IDA3 = REGBS+$153 ;CAN0 Identifier acceptanceregister 3
+ 0154            CAN0IDM0 = REGBS+$154 ;CAN0 Identifier mask register 0
+ 0155            CAN0IDM1 = REGBS+$155 ;CAN0 Identifier mask register 1
+ 0156            CAN0IDM2 = REGBS+$156 ;CAN0 Identifier mask register 2
+ 0157            CAN0IDM3 = REGBS+$157 ;CAN0 Identifier mask register 3
+ 0158            CAN0IDA4 = REGBS+$158 ;CAN0 Identifier acceptanceregister 4
+ 0159            CAN0IDA5 = REGBS+$159 ;CAN0 Identifier acceptanceregister 5
+ 015A            CAN0IDA6 = REGBS+$15A ;CAN0 Identifier acceptanceregister 6
+ 015B            CAN0IDA7 = REGBS+$15B ;CAN0 Identifier acceptanceregister 7
+ 015C            CAN0IDM4 = REGBS+$15C ;CAN0 Identifier mask register 4
+ 015D            CAN0IDM5 = REGBS+$15D ;CAN0 Identifier mask register 5
+ 015E            CAN0IDM6 = REGBS+$15E ;CAN0 Identifier mask register 6
+ 015F            CAN0IDM7 = REGBS+$15F ;CAN0 Identifier mask register 7
+ 0160            CAN0RXFG = REGBS+$160 ;CAN0 RX foregroundbuffer thru +$16F
+ 0170            CAN0TXFG = REGBS+$170 ;CAN0 TX foregroundbuffer thru +$17F
+--- 0000           
+ 0180            CAN1CTL0 = REGBS+$180 ;CAN1 control register 0
+ 0181            CAN1CTL1 = REGBS+$181 ;CAN1 control register 1
+ 0182            CAN1BTR0 = REGBS+$182 ;CAN1 bus timing register 0
+ 0183            CAN1BTR1 = REGBS+$183 ;CAN1 bus timing register 1
+ 0184            CAN1RFLG = REGBS+$184 ;CAN1 receiver flags
+ 0185            CAN1RIER = REGBS+$185 ;CAN1 receiver interrupt enables
+ 0186            CAN1TFLG = REGBS+$186 ;CAN1 transmit flags
+ 0187            CAN1TIER = REGBS+$187 ;CAN1 transmit interrupt enables
+ 0188            CAN1TARQ = REGBS+$188 ;CAN1 transmit message abort control
+ 0189            CAN1TAAK = REGBS+$189 ;CAN1 transmit message abort status
+ 018A            CAN1TBEL = REGBS+$18A ;CAN1 transmit buffer select
+ 018B            CAN1IDAC = REGBS+$18B ;CAN1 identfier acceptancecontrol
+--- 0000           
+ 018E            CAN1RERR = REGBS+$18E ;CAN1 Receive error counter
+ 018F            CAN1TERR = REGBS+$18F ;CAN1 Transmit error counter
+ 0190            CAN1IDA0 = REGBS+$190 ;CAN1 Identifier acceptanceregister 0
+ 0191            CAN1IDA1 = REGBS+$191 ;CAN1 Identifier acceptanceregister 1
+ 0192            CAN1IDA2 = REGBS+$192 ;CAN1 Identifier acceptanceregister 2
+ 0193            CAN1IDA3 = REGBS+$193 ;CAN1 Identifier acceptanceregister 3
+ 0194            CAN1IDM0 = REGBS+$194 ;CAN1 Identifier mask register 0
+ 0195            CAN1IDM1 = REGBS+$195 ;CAN1 Identifier mask register 1
+ 0196            CAN1IDM2 = REGBS+$196 ;CAN1 Identifier mask register 2
+ 0197            CAN1IDM3 = REGBS+$197 ;CAN1 Identifier mask register 3
+ 0198            CAN1IDA4 = REGBS+$198 ;CAN1 Identifier acceptanceregister 4
+ 0199            CAN1IDA5 = REGBS+$199 ;CAN1 Identifier acceptanceregister 5
+ 019A            CAN1IDA6 = REGBS+$19A ;CAN1 Identifier acceptanceregister 6
+ 019B            CAN1IDA7 = REGBS+$19B ;CAN1 Identifier acceptanceregister 7
+ 019C            CAN1IDM4 = REGBS+$19C ;CAN1 Identifier mask register 4
+ 019D            CAN1IDM5 = REGBS+$19D ;CAN1 Identifier mask register 5
+ 019E            CAN1IDM6 = REGBS+$19E ;CAN1 Identifier mask register 6
+ 019F            CAN1IDM7 = REGBS+$19F ;CAN1 Identifier mask register 7
+ 01A0            CAN1RXFG = REGBS+$1A0 ;CAN1 RX foregroundbuffer thru +$1AF
+ 01B0            CAN1TXFG = REGBS+$1B0 ;CAN1 TX foregroundbuffer thru +$1BF
+--- 0000           
+ 01C0            CAN2CTL0 = REGBS+$1C0 ;CAN2 control register 0
+ 01C1            CAN2CTL1 = REGBS+$1C1 ;CAN2 control register 1
+ 01C2            CAN2BTR0 = REGBS+$1C2 ;CAN2 bus timing register 0
+ 01C3            CAN2BTR1 = REGBS+$1C3 ;CAN2 bus timing register 1
+ 01C4            CAN2RFLG = REGBS+$1C4 ;CAN2 receiver flags
+ 01C5            CAN2RIER = REGBS+$1C5 ;CAN2 receiver interrupt enables
+ 01C6            CAN2TFLG = REGBS+$1C6 ;CAN2 transmit flags
+ 01C7            CAN2TIER = REGBS+$1C7 ;CAN2 transmit interrupt enables
+ 01C8            CAN2TARQ = REGBS+$1C8 ;CAN2 transmit message abort control
+ 01C9            CAN2TAAK = REGBS+$1C9 ;CAN2 transmit message abort status
+ 01CA            CAN2TBEL = REGBS+$1CA ;CAN2 transmit buffer select
+ 01CB            CAN2IDAC = REGBS+$1CB ;CAN2 identfier acceptancecontrol
+--- 0000           
+ 01CE            CAN2RERR = REGBS+$1CE ;CAN2 Receive error counter
+ 01CF            CAN2TERR = REGBS+$1CF ;CAN2 Transmit error counter
+ 01D0            CAN2IDA0 = REGBS+$1D0 ;CAN2 Identifier acceptanceregister 0
+ 01D1            CAN2IDA1 = REGBS+$1D1 ;CAN2 Identifier acceptanceregister 1
+ 01D2            CAN2IDA2 = REGBS+$1D2 ;CAN2 Identifier acceptanceregister 2
+ 01D3            CAN2IDA3 = REGBS+$1D3 ;CAN2 Identifier acceptanceregister 3
+ 01D4            CAN2IDM0 = REGBS+$1D4 ;CAN2 Identifier mask register 0
+ 01D5            CAN2IDM1 = REGBS+$1D5 ;CAN2 Identifier mask register 1
+ 01D6            CAN2IDM2 = REGBS+$1D6 ;CAN2 Identifier mask register 2
+ 01D7            CAN2IDM3 = REGBS+$1D7 ;CAN2 Identifier mask register 3
+ 01D8            CAN2IDA4 = REGBS+$1D8 ;CAN2 Identifier acceptanceregister 4
+ 01D9            CAN2IDA5 = REGBS+$1D9 ;CAN2 Identifier acceptanceregister 5
+ 01DA            CAN2IDA6 = REGBS+$1DA ;CAN2 Identifier acceptanceregister 6
+ 01DB            CAN2IDA7 = REGBS+$1DB ;CAN2 Identifier acceptanceregister 7
+ 01DC            CAN2IDM4 = REGBS+$1DC ;CAN2 Identifier mask register 4
+ 01DD            CAN2IDM5 = REGBS+$1DD ;CAN2 Identifier mask register 5
+ 01DE            CAN2IDM6 = REGBS+$1DE ;CAN2 Identifier mask register 6
+ 01DF            CAN2IDM7 = REGBS+$1DF ;CAN2 Identifier mask register 7
+ 01E0            CAN2RXFG = REGBS+$1E0 ;CAN2 RX foregroundbuffer thru +$1EF
+ 01F0            CAN2TXFG = REGBS+$1F0 ;CAN2 TX foregroundbuffer thru +$1FF
+--- 0000           
+ 0200            CAN3CTL0 = REGBS+$200 ;CAN3 control register 0
+ 0201            CAN3CTL1 = REGBS+$201 ;CAN3 control register 1
+ 0202            CAN3BTR0 = REGBS+$202 ;CAN3 bus timing register 0
+ 0203            CAN3BTR1 = REGBS+$203 ;CAN3 bus timing register 1
+ 0204            CAN3RFLG = REGBS+$204 ;CAN3 receiver flags
+ 0205            CAN3RIER = REGBS+$205 ;CAN3 receiver interrupt enables
+ 0206            CAN3TFLG = REGBS+$206 ;CAN3 transmit flags
+ 0207            CAN3TIER = REGBS+$207 ;CAN3 transmit interrupt enables
+ 0208            CAN3TARQ = REGBS+$208 ;CAN3 transmit message abort control
+ 0209            CAN3TAAK = REGBS+$209 ;CAN3 transmit message abort status
+ 020A            CAN3TBEL = REGBS+$20A ;CAN3 transmit buffer select
+ 020B            CAN3IDAC = REGBS+$20B ;CAN3 identfier acceptancecontrol
+--- 0000           
+ 020E            CAN3RERR = REGBS+$20E ;CAN3 Receive error counter
+ 020F            CAN3TERR = REGBS+$20F ;CAN3 Transmit error counter
+ 0210            CAN3IDA0 = REGBS+$210 ;CAN3 Identifier acceptanceregister 0
+ 0211            CAN3IDA1 = REGBS+$211 ;CAN3 Identifier acceptanceregister 1
+ 0212            CAN3IDA2 = REGBS+$212 ;CAN3 Identifier acceptanceregister 2
+ 0213            CAN3IDA3 = REGBS+$213 ;CAN3 Identifier acceptanceregister 3
+ 0214            CAN3IDM0 = REGBS+$214 ;CAN3 Identifier mask register 0
+ 0215            CAN3IDM1 = REGBS+$215 ;CAN3 Identifier mask register 1
+ 0216            CAN3IDM2 = REGBS+$216 ;CAN3 Identifier mask register 2
+ 0217            CAN3IDM3 = REGBS+$217 ;CAN3 Identifier mask register 3
+ 0218            CAN3IDA4 = REGBS+$218 ;CAN3 Identifier acceptanceregister 4
+ 0219            CAN3IDA5 = REGBS+$219 ;CAN3 Identifier acceptanceregister 5
+ 021A            CAN3IDA6 = REGBS+$21A ;CAN3 Identifier acceptanceregister 6
+ 021B            CAN3IDA7 = REGBS+$21B ;CAN3 Identifier acceptanceregister 7
+ 021C            CAN3IDM4 = REGBS+$21C ;CAN3 Identifier mask register 4
+ 021D            CAN3IDM5 = REGBS+$21D ;CAN3 Identifier mask register 5
+ 021E            CAN3IDM6 = REGBS+$21E ;CAN3 Identifier mask register 6
+ 021F            CAN3IDM7 = REGBS+$21F ;CAN3 Identifier mask register 7
+ 0220            CAN3RXFG = REGBS+$220 ;CAN3 RX foregroundbuffer thru +$22F
+ 0230            CAN3TXFG = REGBS+$230 ;CAN3 TX foregroundbuffer thru +$23F
+--- 0000           
+ 0240            PTT = REGBS+$240 ;portT data register
+ 0241            PTIT = REGBS+$241 ;portT input register
+ 0242            DDRT = REGBS+$242 ;portT direction register
+ 0243            RDRT = REGBS+$243 ;portT reduced drive register
+ 0244            PERT = REGBS+$244 ;portT pull device enable
+ 0245            PPST = REGBS+$245 ;portT pull polarity select
+--- 0000           
+ 0248            PTS = REGBS+$248 ;portS data register
+ 0249            PTIS = REGBS+$249 ;portS input register
+ 024A            DDRS = REGBS+$24A ;portS direction register
+ 024B            RDRS = REGBS+$24B ;portS reduced drive register
+ 024C            PERS = REGBS+$24C ;portS pull device enable
+ 024D            PPSS = REGBS+$24D ;portS pull polarity select
+ 024E            WOMS = REGBS+$24E ;portS Wired Or mode register
+--- 0000           
+ 0250            PTM = REGBS+$250 ;portM data register
+ 0251            PTIM = REGBS+$251 ;portM input register
+ 0252            DDRM = REGBS+$252 ;portM direction register
+ 0253            RDRM = REGBS+$253 ;portM reduced drive register
+ 0254            PERM = REGBS+$254 ;portM pull device enable
+ 0255            PPSM = REGBS+$255 ;portM pull polarity select
+ 0256            WOMM = REGBS+$256 ;portM Wired Or mode register
+ 0257            MODRR = REGBS+$257 ;portM Module routing register
+ 0258            PTP = REGBS+$258 ;portP data register
+ 0259            PTIP = REGBS+$259 ;portP input register
+ 025A            DDRP = REGBS+$25A ;portP direction register
+ 025B            RDRP = REGBS+$25B ;portP reduced drive register
+ 025C            PERP = REGBS+$25C ;portP pull device enable
+ 025D            PPSP = REGBS+$25D ;portP pull polarity select
+ 025E            PIEP = REGBS+$25E ;portP interrupt enable register
+ 025F            PIFP = REGBS+$25F ;portP interrupt flag register
+ 0260            PTH = REGBS+$260 ;portH data register
+ 0261            PTIH = REGBS+$261 ;portH input register
+ 0262            DDRH = REGBS+$262 ;portH direction register
+ 0263            RDRH = REGBS+$263 ;portH reduced drive register
+ 0264            PERH = REGBS+$264 ;portH pull device enable
+ 0265            PPSH = REGBS+$265 ;portH pull polarity select
+ 0266            PIEH = REGBS+$266 ;portH interrupt enable register
+ 0267            PIFH = REGBS+$267 ;portH interrupt flag register
+ 0268            PTJ = REGBS+$268 ;portP data register
+ 0269            PTIJ = REGBS+$269 ;portP input register
+ 026A            DDRJ = REGBS+$26A ;portP direction register
+ 026B            RDRJ = REGBS+$26B ;portP reduced drive register
+ 026C            PERJ = REGBS+$26C ;portP pull device enable
+ 026D            PPSJ = REGBS+$26D ;portP pull polarity select
+ 026E            PIEJ = REGBS+$26E ;portP interrupt enable register
+ 026F            PIFJ = REGBS+$26F ;portP interrupt flag register
+--- 0000           
+ 0280            CAN4CTL0 = REGBS+$280 ;CAN4 control register 0
+ 0281            CAN4CTL1 = REGBS+$281 ;CAN4 control register 1
+ 0282            CAN4BTR0 = REGBS+$282 ;CAN4 bus timing register 0
+ 0283            CAN4BTR1 = REGBS+$283 ;CAN4 bus timing register 1
+ 0284            CAN4RFLG = REGBS+$284 ;CAN4 receiver flags
+ 0285            CAN4RIER = REGBS+$285 ;CAN4 receiver interrupt enables
+ 0286            CAN4TFLG = REGBS+$286 ;CAN4 transmit flags
+ 0287            CAN4TIER = REGBS+$287 ;CAN4 transmit interrupt enables
+ 0288            CAN4TARQ = REGBS+$288 ;CAN4 transmit message abort control
+ 0289            CAN4TAAK = REGBS+$289 ;CAN4 transmit message abort status
+ 028A            CAN4TBEL = REGBS+$28A ;CAN4 transmit buffer select
+ 028B            CAN4IDAC = REGBS+$28B ;CAN4 identfier acceptancecontrol
+--- 0000           
+ 028E            CAN4RERR = REGBS+$28E ;CAN4 Receive error counter
+ 028F            CAN4TERR = REGBS+$28F ;CAN4 Transmit error counter
+ 0290            CAN4IDA0 = REGBS+$290 ;CAN4 Identifier acceptanceregister 0
+ 0291            CAN4IDA1 = REGBS+$291 ;CAN4 Identifier acceptanceregister 1
+ 0292            CAN4IDA2 = REGBS+$292 ;CAN4 Identifier acceptanceregister 2
+ 0293            CAN4IDA3 = REGBS+$293 ;CAN4 Identifier acceptanceregister 3
+ 0294            CAN4IDM0 = REGBS+$294 ;CAN4 Identifier mask register 0
+ 0295            CAN4IDM1 = REGBS+$295 ;CAN4 Identifier mask register 1
+ 0296            CAN4IDM2 = REGBS+$296 ;CAN4 Identifier mask register 2
+ 0297            CAN4IDM3 = REGBS+$297 ;CAN4 Identifier mask register 3
+ 0298            CAN4IDA4 = REGBS+$298 ;CAN4 Identifier acceptanceregister 4
+ 0299            CAN4IDA5 = REGBS+$299 ;CAN4 Identifier acceptanceregister 5
+ 029A            CAN4IDA6 = REGBS+$29A ;CAN4 Identifier acceptanceregister 6
+ 029B            CAN4IDA7 = REGBS+$29B ;CAN4 Identifier acceptanceregister 7
+ 029C            CAN4IDM4 = REGBS+$29C ;CAN4 Identifier mask register 4
+ 029D            CAN4IDM5 = REGBS+$29D ;CAN4 Identifier mask register 5
+ 029E            CAN4IDM6 = REGBS+$29E ;CAN4 Identifier mask register 6
+ 029F            CAN4IDM7 = REGBS+$29F ;CAN4 Identifier mask register 7
+ 02A0            CAN4RXFG = REGBS+$2A0 ;CAN4 RX foregroundbuffer thru +$2AF
+ 02B0            CAN4TXFG = REGBS+$2B0 ;CAN4 TX foregroundbuffer thru +$2BF
+--- 0000           
+--- 0000           ; ========================================================
+--- 0000           ;	basicLCD	Include file with minimal support 
+--- 0000           ;			for LCD
+--- 0000           ;	Requires : dp256reg.asm
+--- 0000           ;
+--- 0000           ;	Hacked from Lcd_2PP.asm:     L  Parallel Lcd Driver 
+--- 0000           ;         Version:       1.0   Released 11/01/2002
+--- 0000           ;          Author:       Gary Karnes , Axiom Manufacturing
+--- 0000           ;        Compiler:       Asm12
+--- 0000           ;        Platform:       CML12S & PROJECT BOARD 
+--- 0000           ;
+--- 0000           ; ========================================================
+--- 0000           ;
+--- 0000           ; Equates
+ 0001           U21_N = $01           ; LCD unused pin
+ 0002           LCD_RW = $02          ; LCD RW select (PT1)
+ 0004           LCD_RS = $04          ; LCD RS select	(PT2)
+ 0008           LCD_EN = $08          ; LCD EN select	(PT3)
+ 0080           U21_EN = $80
+--- 0000           
+ 48BA            _LCD_instruction::
+ 48BA  3B                 pshd
+ 48BB  34                 pshx
+ 48BC  35                 pshy
+ 48BD  180F               tba
+ 48BF  164934             jsr LD2PP_Instruction
+ 48C2  31                 puly
+ 48C3  30                 pulx
+ 48C4  3A                 puld
+ 48C5  3D                 rts
+ 48C6            _LCD_display::
+ 48C6  3B                 pshd
+ 48C7  34                 pshx
+ 48C8  35                 pshy
+ 48C9  180F               tba
+ 48CB  16492C             jsr LCD2PP_Data
+ 48CE  31                 puly
+ 48CF  30                 pulx
+ 48D0  3A                 puld
+ 48D1  3D                 rts
+ 48D2                     
+ 48D2            ;-----------
+ 48D2            _Lcd2PP_Init::
+ 48D2  3B                 pshd
+ 48D3  34                 pshx
+ 48D4  35                 pshy
+ 48D5  1648DC             jsr Lcd2PP_Init
+ 48D8  31                 puly
+ 48D9  30                 pulx
+ 48DA  3A                 puld
+ 48DB  3D                 rts    
+ 48DC                      
+ 48DC            Lcd2PP_Init:	; Note : Use 4-bit init sequence (not 8-bit)  Page 3 LCD_spec.pdf
+ 48DC            		; Bottom table contains sequence of instructions
+ 48DC            		; Each row in the table represents one WRITE to the LCD instruction register (via Port P)
+ 48DC            		;	First instruction involves only a 4-bit instruction (one WRITE)
+ 48DC            		;	Following instructions involve 8 bit instruction, therefore
+ 48DC            		;		2 * 4-bit writes
+ 48DC            
+ 48DC            	; "System init"
+ 48DC            	; Setup Port T for output
+ 48DC  180B0F0242           movb #$0F,DDRT        ; setup port T
+ 48E1  180B000240           movb #$00,PTT         ; all low
+ 48E6                    ; Disable SPI AND setup SPI1 as four output bits
+ 48E6  1C025A0F                bset  DDRP,#$0F           ; set P0-3 as outputs
+ 48EA  1D00F040            bclr  SPI1CR1,#$40    ; Disable SP by turning SPI1 off
+ 48EE            
+ 48EE  180BFE0252           movb #$FE,DDRM        ; set PM1-7 as outputs
+ 48F3  180B000250           movb #$00,PTM         ; D.P.(PM2) = Off, U7_EN(PM3)= low,
+ 48F8                                            ; SS0*(PM4), SS1*(PM5), SS2*(PM6) = Low
+ 48F8                                            ; Heat(PM7) = Off
+ 48F8            
+ 48F8  1D02400E            bclr    PTT,LCD_RW+LCD_RS+LCD_EN  ; select lcd commands Cs=0 En=0
+ 48FC            
+ 48FC  16497A              jsr      DELAY50M
+ 48FF  8602                ldaa     #$02         ; Set to 4-bit operation (0010)
+ 4901  164940              jsr      LCD2PP_4     ; This first instruction is only 4 bits long!!!  Rest are 8 bits.  
+ 4904  16497A              jsr      DELAY50M
+ 4907            
+ 4907                    ;  ldaa     #$2c                ; Function Set = 001(D/L)NF** where D/L = 0(4-bit) N=1(2-lines) F=0(font=5x7 dots)
+ 4907  8628                ldaa     #$28         ; Function Set = 001(D/L)NF** where D/L = 0(4-bit) N=1(2-lines) F=0(font=5x7 dots)
+ 4909  164934              jsr      LD2PP_Instruction         
+ 490C  164988              jsr      DELAY10M         
+ 490F            
+ 490F  860E                ldaa      #$0e        ; Display On/off Control = 00001DCB where D=1(display on) C=1(cursor on) B=0 (blink off)
+ 4911  164934              jsr      LD2PP_Instruction          
+ 4914  164988              jsr      DELAY10M          
+ 4917                            
+ 4917  8601                ldaa     #$01         ; Clear display = 00000001
+ 4919  164934              jsr      LD2PP_Instruction           
+ 491C  164983              jsr      DELAY20M          
+ 491F  8680                ldaa     #$80         ; DDRAM Address Set = 01xxxxxx where xxxxxx = address
+ 4921  164934              jsr      LD2PP_Instruction
+ 4924  164988              jsr      DELAY10M        
+ 4927            
+ 4927            ; Reset Lcd states to rest
+ 4927  1D02400E           bclr    PTT,LCD_RS+LCD_RW+LCD_EN ; turn all signals off on lcd
+ 492B  3D                  rts
+ 492C            ;
+ 492C            ;-----------------------------------------------
+ 492C            ; Lcd Routines
+ 492C            ;
+ 492C            ; Write a byte to the LCD Data Register
+ 492C            LCD2PP_Data:
+ 492C  1C024004        bset  PTT,LCD_RS     ; select lcd data buffer RS=1
+ 4930  16496D          jsr   LCD_W_8        ; write byte
+ 4933  3D              rts
+ 4934            
+ 4934            ; Write a byte to the LCD Instruction Register (leaves LCD in Data mode)
+ 4934            LD2PP_Instruction:
+ 4934  1D024004          bclr   PTT,LCD_RS        ; select lcd command buffer
+ 4938  16496D            jsr    LCD_W_8           ; wait
+ 493B  1C024004          bset   PTT,LCD_RS        ; select data buffer
+ 493F  3D                rts
+ 4940            
+ 4940            LCD2PP_4:			; Destroys a and b
+ 4940  1C024880           bset   PTS,#U21_EN     ; set U21_EN high so that latch becomes transparent
+ 4944  164991             jsr      DELAY1MS      ; delay     
+ 4947  F60258             ldab     PTP              ; Port P
+ 494A  C4F0               andb     #$f0             ; get only bits 4 - 7
+ 494C  840F               anda     #$0f             ; get data
+ 494E  1806               aba
+ 4950  7A0258             staa     PTP              ; save data 
+ 4953                    ; For LCD's write cycle, Enable must pulse high and then low (for specified time)
+ 4953  1D024008           bclr     PTT,LCD_EN       ; enable low
+ 4957  164991             jsr      DELAY1MS         ; delay for LCD
+ 495A  1C024008           bset     PTT,LCD_EN       ; latch data
+ 495E  164991             jsr      DELAY1MS         ; delay for LCD 
+ 4961  1D024008           bclr     PTT,LCD_EN           ; enable low
+ 4965  164991             jsr      DELAY1MS
+ 4968  1D024880           bclr  PTS,#U21_EN    ; set U21_EN low to isolate LCD from parallel control (outputs are latched)
+ 496C  3D                 rts
+ 496D            ;
+ 496D            ;
+ 496D            ; Lcd Write 8 bit Data , lower 4 bits first in acc A   (Destroys A)
+ 496D            LCD_W_8:					
+ 496D  36                 psha                     ; save a 
+ 496E  44                 lsra                     ; shift upper 4 bits to lower
+ 496F  44                 lsra
+ 4970  44                 lsra
+ 4971  44                 lsra
+ 4972  164940             jsr      LCD2PP_4        ; write upper 4 bits to lcd
+ 4975  32                 pula
+ 4976  164940             jsr      LCD2PP_4         ; write lower 4 bits to lcd
+ 4979  3D                 rts
+ 497A                                                    
+ 497A            
+ 497A            ;
+ 497A            ; Delay routines
+ 497A            ;
+ 497A            ;
+ 497A            ; Generate a 50 ms delay
+ 497A            DELAY50M:
+ 497A  34                  pshx
+ 497B  CEC34E              ldx  #49998      ; delay 50,000 usecs,
+ 497E  16499A              jsr  DELML01     ; call usec delay
+ 4981  30                  pulx
+ 4982  3D                  rts
+ 4983            ;
+ 4983            ;
+ 4983            ; Generate a 20 ms delay
+ 4983            DELAY20M:
+ 4983  0703                bsr  DELAY10M
+ 4985  0701                bsr  DELAY10M 
+ 4987  3D                  rts
+ 4988            ;
+ 4988            ; Generate a 10 ms delay
+ 4988            DELAY10M:                            ; jsr=4cyles
+ 4988  34                  pshx             ; 2 cycles ,save x
+ 4989  CE270E              ldx  #9998       ; 2 cycles,delay 9998 usec + 2 for this routine
+ 498C  16499A              jsr  DELML01     ; call usec delay, this delay offset in sub
+ 498F  30                  pulx             ; 3 cycles restore x
+ 4990  3D                  rts              ; 5 cycles
+ 4991            ;
+ 4991            ;
+ 4991            ; Generate a 1 ms delay
+ 4991            DELAY1MS:
+ 4991                                       ; jsr=4cyles
+ 4991  34                  pshx             ; 2 cycles ,save x
+ 4992  CE03E6              ldx  #998       ; 2 cycles,delay 9998 usec + 2 for this routine
+ 4995  16499A              jsr  DELML01     ; call usec delay, this delay offset in sub
+ 4998  30                  pulx             ; 3 cycles restore x
+ 4999  3D                  rts              ; 5 cycles
+ 499A            
+ 499A            
+ 499A            ;
+ 499A            ; 8 cycles = 1 usec e = 8mhz
+ 499A            DELML01:
+ 499A  A7                  nop              ; 1 cycle
+ 499B  A7                  nop              ; 1 cycle
+ 499C  A7                  nop              ; 1 cycle
+ 499D  A7                  nop              ; 1 cycle
+ 499E  09                  dex              ; 1 cycle 
+ 499F  26F9                bne   DELML01    ; 3 cycles
+ 49A1  3D                  rts              ; 5 cycles

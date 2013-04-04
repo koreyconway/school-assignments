@@ -1,0 +1,323 @@
+                        .module assign53.c
+                        .area data
+ 0000           _temperature_value:
+ 0000                   .blkb 2
+                        .area idata
+ 0000 0000              .word 0
+                        .area data
+ 0002                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART3~1/../lib/temperature.c
+ 0002                   .dbsym s temperature_value _temperature_value I
+ 0002           _temperature_ready:
+ 0002                   .blkb 2
+                        .area idata
+ 0002 0000              .word 0
+                        .area data
+ 0004                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART3~1/../lib/temperature.c
+ 0004                   .dbsym s temperature_ready _temperature_ready I
+                        .area text
+ 0000                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART3~1/../lib/temperature.c
+ 0000                   .dbfunc e temperature_init _temperature_init fV
+ 0000           _temperature_init::
+ 0000                   .dbline -1
+ 0000                   .dbline 20
+ 0000           ; // By Korey Conway and Tanzeel Rana
+ 0000           ; 
+ 0000           ; #include <hcs12dp256.h>
+ 0000           ; #include <stdio.h>
+ 0000           ; #include "../lib/temperature.c"
+ 0000           ; 
+ 0000           ; #define DESIRED_TEMPERATURE   100
+ 0000           ; 
+ 0000           ; int main()
+ 0000           ; {
+ 0000           ;       int temperature = 0;
+ 0000           ;       int prevtemp = 0;
+ 0000           ;       
+ 0000           ;       // Setup terminal
+ 0000           ;       setbaud(BAUD19K);
+ 0000           ;       
+ 0000           ;       INTR_ON();
+ 0000           ;       temperature_init();
+ 0000           ;       temperature_start_sample();
+ 0000           ;       
+ 0000                   .dbline 21
+ 0000           ;       while ( 1 ) {
+ 0000 CC0000            ldd #0
+ 0003 7C0002            std _temperature_ready
+ 0006                   .dbline 26
+ 0006           ;               if ( temperature_is_ready() ) {
+ 0006           ;                       temperature = temperature_get();
+ 0006           ;                       
+ 0006           ;                       // Turn the heater on/off to get the desired temperature
+ 0006           ;                       if ( temperature < DESIRED_TEMPERATURE ) {
+ 0006 C6FA              ldab #250
+ 0008 7B0082            stab 0x82
+ 000B                   .dbline 29
+ 000B           ;                               temperature_heater_on();
+ 000B           ;                       } else {
+ 000B           ;                               temperature_heater_off();
+ 000B 790083            clr 0x83
+ 000E                   .dbline 33
+ 000E           ;                       }
+ 000E           ;                       
+ 000E           ;                       // Print on the terminal if the temperature changed
+ 000E           ;                       if ( temperature != prevtemp ) {
+ 000E C660              ldab #96
+ 0010 7B0084            stab 0x84
+ 0013                   .dbline 36
+ 0013           ;                               prevtemp = temperature;
+ 0013           ;                               printf("Temperature is %d F\n", temperature);
+ 0013           ;                       }
+ 0013 1C025280          bset 0x252,#128
+ 0017                   .dbline -2
+ 0017                   .dbline 37
+ 0017           ;                       
+ 0017           L3:
+ 0017                   .dbline 0 ; func end
+ 0017 3D                rts
+ 0018                   .dbend
+ 0018                   .dbfunc e temperature_start_sample _temperature_start_sample fV
+ 0018           _temperature_start_sample::
+ 0018                   .dbline -1
+ 0018                   .dbline 43
+ 0018           ;                       // Start a new sample
+ 0018           ;                       temperature_start_sample();
+ 0018           ;               }
+ 0018           ;       }
+ 0018           ;               
+ 0018           ;       return 0;
+ 0018                   .dbline 46
+ 0018           ; }
+ 0018           ; }
+ 0018           ; }
+ 0018 CC0000            ldd #0
+ 001B 7C0002            std _temperature_ready
+ 001E                   .dbline 47
+ 001E           ; }
+ 001E C686              ldab #134
+ 0020 7B0085            stab 0x85
+ 0023                   .dbline -2
+ 0023                   .dbline 48
+ 0023           ; }
+ 0023           L4:
+ 0023                   .dbline 0 ; func end
+ 0023 3D                rts
+ 0024                   .dbend
+ 0024                   .dbfunc e temperature_is_ready _temperature_is_ready fI
+ 0024           ;          ?temp -> -2,x
+ 0024           _temperature_is_ready::
+ 0024 34                pshx
+ 0025 B775              tfr s,x
+ 0027 1B9E              leas -2,sp
+ 0029                   .dbline -1
+ 0029                   .dbline 54
+ 0029           ; ä
+ 0029           ; ä
+ 0029           ; ä
+ 0029           ; ä
+ 0029           ; ä
+ 0029           ; ä
+ 0029                   .dbline 55
+ 0029           ; ä
+ 0029 FC0002            ldd _temperature_ready
+ 002C 2707              beq L7
+ 002E CC0001            ldd #1
+ 0031 6C1E              std -2,x
+ 0033 2005              bra L8
+ 0035           L7:
+ 0035 CC0000            ldd #0
+ 0038 6C1E              std -2,x
+ 003A           L8:
+ 003A EC1E              ldd -2,x
+ 003C                   .dbline -2
+ 003C           L5:
+ 003C B757              tfr x,s
+ 003E 30                pulx
+ 003F                   .dbline 0 ; func end
+ 003F 3D                rts
+ 0040                   .dbend
+ 0040                   .dbfunc e temperature_get _temperature_get fI
+ 0040           _temperature_get::
+ 0040                   .dbline -1
+ 0040                   .dbline 62
+ 0040           ; ä
+ 0040           ; ä
+ 0040           ; ä
+ 0040           ; ä
+ 0040           ; ä
+ 0040           ; ä
+ 0040           ; ä
+ 0040                   .dbline 63
+ 0040           ; ä
+ 0040 CC0000            ldd #0
+ 0043 7C0002            std _temperature_ready
+ 0046                   .dbline 64
+ 0046           ; ä
+ 0046 FC0000            ldd _temperature_value
+ 0049                   .dbline -2
+ 0049           L9:
+ 0049                   .dbline 0 ; func end
+ 0049 3D                rts
+ 004A                   .dbend
+ 004A                   .dbfunc e temperature_heater_on _temperature_heater_on fV
+ 004A           _temperature_heater_on::
+ 004A                   .dbline -1
+ 004A                   .dbline 71
+ 004A           ; ä
+ 004A           ; ä
+ 004A           ; ä
+ 004A           ; ä
+ 004A           ; ä
+ 004A           ; ä
+ 004A           ; ä
+ 004A                   .dbline 72
+ 004A           ; ä
+ 004A 1C025080          bset 0x250,#128
+ 004E                   .dbline -2
+ 004E                   .dbline 73
+ 004E           ; ä
+ 004E           L10:
+ 004E                   .dbline 0 ; func end
+ 004E 3D                rts
+ 004F                   .dbend
+ 004F                   .dbfunc e temperature_heater_off _temperature_heater_off fV
+ 004F           _temperature_heater_off::
+ 004F                   .dbline -1
+ 004F                   .dbline 79
+ 004F           ; ä
+ 004F           ; ä
+ 004F           ; ä
+ 004F           ; ä
+ 004F           ; ä
+ 004F           ; ä
+ 004F                   .dbline 80
+ 004F           ; ä
+ 004F 1D025080          bclr 0x250,#0x80
+ 0053                   .dbline -2
+ 0053                   .dbline 81
+ 0053           ; ä
+ 0053           L11:
+ 0053                   .dbline 0 ; func end
+ 0053 3D                rts
+ 0054                   .dbend
+ 0054                   .dbfunc e temperature_isr _temperature_isr fV
+ 0054           _temperature_isr::
+ 0054                   .dbline -1
+ 0054                   .dbline 88
+ 0054           ; ä
+ 0054           ; ä
+ 0054           ; ä
+ 0054           ; ä
+ 0054           ; ä
+ 0054           ; ä
+ 0054           ; ä
+ 0054                   .dbline 89
+ 0054           ; ä
+ 0054                   ; vol
+ 0054 FC009C            ldd 0x9c
+ 0057 8403              anda #3
+ 0059 C4FF              andb #255
+ 005B 49                lsrd
+ 005C 49                lsrd
+ 005D 49                lsrd
+ 005E 830005            subd #5
+ 0061 7C0000            std _temperature_value
+ 0064                   .dbline 90
+ 0064           ; ä
+ 0064 CC0001            ldd #1
+ 0067 7C0002            std _temperature_ready
+ 006A                   .dbline -2
+ 006A                   .dbline 91
+ 006A           ; ä
+ 006A           L12:
+ 006A                   .dbline 0 ; func end
+ 006A 0B                rti
+ 006B                   .dbend
+ 006B                   .dbfile M:\SYSC20~2\Assignments\ASSIGN~4\PART3~1\assign53.c
+ 006B                   .dbfunc e main _main fI
+ 006B           ;       prevtemp -> -4,x
+ 006B           ;    temperature -> -2,x
+ 006B           _main::
+ 006B 34                pshx
+ 006C B775              tfr s,x
+ 006E 1B9A              leas -6,sp
+ 0070                   .dbline -1
+ 0070                   .dbline 10
+ 0070                   .dbline 11
+ 0070 CC0000            ldd #0
+ 0073 6C1E              std -2,x
+ 0075                   .dbline 12
+ 0075 CC0000            ldd #0
+ 0078 6C1C              std -4,x
+ 007A                   .dbline 15
+ 007A CC001A            ldd #26
+ 007D 160000            jsr _setbaud
+ 0080                   .dbline 17
+ 0080 10EF                      cli
+ 0082           
+ 0082                   .dbline 18
+ 0082 160000            jsr _temperature_init
+ 0085                   .dbline 19
+ 0085 160018            jsr _temperature_start_sample
+ 0088 2033              bra L15
+ 008A           L14:
+ 008A                   .dbline 21
+ 008A                   .dbline 22
+ 008A 160024            jsr _temperature_is_ready
+ 008D 8C0000            cpd #0
+ 0090 272B              beq L17
+ 0092                   .dbline 22
+ 0092                   .dbline 23
+ 0092 160040            jsr _temperature_get
+ 0095 6C1E              std -2,x
+ 0097                   .dbline 26
+ 0097 EC1E              ldd -2,x
+ 0099 8C0064            cpd #100
+ 009C 2C05              bge L19
+ 009E                   .dbline 26
+ 009E                   .dbline 27
+ 009E 16004A            jsr _temperature_heater_on
+ 00A1                   .dbline 28
+ 00A1 2003              bra L20
+ 00A3           L19:
+ 00A3                   .dbline 28
+ 00A3                   .dbline 29
+ 00A3 16004F            jsr _temperature_heater_off
+ 00A6                   .dbline 30
+ 00A6           L20:
+ 00A6                   .dbline 33
+ 00A6 EC1E              ldd -2,x
+ 00A8 AC1C              cpd -4,x
+ 00AA 270E              beq L21
+ 00AC                   .dbline 33
+ 00AC                   .dbline 34
+ 00AC 18021E1C          movw -2,x,-4,x
+ 00B0                   .dbline 35
+ 00B0 18021E80          movw -2,x,0,sp
+ 00B4 CC00C6            ldd #L23
+ 00B7 160000            jsr _printf
+ 00BA                   .dbline 36
+ 00BA           L21:
+ 00BA                   .dbline 39
+ 00BA 160018            jsr _temperature_start_sample
+ 00BD                   .dbline 40
+ 00BD           L17:
+ 00BD                   .dbline 41
+ 00BD           L15:
+ 00BD                   .dbline 21
+ 00BD 20CB              bra L14
+ 00BF           X0:
+ 00BF                   .dbline 43
+ 00BF CC0000            ldd #0
+ 00C2                   .dbline -2
+ 00C2           L13:
+ 00C2 B757              tfr x,s
+ 00C4 30                pulx
+ 00C5                   .dbline 0 ; func end
+ 00C5 3D                rts
+ 00C6                   .dbsym l prevtemp -4 I
+ 00C6                   .dbsym l temperature -2 I
+ 00C6                   .dbend
+ 00C6           L23:
+ 00C6 54656D70657261747572652069732025  .byte 'T,'e,'m,'p,'e,'r,'a,'t,'u,'r,'e,32,'i,'s,32,37
+ 00D6 6420460A00        .byte 'd,32,'F,10,0
