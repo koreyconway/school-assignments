@@ -1,4 +1,4 @@
-sysc2003
-========
+School Assignments
+==================
 
-Sysc 2003 Assignments
+This is a record of some school assignments that involved programming.
