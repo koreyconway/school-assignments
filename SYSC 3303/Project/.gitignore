@@ -1,0 +1,5 @@
+bin
+server_files
+client_files
+UML.ucls
+*.db

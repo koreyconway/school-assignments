@@ -1,0 +1,1 @@
+To run, simply execute the main method of the AgentThread class. The main method will create the various threads and terminate when finished making sandwiches. Each chef thread will say how many sandwiches it made when all the sandwiches have been made.
