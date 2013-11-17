@@ -1,0 +1,2 @@
+verilog work "netgen/par/top_timesim.v"
+verilog work "top_tb.v"

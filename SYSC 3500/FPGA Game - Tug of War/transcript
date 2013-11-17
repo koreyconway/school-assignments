@@ -1,0 +1,212 @@
+# Reading C:/Modeltech_xe/tcl/vsim/pref.tcl 
+# do {OPP_tb.fdo} 
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# 
+# Top level modules:
+# 	OPP
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP_tb
+# 
+# Top level modules:
+# 	OPP_tb
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module glbl
+# 
+# Top level modules:
+# 	glbl
+# vsim -L xilinxcorelib_ver -L unisims_ver -lib work -voptargs=\"+acc\" -t 1ps work.OPP_tb glbl 
+# Loading work.OPP_tb
+# Loading work.OPP
+# Loading work.glbl
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body
+do {OPP_tb.fdo}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# ** Error: OPP.v(19): Register is illegal in left-hand side of continuous assignment
+# ** Error: C:/Modeltech_xe/win32xoem/vlog failed.
+# Error in macro ./OPP_tb.fdo line 23
+# C:/Modeltech_xe/win32xoem/vlog failed.
+#     while executing
+# "vlog  "OPP.v""
+do {OPP_tb.fdo}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# ** Error: OPP.v(19): Register is illegal in left-hand side of continuous assignment
+# ** Error: C:/Modeltech_xe/win32xoem/vlog failed.
+# Error in macro ./OPP_tb.fdo line 23
+# C:/Modeltech_xe/win32xoem/vlog failed.
+#     while executing
+# "vlog  "OPP.v""
+do {OPP_tb.fdo}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# ** Error: OPP.v(19): Register is illegal in left-hand side of continuous assignment
+# ** Error: C:/Modeltech_xe/win32xoem/vlog failed.
+# Error in macro ./OPP_tb.fdo line 23
+# C:/Modeltech_xe/win32xoem/vlog failed.
+#     while executing
+# "vlog  "OPP.v""
+do {OPP_tb.fdo}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# 
+# Top level modules:
+# 	OPP
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP_tb
+# 
+# Top level modules:
+# 	OPP_tb
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module glbl
+# 
+# Top level modules:
+# 	glbl
+# vsim -L xilinxcorelib_ver -L unisims_ver -lib work -voptargs=\"+acc\" -t 1ps work.OPP_tb glbl 
+# Loading work.OPP_tb
+# Loading work.OPP
+# Loading work.glbl
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body
+do {OPP_tb.fdo}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# 
+# Top level modules:
+# 	OPP
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP_tb
+# 
+# Top level modules:
+# 	OPP_tb
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module glbl
+# 
+# Top level modules:
+# 	glbl
+# vsim -L xilinxcorelib_ver -L unisims_ver -lib work -voptargs=\"+acc\" -t 1ps work.OPP_tb glbl 
+# Loading work.OPP_tb
+# Loading work.OPP
+# Loading work.glbl
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body
+do {top_tb.fdo}
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module RSLatch
+# 
+# Top level modules:
+# 	RSLatch
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module Synchronizer
+# 
+# Top level modules:
+# 	Synchronizer
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module scorer
+# 
+# Top level modules:
+# 	scorer
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module random
+# 
+# Top level modules:
+# 	random
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module PBL
+# 
+# Top level modules:
+# 	PBL
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module OPP
+# 
+# Top level modules:
+# 	OPP
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module MC
+# 
+# Top level modules:
+# 	MC
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module ledmux
+# 
+# Top level modules:
+# 	ledmux
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module div256
+# 
+# Top level modules:
+# 	div256
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module top
+# 
+# Top level modules:
+# 	top
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module top_tb
+# 
+# Top level modules:
+# 	top_tb
+# Model Technology ModelSim XE III vlog 6.5c Compiler 2010.02 Feb 10 2010
+# -- Compiling module glbl
+# 
+# Top level modules:
+# 	glbl
+# vsim -L xilinxcorelib_ver -L unisims_ver -lib work -voptargs=\"+acc\" -t 1ps work.top_tb glbl 
+# Loading work.top_tb
+# Loading work.top
+# Loading work.div256
+# Loading work.random
+# Loading work.MC
+# Loading work.PBL
+# Loading work.RSLatch
+# Loading work.Synchronizer
+# Loading work.OPP
+# Loading work.scorer
+# ** Warning: (vsim-3009) [TSCALE] - Module 'scorer' does not have a `timescale directive in effect, but previous modules do.
+#         Region: /top_tb/uut/scorer
+# Loading work.ledmux
+# Loading work.glbl
+# .main_pane.wave.interior.cs.body.pw.wf
+# .main_pane.structure.interior.cs.body.struct
+# .main_pane.objects.interior.cs.body
+#                 3000 clear = 1
+#                 3000 clear = 1
+#                 3000 winrnd = x
+#                 5000 winrnd = 0
+#                11000 winrnd = 0
+#                13000 winrnd = 0
+#                13000 winrnd = 0
+#                15000 winrnd = 0
+#                17000 winrnd = 0
+#                19000 winrnd = 0
+#                21000 winrnd = 0
+#                23000 winrnd = 0
+#                25000 winrnd = 0
+#              1037000 clear = 0
+#              1037000 clear = 0
+#              1037000 winrnd = 0
+#              4109000 winrnd = 0
+#              4110000 winrnd = 0
+#              4113000 winrnd = 1
+#              4113000 winrnd high
+#              4115000 winrnd = 0
+#              4117000 winrnd = 0
+#              4117000 clear = 1
+#              4117000 clear = 1
+#              5133000 clear = 0
+#              5133000 clear = 0
+#              5133000 winrnd = 0
+#              5645000 winrnd = 0
+# Load canceled
