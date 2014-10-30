@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pins_config>
+	<motors>
+		<motor id="gripper" forward_pin="0" reverse_pin="1"/>
+		<motor id="wrist" forward_pin="2" reverse_pin="3"/>
+	</motors>
+	<leds>
+	    <led id="hawkeye" state_pin="4" />
+	</leds>
+</pins_config>

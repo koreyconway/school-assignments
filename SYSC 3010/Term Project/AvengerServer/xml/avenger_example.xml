@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<avengerState>
+	<motors>
+		<motor id="0" state="off" />
+		<motor id="1" state="forward" />
+		<motor id="2" state="reverse" />
+		<motor id="3" state="off" />
+	</motors>
+	<leds>
+	    <led id="0" state="on" />
+	</leds>
+</avengerState>

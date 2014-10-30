@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<avengerServerConfig>
+	<port>5555</port>
+	<destinationHost>localhost</destinationHost>
+	<destinationPort>6666</destinationPort>
+	<lockTimeout>2000</lockTimeout>
+	<resendInterval>200</resendInterval>
+	<motors>
+		<motor id="gripper" />
+		<motor id="wrist" />
+		<motor id="shoulder" />
+		<motor id="elbow" />
+		<motor id="base" />
+	</motors>
+	<leds>
+		<led id="hawkeye" />
+	</leds>
+</avengerServerConfig>

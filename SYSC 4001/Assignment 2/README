@@ -1,0 +1,42 @@
+
+Assignment 2
+============
+
+Authors
+-------
+- Monisha Gunalan (100871444)
+- Korey Conway (100838924)
+
+Compile Instructions
+--------------------
+	
+To compile, run:
+	
+	make all
+
+
+Run Instructions
+----------------
+
+To run program:
+	
+	$ ./bin/assign2
+
+
+
+Run Instructions
+----------------
+Select assignment part (1, 2): 
+	Enter < 1 > or < 2 > to choose the assignment.
+	< 1 > to run the producer consumer program using any of the three alternatives
+	< 2 > to run the performance of the three alternatives
+
+
+Select alternative (1, 2, 3): 
+	Enter < 1 > or < 2 > or < 3 >to choose the respective alternative
+	
+
+Run the program again to test a another alternative
+
+	
+
